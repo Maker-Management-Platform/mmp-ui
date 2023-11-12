@@ -1,25 +1,17 @@
-import {
-    Card,
-    Image,
-    ActionIcon,
-    Group,
-    Text,
-    useMantineTheme,
-    rem, AspectRatio,
-} from '@mantine/core';
-import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
+import {ActionIcon, AspectRatio, Card, Group, Image, rem, Text, useMantineTheme,} from '@mantine/core';
+import {IconBookmark, IconHeart, IconShare} from '@tabler/icons-react';
 import classes from './ModelCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
 import {baseURL} from "../../../core/config.ts";
-import {Project} from "../../../projects/entities/Project.ts";
 
 type ModelCardProps = {
-    project: Project;
+    projectUuid: string;
     asset: Asset;
-    onClick: () => void;
+    selected: boolean;
+    onSelectChange: (arg0: boolean) => void;
 }
 
-export function ModelCard({project, asset, onClick}: ModelCardProps) {
+export function ModelCard({projectUuid, asset, onSelectChange}: ModelCardProps) {
     const theme = useMantineTheme();
 
     const size = rem('280px');
@@ -29,7 +21,7 @@ export function ModelCard({project, asset, onClick}: ModelCardProps) {
                 <AspectRatio ratio={16/9}>
 
                     <Image
-                        src={`${baseURL}/projects/${project.uuid}/assets/${asset?.model.image_sha1}`}
+                        src={`${baseURL}/projects/${projectUuid}/assets/${asset?.model.image_sha1}`}
                         alt={asset.name}
                     />
                 </AspectRatio>

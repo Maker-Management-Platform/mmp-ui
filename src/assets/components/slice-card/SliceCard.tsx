@@ -1,37 +1,29 @@
-import {
-    Card,
-    Image,
-    ActionIcon,
-    Group,
-    Text,
-    useMantineTheme,
-    rem, AspectRatio,
-} from '@mantine/core';
-import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
+import {AspectRatio, Card, Group, Image, rem, Text,} from '@mantine/core';
 import classes from './SliceCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
 import {baseURL} from "../../../core/config.ts";
-import {Project} from "../../../projects/entities/Project.ts";
+import {SelectBtn} from "../parts/select-btn/SelectBtn.tsx";
+import {DownloadBtn} from "../parts/download-btn/DownloadBtn.tsx";
 
 type SliceCardProps = {
-    project: Project;
+    projectUuid: string;
     asset: Asset;
-    onClick: () => void;
+    selected: boolean;
+    onSelectChange: (arg0: boolean) => void;
 }
 
-export function SliceCard({project, asset, onClick}: SliceCardProps) {
-    const theme = useMantineTheme();
+export function SliceCard({projectUuid, asset, selected, onSelectChange}: SliceCardProps) {
 
     const size = rem('280px');
     return (
-        <Card withBorder padding="lg" radius="md" className={classes.card} style={{ minWidth: size, width: size}}>
+        <Card withBorder padding="lg" radius="md" className={classes.card} style={{minWidth: size, width: size}}>
             <Card.Section mb="sm">
-                <AspectRatio ratio={16/9}>
+                <AspectRatio ratio={16 / 9}>
 
-                <Image
-                    src={`${baseURL}/projects/${project.uuid}/assets/${asset?.slice.image.sha1}`}
-                    alt={asset.name}
-                />
+                    <Image
+                        src={`${baseURL}/projects/${projectUuid}/assets/${asset?.slice?.image.sha1}`}
+                        alt={asset.name}
+                    />
                 </AspectRatio>
             </Card.Section>
 
@@ -40,29 +32,18 @@ export function SliceCard({project, asset, onClick}: SliceCardProps) {
             </Text>
 
             <Card.Section className={classes.footer}>
-                <Group justify="space-between">
+                <Group justify="flex-end">
                     <Group gap={0}>
-                        <ActionIcon variant="subtle" color="gray">
+                        {/*                        <ActionIcon variant="subtle" color="gray">
                             <IconHeart
-                                style={{ width: rem(20), height: rem(20) }}
+                                style={{width: rem(20), height: rem(20)}}
                                 color={theme.colors.red[6]}
                                 stroke={1.5}
                             />
-                        </ActionIcon>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconBookmark
-                                style={{ width: rem(20), height: rem(20) }}
-                                color={theme.colors.yellow[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconShare
-                                style={{ width: rem(20), height: rem(20) }}
-                                color={theme.colors.blue[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>
+                        </ActionIcon>*/}
+                        <DownloadBtn
+                            downloadLink={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}/>
+                        <SelectBtn selected={selected} onChange={onSelectChange}/>
                     </Group>
                 </Group>
             </Card.Section>

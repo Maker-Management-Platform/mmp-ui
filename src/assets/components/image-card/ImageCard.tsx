@@ -1,34 +1,27 @@
-import {
-    Card,
-    Image,
-    ActionIcon,
-    Group,
-    Text,
-    useMantineTheme,
-    rem, AspectRatio, Modal,
-} from '@mantine/core';
-import {IconHeart, IconBookmark, IconShare} from '@tabler/icons-react';
+import {ActionIcon, AspectRatio, Card, Group, Image, Modal, rem, Text, useMantineTheme,} from '@mantine/core';
+import {IconBookmark, IconHeart, IconShare} from '@tabler/icons-react';
 import classes from './ImageCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
 import {baseURL} from "../../../core/config.ts";
-import {Project} from "../../../projects/entities/Project.ts";
 import {useToggle} from "@mantine/hooks";
 
 type ImageCardProps = {
-    project: Project;
+    projectUuid: string;
     asset: Asset;
-    onClick: () => void;
+    selected: boolean;
+    onFocus?: () => void;
+    onSelectChange: (arg0: boolean) => void;
 }
 
-export function ImageCard({project, asset, onClick}: ImageCardProps) {
+export function ImageCard({projectUuid, asset, onFocus}: ImageCardProps) {
     const [value, toggle] = useToggle([false, true]);
     const theme = useMantineTheme();
 
     const size = rem('280px');
     return (<>
-            <Modal  opened={value} onClose={() => toggle()}>
+            <Modal opened={value} onClose={() => toggle()}>
                 <Image
-                    src={`${baseURL}/projects/${project.uuid}/assets/${asset.sha1}`}
+                    src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}
                     alt="Top 50 underrated plants for house decoration"
                 />
             </Modal>
@@ -37,7 +30,7 @@ export function ImageCard({project, asset, onClick}: ImageCardProps) {
                 <Card.Section mb="sm">
                     <AspectRatio ratio={16 / 9}>
                         <Image
-                            src={`${baseURL}/projects/${project.uuid}/assets/${asset.sha1}`}
+                            src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}
                             alt="Top 50 underrated plants for house decoration"
                         />
                     </AspectRatio>
@@ -64,7 +57,7 @@ export function ImageCard({project, asset, onClick}: ImageCardProps) {
                                     stroke={1.5}
                                 />
                             </ActionIcon>
-                            <ActionIcon variant="subtle" color="gray">
+                            <ActionIcon variant="subtle" color="gray" onClick={() => onFocus()}>
                                 <IconShare
                                     style={{width: rem(20), height: rem(20)}}
                                     color={theme.colors.blue[6]}

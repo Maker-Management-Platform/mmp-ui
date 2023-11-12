@@ -1,24 +1,19 @@
-import {
-    Card,
-    ActionIcon,
-    Group,
-    Text,
-    useMantineTheme,
-    rem, AspectRatio, Paper,
-} from '@mantine/core';
-import {IconHeart, IconBookmark, IconShare, IconFileTypePdf, IconFile} from '@tabler/icons-react';
+import {AspectRatio, Card, Group, rem, Text,} from '@mantine/core';
+import {IconFile, IconFileTypePdf} from '@tabler/icons-react';
 import classes from './FileCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
-import {Project} from "../../../projects/entities/Project.ts";
+import {DownloadBtn} from "../parts/download-btn/DownloadBtn.tsx";
+import {baseURL} from "../../../core/config.ts";
+import {SelectBtn} from "../parts/select-btn/SelectBtn.tsx";
 
 type ImageCardProps = {
-    project: Project;
+    projectUuid: string;
     asset: Asset;
-    onClick: () => void;
+    selected: boolean
+    onSelectChange: (arg0: boolean) => void;
 }
 
-export function FileCard({project, asset, onClick}: ImageCardProps) {
-    const theme = useMantineTheme();
+export function FileCard({asset, projectUuid, selected, onSelectChange}: ImageCardProps) {
     const iconMap = new Map<string, JSX.Element>();
     iconMap.set('.pdf', <IconFileTypePdf/>);
     iconMap.set('.jpg', <IconFile/>);
@@ -38,29 +33,11 @@ export function FileCard({project, asset, onClick}: ImageCardProps) {
             </Text>
 
             <Card.Section className={classes.footer}>
-                <Group justify="space-between">
+                <Group justify="flex-end">
                     <Group gap={0}>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconHeart
-                                style={{width: rem(20), height: rem(20)}}
-                                color={theme.colors.red[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconBookmark
-                                style={{width: rem(20), height: rem(20)}}
-                                color={theme.colors.yellow[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconShare
-                                style={{width: rem(20), height: rem(20)}}
-                                color={theme.colors.blue[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>
+                        <DownloadBtn
+                            downloadLink={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}/>
+                        <SelectBtn selected={selected} onChange={onSelectChange}/>
                     </Group>
                 </Group>
             </Card.Section>

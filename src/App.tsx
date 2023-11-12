@@ -1,5 +1,5 @@
 import {useDisclosure, useMediaQuery} from '@mantine/hooks';
-import {AppShell, Burger, Group, useMantineTheme} from '@mantine/core';
+import {AppShell, Burger, Group} from '@mantine/core';
 import {NavBar} from "./core/navbar/NavBar.tsx";
 import {Outlet} from "react-router-dom";
 
