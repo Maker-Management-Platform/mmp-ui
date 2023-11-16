@@ -19,14 +19,14 @@
     "@mantine/modals": "^7.1.7",
     "@mantine/notifications": "^7.1.7",
     "@mantine/nprogress": "^7.1.7",
+    "@react-three/drei": "^9.88.13",
+    "@react-three/fiber": "^8.15.10",
     "axios": "^1.6.0",
     "axios-hooks": "^5.0.1",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.18.0",
-    "react-three-fiber": "^6.0.13",
-    "three": "^0.158.0"
+    "react-router-dom": "^6.18.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

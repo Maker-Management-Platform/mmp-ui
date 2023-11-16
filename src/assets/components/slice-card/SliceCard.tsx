@@ -1,4 +1,4 @@
-import {AspectRatio, Card, Group, Image, rem, Text,} from '@mantine/core';
+import {AspectRatio, Card, Group, Image, rem, Text} from '@mantine/core';
 import classes from './SliceCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
 import {baseURL} from "../../../core/config.ts";
@@ -34,13 +34,6 @@ export function SliceCard({projectUuid, asset, selected, onSelectChange}: SliceC
             <Card.Section className={classes.footer}>
                 <Group justify="flex-end">
                     <Group gap={0}>
-                        {/*                        <ActionIcon variant="subtle" color="gray">
-                            <IconHeart
-                                style={{width: rem(20), height: rem(20)}}
-                                color={theme.colors.red[6]}
-                                stroke={1.5}
-                            />
-                        </ActionIcon>*/}
                         <DownloadBtn
                             downloadLink={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}/>
                         <SelectBtn selected={selected} onChange={onSelectChange}/>

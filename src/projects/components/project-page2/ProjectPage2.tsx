@@ -4,6 +4,7 @@ import {Project} from "../../entities/Project.ts";
 import {useEffect, useState} from "react";
 import {Flex} from "@mantine/core";
 import {ProjectAssetsList} from "./parts/project-assets-list/ProjectAssetsList.tsx";
+import {ProjectPageHeader} from "./parts/project-page-header/ProjectPageHeader.tsx";
 
 
 export function ProjectPage2() {
@@ -20,8 +21,7 @@ export function ProjectPage2() {
 
     return (
         <>
-            {project?.name}
-            {project?.tags.map(s => <span>{s}</span>)}
+            <ProjectPageHeader project={project}/>
             {error && <p>Error!</p>}
             {loading && <p>Loading...</p>}
             <Flex

@@ -1,4 +1,4 @@
-import {AspectRatio, Card, Group, rem, Text,} from '@mantine/core';
+import {AspectRatio, Card, Group, rem, Text} from '@mantine/core';
 import {IconFile, IconFileTypePdf} from '@tabler/icons-react';
 import classes from './FileCard.module.css';
 import {Asset} from "../../entities/Assets.ts";

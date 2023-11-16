@@ -8,6 +8,7 @@ import {SliceCard} from "../../../../../assets/components/slice-card/SliceCard.t
 import {FileCard} from "../../../../../assets/components/file-card/FileCard.tsx";
 import {useListState} from "@mantine/hooks";
 import {useEffect, useState} from "react";
+import {ModelDetailPane} from "../../../../../assets/components/model-detail-pane/ModelDetailPane.tsx";
 
 type ProjectAssetsListProps = {
     projectUuid: string;
@@ -15,48 +16,75 @@ type ProjectAssetsListProps = {
 
 export function ProjectAssetsList({projectUuid}: ProjectAssetsListProps) {
     const [assetList, assetListHandlers] = useListState<{ asset: Asset, selected: boolean }>([]);
+    const [lastSelected, setLastSelected] = useState<{ asset: Asset, s: boolean, i: number }>();
     const [typeFilter, setTypeFilter] = useState('all');
     const [{data: assets, loading, error}] = useAxios(
         `/projects/${projectUuid}/assets`
     );
     useEffect(() => {
         if (!assets) return;
+        assetListHandlers.remove(0, assetList.length);
         assets.forEach((a: Asset) => assetListHandlers.append({asset: a, selected: false}))
     }, [assets]);
+
+    useEffect(() => {
+        if (!lastSelected) return;
+
+        const {asset, s: selected} = lastSelected;
+        assetListHandlers
+            .applyWhere(
+                (i) => {
+                    return i.asset.sha1 === asset.sha1
+                },
+                (i) => {
+                    return {...i, selected}
+                }
+            )
+
+        if (selected) {
+            assetListHandlers
+                .applyWhere(
+                    (i) => {
+                        return i.selected && i.asset.asset_type !== 'model' && i.asset.sha1 !== asset.sha1
+                    },
+                    (i) => {
+                        return {...i, selected: false}
+                    }
+                )
+        }
+
+    }, [lastSelected]);
+
+    useEffect(() => {
+        setTypeFilter(assetList.find(a => a.selected)?.asset.asset_type || 'all');
+    }, [assetList]);
+
 
     const assetMap = ({selected, asset}: { asset: Asset, selected: boolean }, i: number) => {
         switch (asset.asset_type) {
             case 'image':
                 return <ImageCard key={asset.sha1} projectUuid={projectUuid} asset={asset}
                                   selected={selected}
-                                  onSelectChange={(s) => doFocusAsset(asset, s, i)}/>;
+                                  onSelectChange={(s) => setLastSelected({asset, s, i})}/>;
             case 'model':
                 return <ModelCard key={asset.sha1} projectUuid={projectUuid} asset={asset}
                                   selected={selected}
-                                  onSelectChange={(s) => doFocusAsset(asset, s, i)}/>;
+                                  onSelectChange={(s) => setLastSelected({asset, s, i})}/>;
             case 'slice':
                 return <SliceCard key={asset.sha1} projectUuid={projectUuid} asset={asset}
                                   selected={selected}
-                                  onSelectChange={(s) => doFocusAsset(asset, s, i)}/>;
+                                  onSelectChange={(s) => setLastSelected({asset, s, i})}/>;
             case 'file':
                 return <FileCard key={asset.sha1} projectUuid={projectUuid} asset={asset}
                                  selected={selected}
-                                 onSelectChange={(s) => doFocusAsset(asset, s, i)}/>;
+                                 onSelectChange={(s) => setLastSelected({asset, s, i})}/>;
         }
     }
 
-    const doFocusAsset = (asset: Asset, selected: boolean, i: number) => {
-        if (asset.asset_type) {
-            setTypeFilter(asset.asset_type);
-        } else {
-            setTypeFilter('all');
-        }
-        assetListHandlers.setItemProp(i, 'selected', selected)
-    }
     return (
         <>
             {error && <p>Error!</p>}
-            <ProjectAssetsTypeFilter assets={assets} value={typeFilter} onChange={setTypeFilter}/>
+            <ProjectAssetsTypeFilter assetList={assetList} value={typeFilter} onChange={setTypeFilter}/>
             <Container fluid my='xs' style={{width: '100%'}}>
                 <SimpleGrid cols={assetList.some((v) => v.selected) ? 2 : 1}>
                     <Flex
@@ -83,6 +111,9 @@ export function ProjectAssetsList({projectUuid}: ProjectAssetsListProps) {
                     {/*!(l1 || l2) && project && focusedAsset?.asset_type === 'slice' &&
                             <SliceDetailPane project={project} asset={focusedAsset}
                                              onClose={() => doFocusAsset(undefined)}/>*/}
+                    {assetList.find(e => e.selected)?.asset.asset_type === 'model'
+                        && <ModelDetailPane projectUuid={projectUuid} onClose={() => console.log('qwe')}
+                                            models={assetList.filter(e => e.selected).map(e => e.asset)}/>}
                 </SimpleGrid>
             </Container>
         </>
