@@ -4,7 +4,8 @@ import {Project} from "../../entities/Project.ts";
 import {useEffect, useState} from "react";
 import {Flex} from "@mantine/core";
 import {ProjectAssetsList} from "./parts/project-assets-list/ProjectAssetsList.tsx";
-import {ProjectPageHeader} from "./parts/project-page-header/ProjectPageHeader.tsx";
+import {ProjectHeader} from "../project-header/ProjectHeader.tsx";
+import {baseURL} from "../../../core/config.ts";
 
 
 export function ProjectPage2() {
@@ -21,7 +22,12 @@ export function ProjectPage2() {
 
     return (
         <>
-            <ProjectPageHeader project={project}/>
+            <ProjectHeader project={project}
+                           name={project?.name || ''}
+                           description={project?.description || ''}
+                           tags={project?.tags || []}
+                           imagePath={`${baseURL}/projects/${project?.uuid}/assets/${project?.default_image_path}` || ''}
+            />
             {error && <p>Error!</p>}
             {loading && <p>Loading...</p>}
             <Flex

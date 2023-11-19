@@ -1,13 +1,14 @@
-import {ProjectsList} from "./components/project-list/ProjectList.tsx";
-import {ProjectPage2} from "./components/project-page2/ProjectPage2.tsx";
+import {ProjectPage3} from "./components/project-page3/ProjectPage3.tsx";
+import {ProjectsPage} from "./components/projects-page/ProjectsPage.tsx";
 
 export const routes = [
     {
         path: '',
-        element: <ProjectsList/>
+        index: true,
+        element: <ProjectsPage/>
     },
     {
         path: ':id',
-        element: <ProjectPage2/>
+        element: <ProjectPage3/>
     }
 ]

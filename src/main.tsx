@@ -4,6 +4,7 @@ import App from './App.tsx'
 import '@mantine/core/styles.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';
+import '@mantine/core/styles/Button.css';
 import '@mantine/core/styles/VisuallyHidden.css';
 import '@mantine/core/styles/Paper.css';
 import '@mantine/core/styles/Popover.css';
@@ -16,8 +17,9 @@ import '@mantine/core/styles/Input.css';
 import '@mantine/core/styles/Flex.css';
 import '@mantine/core/styles/AppShell.css';
 import '@mantine/core/styles/Tabs.css';
+import '@mantine/dropzone/styles.css';
 import {baseURL} from "./core/config.ts";
-import {MantineProvider, createTheme} from '@mantine/core';
+import {createTheme, MantineProvider} from '@mantine/core';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {configure} from 'axios-hooks'
 import Axios from 'axios'
@@ -32,7 +34,7 @@ const axios = Axios.create({
     baseURL
 })
 
-configure({axios})
+configure({axios, cache: false})
 
 
 const router = createBrowserRouter([
@@ -53,6 +55,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <MantineProvider theme={theme} defaultColorScheme="dark">
             <RouterProvider router={router}/>
-        </MantineProvider>
+        </MantineProvider>a
     </React.StrictMode>,
 )
