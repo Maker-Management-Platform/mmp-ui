@@ -80,7 +80,7 @@ export function CreateProject() {
                     </Dropzone>
                 </Stepper.Step>
                 <Stepper.Step label="Configuration" description="Configure Project">
-                    <h1>{project.name}</h1>
+                    <h1>{project?.name}</h1>
                     <ProjectForm project={project} loading={saving} onSave={onSave}/>
                 </Stepper.Step>
                 <Stepper.Step label="Done" description="Enjoy your project">

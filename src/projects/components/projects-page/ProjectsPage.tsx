@@ -4,6 +4,7 @@ import {ProjectsList} from "../tabs/projects-list/ProjectsList.tsx";
 import {CreateProject} from "../tabs/create-project/CreateProject.tsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {ProjectHeader} from "../project-header/ProjectHeader.tsx";
+import {ImportProject} from "../tabs/import-project/ImportProject.tsx";
 
 export function ProjectsPage() {
     const iconStyle = {width: rem(12), height: rem(12)};
@@ -33,8 +34,8 @@ export function ProjectsPage() {
                     <ProjectsList/>
                 </Tabs.Panel>
 
-                <Tabs.Panel value="import">
-                    Import Project
+                <Tabs.Panel value="import" pt={'xl'}>
+                    <ImportProject/>
                 </Tabs.Panel>
 
                 <Tabs.Panel value="new" pt={'xl'}>

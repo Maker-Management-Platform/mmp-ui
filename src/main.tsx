@@ -5,6 +5,7 @@ import '@mantine/core/styles.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';
 import '@mantine/core/styles/Button.css';
+import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/VisuallyHidden.css';
 import '@mantine/core/styles/Paper.css';
 import '@mantine/core/styles/Popover.css';

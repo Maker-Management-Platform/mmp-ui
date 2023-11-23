@@ -89,6 +89,7 @@ export function ProjectPageBody({projectUuid, project}: ProjectAssetsListProps) 
     }, [lastSelected]);
 
     useEffect(() => {
+        if (typeFilter === 'settings' || typeFilter === 'add_asset') return;
         const v = assetList.find(a => a.selected)?.asset.asset_type || 'all'
         navigate(`?tab=${v}`)
         setTypeFilter(v);
@@ -110,7 +111,7 @@ export function ProjectPageBody({projectUuid, project}: ProjectAssetsListProps) 
         <>
             {error && <p>Error!</p>}
                 <Container fluid my='xs' style={{width: '100%'}}>
-                    <Tabs defaultValue="all" value={typeFilter} onChange={(v) => {
+                    <Tabs value={typeFilter} onChange={(v) => {
                         setTypeFilter(v);
                         navigate(`?tab=${v}`)
                     }}>

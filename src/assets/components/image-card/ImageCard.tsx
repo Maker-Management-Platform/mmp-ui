@@ -1,38 +1,33 @@
 import {ActionIcon, AspectRatio, Card, Group, Image, Modal, rem, Text, useMantineTheme} from '@mantine/core';
-import {IconZoomScan} from '@tabler/icons-react';
+import {IconFileText, IconZoomScan} from '@tabler/icons-react';
 import classes from './ImageCard.module.css';
 import {Asset} from "../../entities/Assets.ts";
 import {baseURL} from "../../../core/config.ts";
 import {useToggle} from "@mantine/hooks";
-import {DownloadBtn} from "../parts/download-btn/DownloadBtn.tsx";
 import {SelectBtn} from "../parts/select-btn/SelectBtn.tsx";
+import {DropDownMenu} from "../parts/drop-down-menu/DropDownMenu.tsx";
 
 type ImageCardProps = {
     projectUuid: string;
     asset: Asset;
     selected: boolean;
     onSelectChange: (arg0: boolean) => void;
+    onDelete: (sha1: string) => void;
 }
 
-export function ImageCard({projectUuid, asset, selected, onSelectChange}: ImageCardProps) {
+export function ImageCard({projectUuid, asset, selected, onSelectChange, onDelete}: ImageCardProps) {
     const [value, toggle] = useToggle([false, true]);
     const theme = useMantineTheme();
 
     const size = rem('280px');
     return (<>
             <Modal opened={value} onClose={() => toggle()}>
-                <Image
-                    src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}
-                    alt="Top 50 underrated plants for house decoration"
-                />
+                <Image src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}/>
             </Modal>
             <Card withBorder padding="lg" radius="md" className={classes.card} style={{minWidth: size, width: size}}>
                 <Card.Section mb="sm" onClick={() => toggle()}>
                     <AspectRatio ratio={16 / 9}>
-                        <Image
-                            src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}
-                            alt="Top 50 underrated plants for house decoration"
-                        />
+                        <Image src={`${baseURL}/projects/${projectUuid}/assets/${asset.sha1}`}/>
                     </AspectRatio>
                 </Card.Section>
 
@@ -50,9 +45,17 @@ export function ImageCard({projectUuid, asset, selected, onSelectChange}: ImageC
                                     stroke={1.5}
                                 />
                             </ActionIcon>
-                            <DownloadBtn
-                                downloadLink={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}/>
                             <SelectBtn selected={selected} onChange={onSelectChange}/>
+                            <ActionIcon variant="subtle" color={theme.colors.blue[6]} onClick={() => toggle()}>
+                                <IconFileText
+                                    style={{width: rem(20), height: rem(20)}}
+                                    stroke={1.5}
+                                />
+                            </ActionIcon>
+                            <DropDownMenu
+                                downloadURL={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
+                                onDelete={() => onDelete(asset.sha1)}>
+                            </DropDownMenu>
                         </Group>
                     </Group>
                 </Card.Section>
