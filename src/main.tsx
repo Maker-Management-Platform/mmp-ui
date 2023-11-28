@@ -19,23 +19,14 @@ import '@mantine/core/styles/Flex.css';
 import '@mantine/core/styles/AppShell.css';
 import '@mantine/core/styles/Tabs.css';
 import '@mantine/dropzone/styles.css';
-import {baseURL} from "./core/config.ts";
 import {createTheme, MantineProvider} from '@mantine/core';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {configure} from 'axios-hooks'
-import Axios from 'axios'
+
 import {routes as projectRoutes} from "./projects/routes.tsx";
 
 const theme = createTheme({
     /** Put your mantine theme override here */
 });
-
-
-const axios = Axios.create({
-    baseURL
-})
-
-configure({axios, cache: false})
 
 
 const router = createBrowserRouter([

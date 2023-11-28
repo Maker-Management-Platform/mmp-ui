@@ -2,6 +2,8 @@ import {Dropzone} from "@mantine/dropzone";
 import {Container, Group, rem, Text} from "@mantine/core";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 import useAxios from "axios-hooks";
+import { useContext } from "react";
+import { SettingsContext } from "../../../../../core/utils/settingsContext";
 
 
 type AddAssetProps = {
@@ -9,9 +11,10 @@ type AddAssetProps = {
 }
 
 export function AddAsset({projectUuid}: AddAssetProps) {
+    const {local_backend} = useContext(SettingsContext);
     const [{loading: saving, error}, executeSave] = useAxios(
         {
-            url: '/projects',
+            url: `${local_backend}/projects`,
             method: 'POST'
         },
         {manual: true}

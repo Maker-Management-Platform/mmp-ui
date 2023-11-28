@@ -1,22 +1,24 @@
 import {Container, Group, rem, Stepper, Text} from '@mantine/core';
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Dropzone} from "@mantine/dropzone";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 import useAxios from "axios-hooks";
 import {ProjectForm} from "../../project-form/ProjectForm.tsx";
 import {Project} from "../../../entities/Project.ts";
+import { SettingsContext } from '../../../../core/utils/settingsContext.ts';
 
 export function CreateProject() {
+    const {local_backend} = useContext(SettingsContext);
     const [active, setActive] = useState(0);
     const [{data, loading: saving, error}, executeSave] = useAxios(
         {
-            url: '/projects',
+            url: `${local_backend}/projects`,
             method: 'POST'
         },
         {manual: true}
     )
     const [{data: project, loading: lProject, error: eProject}, loadProject] = useAxios(
-        `/projects/xx`,
+        `${local_backend}/projects/xx`,
         {manual: true}
     )
 
@@ -30,12 +32,12 @@ export function CreateProject() {
 
     const onSave = (project: Project) => {
         project.initialized = true;
-        executeSave({data: project, url: `/projects/${project.uuid}`}).then(() => nextStep());
+        executeSave({data: project, url: `${local_backend}/projects/${project.uuid}`}).then(() => nextStep());
     }
 
     useEffect(() => {
         if (!data) return;
-        loadProject({url: `/projects/${data.uuid}`}).then(() => nextStep());
+        loadProject({url: `${local_backend}/projects/${data.uuid}`}).then(() => nextStep());
     }, [data]);
 
     const nextStep = () =>

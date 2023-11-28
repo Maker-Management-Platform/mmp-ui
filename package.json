@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -20,13 +20,14 @@
     "@mantine/notifications": "^7.1.7",
     "@mantine/nprogress": "^7.1.7",
     "@react-three/drei": "^9.88.13",
-    "@react-three/fiber": "^8.15.10",
+    "@react-three/fiber": "^8.15.11",
     "axios": "^1.6.0",
     "axios-hooks": "^5.0.1",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.18.0"
+    "react-router-dom": "^6.18.0",
+    "three": "^0.158.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

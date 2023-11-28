@@ -3,7 +3,8 @@ import {useForm} from "@mantine/form";
 import {Project} from "../../entities/Project.ts";
 import useAxios from "axios-hooks";
 import {IconHomeMove} from '@tabler/icons-react';
-import {useState} from "react";
+import {useContext, useState} from "react";
+import { SettingsContext } from "../../../core/utils/settingsContext.ts";
 
 type ProjectFormProps = {
     project: Project;
@@ -12,9 +13,10 @@ type ProjectFormProps = {
 };
 
 export function ProjectForm({project, loading, onSave}: ProjectFormProps) {
+    const {local_backend} = useContext(SettingsContext);
     const [{data: paths, loading: lPaths, error: ePaths}] = useAxios(
         {
-            url: '/system/paths'
+            url: `${local_backend}/system/paths`
         }
     )
     const [{loading: lMove, error: eMove}, moveProject] = useAxios({
@@ -33,7 +35,7 @@ export function ProjectForm({project, loading, onSave}: ProjectFormProps) {
     const [path, setPath] = useState(form.values.path);
     const onMoveHandler = () => {
         moveProject({
-            url: `/projects/${project.uuid}/move`,
+            url: `${local_backend}/projects/${project.uuid}/move`,
             data: {
                 uuid: project.uuid,
                 path: path

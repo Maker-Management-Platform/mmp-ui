@@ -3,16 +3,18 @@ import {ProjectFilterCard} from "../../project-filter-card/ProjectFilterCard.tsx
 import {ProjectCard} from "../../project-card/ProjectCard.tsx";
 import {useListState} from "@mantine/hooks";
 import useAxios from "axios-hooks";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {Project} from "../../../entities/Project.ts";
+import { SettingsContext } from "../../../../core/utils/settingsContext.ts";
 
 type ProjectLisItem = { visible: boolean, p: Project }
 
 export function ProjectsList() {
+    const {local_backend} = useContext(SettingsContext);
     const size = rem('280px');
     const [projectList, projectListHandlers] = useListState<ProjectLisItem>([]);
     const [{data, loading, error}] = useAxios(
-        "/projects"
+        `${local_backend}/projects`
     );
     useEffect(() => {
         if (!data) return;

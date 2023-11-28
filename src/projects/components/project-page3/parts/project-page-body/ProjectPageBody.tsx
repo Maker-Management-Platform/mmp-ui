@@ -6,13 +6,14 @@ import {ModelCard} from "../../../../../assets/components/model-card/ModelCard.t
 import {SliceCard} from "../../../../../assets/components/slice-card/SliceCard.tsx";
 import {FileCard} from "../../../../../assets/components/file-card/FileCard.tsx";
 import {useListState} from "@mantine/hooks";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ModelDetailPane} from "../../../../../assets/components/model-detail-pane/ModelDetailPane.tsx";
 import {IconPhoto, IconSettings} from "@tabler/icons-react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {AddAsset} from "../add-asset/AddAsset.tsx";
 import {EditProject} from "../edit-project/EditProject.tsx";
 import {Project} from "../../../../entities/Project.ts";
+import { SettingsContext } from "../../../../../core/utils/settingsContext.ts";
 
 type SelectableAsset = { asset: Asset, selected: boolean }
 
@@ -46,13 +47,14 @@ type ProjectAssetsListProps = {
 }
 
 export function ProjectPageBody({projectUuid, project}: ProjectAssetsListProps) {
+    const {local_backend} = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [assetList, assetListHandlers] = useListState<SelectableAsset>([]);
     const [lastSelected, setLastSelected] = useState<SelectableAsset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
     const [{data: assets, loading, error}] = useAxios(
-        `/projects/${projectUuid}/assets`
+        `${local_backend}/projects/${projectUuid}/assets`
     );
     useEffect(() => {
         if (!assets) return;

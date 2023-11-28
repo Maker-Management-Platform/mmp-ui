@@ -1,19 +1,21 @@
 import {useParams} from "react-router-dom";
 import useAxios from "axios-hooks";
 import {Project} from "../../entities/Project.ts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Flex} from "@mantine/core";
 import {ProjectAssetsList} from "./parts/project-assets-list/ProjectAssetsList.tsx";
 import {ProjectHeader} from "../project-header/ProjectHeader.tsx";
 import {baseURL} from "../../../core/config.ts";
+import { SettingsContext } from "../../../core/utils/settingsContext.ts";
 
 
 export function ProjectPage2() {
+    const {local_backend} = useContext(SettingsContext);
     const {id} = useParams();
     const [project, setProject] = useState<Project>();
 
     const [{data, loading, error}] = useAxios(
-        `/projects/${id}`
+        `${local_backend}/projects/${id}`
     );
 
     useEffect(() => {

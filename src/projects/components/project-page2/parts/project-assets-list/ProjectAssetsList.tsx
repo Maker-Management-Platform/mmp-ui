@@ -7,19 +7,21 @@ import {ModelCard} from "../../../../../assets/components/model-card/ModelCard.t
 import {SliceCard} from "../../../../../assets/components/slice-card/SliceCard.tsx";
 import {FileCard} from "../../../../../assets/components/file-card/FileCard.tsx";
 import {useListState} from "@mantine/hooks";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ModelDetailPane} from "../../../../../assets/components/model-detail-pane/ModelDetailPane.tsx";
+import { SettingsContext } from "../../../../../core/utils/settingsContext.ts";
 
 type ProjectAssetsListProps = {
     projectUuid: string;
 }
 
 export function ProjectAssetsList({projectUuid}: ProjectAssetsListProps) {
+    const {local_backend} = useContext(SettingsContext);
     const [assetList, assetListHandlers] = useListState<{ asset: Asset, selected: boolean }>([]);
     const [lastSelected, setLastSelected] = useState<{ asset: Asset, s: boolean, i: number }>();
     const [typeFilter, setTypeFilter] = useState('all');
     const [{data: assets, loading, error}] = useAxios(
-        `/projects/${projectUuid}/assets`
+        `${local_backend}/projects/${projectUuid}/assets`
     );
     useEffect(() => {
         if (!assets) return;
