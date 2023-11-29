@@ -1,0 +1,15 @@
+{
+    debug
+}
+:8081 {
+	handle /api* {
+		reverse_proxy {$AGENT_ADDRESS}
+	}
+
+	handle {
+		root * /app/dist
+		try_files {path} /index.html
+		encode gzip zstd
+		file_server
+	}
+}
