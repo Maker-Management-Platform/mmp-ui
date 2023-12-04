@@ -1,5 +1,5 @@
 import {useDisclosure, useMediaQuery} from '@mantine/hooks';
-import {AppShell, Burger, Group} from '@mantine/core';
+import {AppShell, Burger, Group, LoadingOverlay} from '@mantine/core';
 import {NavBar} from "./core/navbar/NavBar.tsx";
 import {Outlet} from "react-router-dom";
 import {SettingsContext} from './core/utils/settingsContext.ts';
@@ -12,6 +12,7 @@ function App() {
 
     return (
         <SettingsContext.Provider value={data}>
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             {!loading && <AppShell
                 withBorder={true}
                 header={{height: 60, collapsed: matches}}
