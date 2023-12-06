@@ -9,7 +9,7 @@ import { FileCard } from "@/assets/components/file-card/FileCard.tsx";
 import { useListState } from "@mantine/hooks";
 import { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
-import { IconPhoto, IconSettings } from "@tabler/icons-react";
+import { IconPhoto, IconSettings, IconFile3d, IconLayersIntersect, IconFile, IconFiles } from "@tabler/icons-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AddAsset } from "../add-asset/AddAsset.tsx";
 import { EditProject } from "../edit-project/EditProject.tsx";
@@ -19,10 +19,10 @@ import { SliceDetailPane } from "@/assets/components/slice/slice-detail-pane/Sli
 
 const iconStyle = { width: rem(12), height: rem(12) };
 const supportedAssetTypes: { name: string, label: string, icon: JSX.Element }[] = [
-    { name: "model", label: "Models", icon: <IconPhoto style={iconStyle} /> },
-    { name: "slice", label: "Slices", icon: <IconPhoto style={iconStyle} /> },
+    { name: "model", label: "Models", icon: <IconFile3d style={iconStyle} /> },
+    { name: "slice", label: "Slices", icon: <IconLayersIntersect style={iconStyle} /> },
     { name: "image", label: "Images", icon: <IconPhoto style={iconStyle} /> },
-    { name: "file", label: "Files", icon: <IconPhoto style={iconStyle} /> },
+    { name: "file", label: "Files", icon: <IconFile style={iconStyle} /> },
 ]
 const assetTypeMap: Map<string, (props: AssetCardProps) => JSX.Element> = new Map([
     ["image", (props: AssetCardProps) => <ImageCard {...props} />],
@@ -49,24 +49,24 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
     );
     useEffect(() => {
         if (!assets) return;
-        assets.forEach((a:Asset)=>assetListHandlers.append(a))
+        assets.forEach((a: Asset) => assetListHandlers.append(a))
     }, [assets]);
 
     useEffect(() => {
-        if(selectedModels.length==0){
+        if (selectedModels.length == 0) {
             setTypeFilter('all');
             navigate(`?tab=all`)
-        }else{
+        } else {
             setTypeFilter('model');
             navigate(`?tab=model`)
         }
     }, [selectedModels]);
 
     const handleModelSelection = (asset: Asset, selected: boolean) => {
-        if(selected){
+        if (selected) {
             selectedModelsHandlers.append(asset)
-        }else{
-            selectedModelsHandlers.filter((a)=>a.sha1!=asset.sha1);
+        } else {
+            selectedModelsHandlers.filter((a) => a.sha1 != asset.sha1);
         }
     };
 
@@ -78,17 +78,17 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
         const props: AssetCardProps = {
             projectUuid,
             asset,
-            selected: selectedAsset?.sha1 === asset.sha1 || (asset.asset_type==='model' && selectedModels.findIndex((a)=>a.sha1===asset.sha1)>-1),
+            selected: selectedAsset?.sha1 === asset.sha1 || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1),
             onSelectChange: () => setSelectedAsset(asset),
             onDelete: (projectUuid: string, sha1: string) => {
-                assetListHandlers.remove(assetList.findIndex((a)=>a.sha1===sha1))
+                assetListHandlers.remove(assetList.findIndex((a) => a.sha1 === sha1))
 
-                return true 
+                return true
             }
         };
         if (asset.asset_type === 'model') {
-            props.view3d = selectedModels.findIndex((a)=>a.sha1===asset.sha1)>-1;
-            props.onView3dChange = (v: boolean) => { handleModelSelection(asset,v) };
+            props.view3d = selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1;
+            props.onView3dChange = (v: boolean) => { handleModelSelection(asset, v) };
         }
 
         return gen && gen(props);
@@ -103,7 +103,7 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
                     navigate(`?tab=${v}`)
                 }}>
                     <Tabs.List>
-                        <Tabs.Tab value="all" leftSection={<IconPhoto style={iconStyle} />}>
+                        <Tabs.Tab value="all" leftSection={<IconFiles style={iconStyle} />}>
                             All
                         </Tabs.Tab>
                         {supportedAssetTypes.map(type => <Tabs.Tab value={type.name} leftSection={type.icon}>{type.label}</Tabs.Tab>)}
@@ -121,7 +121,7 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
                         {project && <EditProject project={project} />}
                     </Tabs.Panel>
                 </Tabs>
-                <SimpleGrid cols={(selectedAsset||selectedModels.length>0) ? 2 : 1} mt={'sm'}>
+                <SimpleGrid cols={(selectedAsset || selectedModels.length > 0) ? 2 : 1} mt={'sm'}>
                     <Flex
                         gap="md"
                         justify="center"
@@ -142,8 +142,8 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
 
                         {assetList.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
                     </Flex>
-                    {selectedModels.length>0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
-                            models={selectedModels} />}
+                    {selectedModels.length > 0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
+                        models={selectedModels} />}
                     {project && selectedAsset &&
                         <Alert color="gray" title={selectedAsset.name} withCloseButton onClose={() => setSelectedAsset(undefined)} >
                             {selectedAsset.asset_type == 'slice' && <SliceDetailPane project={project} asset={selectedAsset} />}
