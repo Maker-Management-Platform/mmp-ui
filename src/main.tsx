@@ -47,6 +47,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <MantineProvider theme={theme} defaultColorScheme="dark">
             <RouterProvider router={router}/>
-        </MantineProvider>a
-    </React.StrictMode>,
+        </MantineProvider>
+    </React.StrictMode>
 )

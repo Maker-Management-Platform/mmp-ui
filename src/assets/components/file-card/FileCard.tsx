@@ -1,46 +1,54 @@
-import {AspectRatio, Card, Group, rem, Text} from '@mantine/core';
-import {IconFile, IconFileTypePdf} from '@tabler/icons-react';
+import { AspectRatio, Card, Group, LoadingOverlay, rem, Text } from '@mantine/core';
+import { IconFile, IconFileTypePdf } from '@tabler/icons-react';
 import classes from './FileCard.module.css';
-import {Asset} from "../../entities/Assets.ts";
-import {DownloadBtn} from "../parts/download-btn/DownloadBtn.tsx";
-import {baseURL} from "../../../core/config.ts";
-import {SelectBtn} from "../parts/select-btn/SelectBtn.tsx";
+import { DropDownMenu } from '../parts/drop-down-menu/DropDownMenu.tsx';
+import { AssetCardProps } from '../AssetCardProps.ts';
+import { useCallback, useContext, useState } from 'react';
+import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
-type ImageCardProps = {
-    projectUuid: string;
-    asset: Asset;
-    selected: boolean
-    onSelectChange: (arg0: boolean) => void;
-}
 
-export function FileCard({asset, projectUuid, selected, onSelectChange}: ImageCardProps) {
+export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelete }: AssetCardProps) {
+    const {local_backend} = useContext(SettingsContext);
+    const [loading, setLoading] = useState(false);
+    const toggleLoadingCallback = useCallback(() => {
+        setLoading((l)=>{
+            return !l
+        })
+    },[loading])
     const iconMap = new Map<string, JSX.Element>();
-    iconMap.set('.pdf', <IconFileTypePdf/>);
-    iconMap.set('.jpg', <IconFile/>);
+    iconMap.set('.pdf', <IconFileTypePdf />);
+    iconMap.set('.jpg', <IconFile />);
 
 
     const size = rem('280px');
-    return (
-        <Card withBorder padding="lg" radius="md" className={classes.card} style={{minWidth: size, width: size}}>
-            <Card.Section mb="sm">
+    return (<>
+        <Card withBorder padding="lg" radius="md" className={classes.card} style={{ position:'relative', minWidth: size, width: size, borderColor: selected ? 'red' : '' }}>
+            <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-                    {iconMap.get(asset.extension) || <IconFile/>}
+                    {iconMap.get(asset.extension) || <IconFile />}
                 </AspectRatio>
             </Card.Section>
 
-            <Text fw={700} className={classes.title} mt="xs">
+            <Text fw={700} className={classes.title} mt="xs" onClick={() => onSelectChange(true)}>
                 {asset.name}
             </Text>
 
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
             <Card.Section className={classes.footer}>
                 <Group justify="flex-end">
                     <Group gap={0}>
-                        <DownloadBtn
-                            downloadLink={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}/>
-                        <SelectBtn selected={selected} onChange={onSelectChange}/>
+                        <DropDownMenu
+                            projectUuid={projectUuid}
+                            sha1={asset.sha1}
+                            openDetails={() => onSelectChange(true)}
+                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
+                            onDelete={() => onDelete(projectUuid, asset.sha1)}
+                            toggleLoad={toggleLoadingCallback}>
+                        </DropDownMenu>
                     </Group>
                 </Group>
             </Card.Section>
         </Card>
+        </>
     );
 }
