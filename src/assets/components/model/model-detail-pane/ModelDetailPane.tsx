@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 import {Canvas, useLoader, useThree} from '@react-three/fiber'
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader.js';
-import {Suspense, useEffect, useRef, useState} from "react";
+import {Suspense, useContext, useEffect, useRef, useState} from "react";
 import {Asset} from "../../../entities/Assets.ts";
 import {Center, GizmoHelper, GizmoViewport, Grid, Html, OrbitControls, useProgress} from '@react-three/drei'
-import {baseURL} from "../../../../core/config.ts";
 import {useElementSize} from "@mantine/hooks";
 import {Alert} from "@mantine/core";
+import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
 
 type ModelProps = {
@@ -15,7 +15,8 @@ type ModelProps = {
 }
 
 function Model({model, projectUuid}: ModelProps) {
-    const geom = useLoader(STLLoader, `${baseURL}/projects/${projectUuid}/assets/${model.sha1}`);
+    const {local_backend} = useContext(SettingsContext);
+    const geom = useLoader(STLLoader, `${local_backend}/projects/${projectUuid}/assets/${model.sha1}`);
     const meshRef = useRef<THREE.Mesh>(null!)
 
     const [active, setActive] = useState(false)

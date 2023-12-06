@@ -2,12 +2,13 @@ import { AspectRatio, Card, Group, LoadingOverlay, rem, Text } from '@mantine/co
 import { IconFile, IconFileTypePdf } from '@tabler/icons-react';
 import classes from './FileCard.module.css';
 import { DropDownMenu } from '../parts/drop-down-menu/DropDownMenu.tsx';
-import { baseURL } from "../../../core/config.ts";
 import { AssetCardProps } from '../AssetCardProps.ts';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
 
 export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelete }: AssetCardProps) {
+    const {local_backend} = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
         setLoading((l)=>{
@@ -40,7 +41,7 @@ export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelet
                             projectUuid={projectUuid}
                             sha1={asset.sha1}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${baseURL}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
+                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.sha1)}
                             toggleLoad={toggleLoadingCallback}>
                         </DropDownMenu>

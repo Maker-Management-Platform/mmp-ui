@@ -1,15 +1,17 @@
 import {Card, Text, Center, useMantineTheme, Group, rem} from '@mantine/core';
 import {IconEye, IconMessageCircle} from '@tabler/icons-react';
 import classes from './ProjectCard.module.css';
-import {baseURL} from "../../../core/config.ts";
 import {Project} from "../../entities/Project.ts";
 import {Link} from "react-router-dom";
+import { SettingsContext } from '@/core/utils/settingsContext.ts';
+import { useContext } from 'react';
 
 type ProjectCardProps = {
     project: Project,
 }
 
 export function ProjectCard({project}: ProjectCardProps) {
+    const {local_backend} = useContext(SettingsContext);
     const theme = useMantineTheme();
 
     const size = rem('280px');
@@ -25,7 +27,7 @@ export function ProjectCard({project}: ProjectCardProps) {
             <div
                 className={classes.image}
                 style={{
-                    backgroundImage: `url(${baseURL}/projects/${project.uuid}/assets/${project.default_image_path})`,
+                    backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_path})`,
                     backgroundPosition: 'center',
                 }}
             />
