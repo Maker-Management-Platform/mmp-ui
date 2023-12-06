@@ -80,7 +80,11 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
             asset,
             selected: selectedAsset?.sha1 === asset.sha1 || (asset.asset_type==='model' && selectedModels.findIndex((a)=>a.sha1===asset.sha1)>-1),
             onSelectChange: () => setSelectedAsset(asset),
-            onDelete: (projectUuid: string, sha1: string) => { return true }
+            onDelete: (projectUuid: string, sha1: string) => {
+                assetListHandlers.remove(assetList.findIndex((a)=>a.sha1===sha1))
+
+                return true 
+            }
         };
         if (asset.asset_type === 'model') {
             props.view3d = selectedModels.findIndex((a)=>a.sha1===asset.sha1)>-1;

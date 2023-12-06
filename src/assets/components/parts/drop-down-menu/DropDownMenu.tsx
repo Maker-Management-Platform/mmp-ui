@@ -14,10 +14,13 @@ type DropDownMenuProps = {
     toggleLoad?: () => void;
 }
 
-export function DropDownMenu({ sha1, projectUuid, children, downloadURL, onDelete, openDetails, toggleLoad }: DropDownMenuProps) {
+export function DropDownMenu({ sha1, children, downloadURL, onDelete, openDetails, toggleLoad }: DropDownMenuProps) {
     const { local_backend } = useContext(SettingsContext);
     const [{ }, callDelete] = useAxios(
-        `${local_backend}/projects/${projectUuid}/assets`,
+        {
+            url: `${local_backend}/assets/${sha1}/delete`,
+            method: 'POST'
+        },
         { manual: true }
     );
 
