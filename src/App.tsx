@@ -12,7 +12,7 @@ function App() {
 
     return (
         <SettingsContext.Provider value={data}>
-            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
             {!loading && <AppShell
                 withBorder={true}
                 header={{height: 60, collapsed: matches}}

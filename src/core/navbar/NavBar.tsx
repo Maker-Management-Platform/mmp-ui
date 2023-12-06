@@ -15,10 +15,10 @@ import {
     IconLogout,
     IconSwitchHorizontal,
     IconSun,
-    IconMoon
+    IconMoon,
+    IconBrandMantine
 } from '@tabler/icons-react';
 import {menuItems as projectMenuItems} from "../../projects/menu";
-import { MantineLogo } from '@mantine/ds';
 import classes from './NavBar.module.css';
 import {Link} from "react-router-dom";
 
@@ -61,7 +61,7 @@ export function NavBar() {
     return (
         <AppShell.Navbar className={classes.navbar}>
             <Center>
-                <MantineLogo type="mark" size={30} />
+                <IconBrandMantine type="mark" size={30} />
             </Center>
 
             <div className={classes.navbarMain}>
