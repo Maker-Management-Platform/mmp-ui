@@ -1,10 +1,10 @@
 import {rem, Tabs} from "@mantine/core";
 import {IconPhoto, IconSettings} from "@tabler/icons-react";
-import {ProjectsList} from "../tabs/projects-list/ProjectsList.tsx";
-import {CreateProject} from "../tabs/create-project/CreateProject.tsx";
+import {ProjectsList} from "./parts/projects-list/ProjectsList.tsx";
+import {CreateProject} from "./parts/create-project/CreateProject.tsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {ProjectHeader} from "../project-header/ProjectHeader.tsx";
-import {ImportProject} from "../tabs/import-project/ImportProject.tsx";
+import {ProjectHeader} from "@/projects/components/parts/project-header/ProjectHeader.tsx";
+import {ImportProject} from "./parts/import-project/ImportProject.tsx";
 
 export function ProjectsPage() {
     const iconStyle = {width: rem(12), height: rem(12)};

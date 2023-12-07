@@ -1,6 +1,6 @@
 import {Badge, Overlay, Text, Title, TypographyStylesProvider, useMantineTheme} from '@mantine/core';
 import classes from './ProjectHeader.module.css';
-import {stringToNumber} from "../../../core/utils/color.ts";
+import {stringToNumber} from "@/core/utils/color.ts";
 
 type ProjectHeaderProps = {
     name: string
