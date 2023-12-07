@@ -1,11 +1,11 @@
 import {Container, Flex, rem, Skeleton} from "@mantine/core";
-import {ProjectFilterCard} from "../../project-filter-card/ProjectFilterCard.tsx";
-import {ProjectCard} from "../../project-card/ProjectCard.tsx";
+import {ProjectFilterCard} from "@/projects/components/project-filter-card/ProjectFilterCard.tsx";
+import {ProjectCard} from "@/projects/components/project-card/ProjectCard.tsx";
 import {useListState} from "@mantine/hooks";
 import useAxios from "axios-hooks";
 import {useContext, useEffect} from "react";
-import {Project} from "../../../entities/Project.ts";
-import { SettingsContext } from "../../../../core/utils/settingsContext.ts";
+import {Project} from "@/projects/entities/Project.ts";
+import { SettingsContext } from "@/core/utils/settingsContext.ts";
 
 type ProjectLisItem = { visible: boolean, p: Project }
 

@@ -3,9 +3,9 @@ import {useContext, useEffect, useState} from "react";
 import {Dropzone} from "@mantine/dropzone";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 import useAxios from "axios-hooks";
-import {ProjectForm} from "../../project-form/ProjectForm.tsx";
-import {Project} from "../../../entities/Project.ts";
-import { SettingsContext } from '../../../../core/utils/settingsContext.ts';
+import {ProjectForm} from "@/projects/components/project-form/ProjectForm.tsx";
+import {Project} from "@/projects/entities/Project.ts";
+import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
 export function CreateProject() {
     const {local_backend} = useContext(SettingsContext);

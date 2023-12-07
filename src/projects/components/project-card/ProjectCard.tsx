@@ -24,13 +24,22 @@ export function ProjectCard({project}: ProjectCardProps) {
               component={Link}
               to={`/projects/${project.uuid}`}
         >
+            {project.default_image_path &&
             <div
                 className={classes.image}
                 style={{
                     backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_path})`,
                     backgroundPosition: 'center',
                 }}
-            />
+            />}
+            {!project.default_image_path &&
+            <div
+                className={classes.image}
+                style={{
+                    backgroundImage: `url(https://picsum.photos/seed/${project.uuid}/280)`,
+                    backgroundPosition: 'center',
+                }}
+            />}
             <div className={classes.overlay}/>
 
             <div className={classes.content}>

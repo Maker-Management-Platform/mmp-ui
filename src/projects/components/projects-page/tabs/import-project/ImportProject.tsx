@@ -2,7 +2,7 @@ import {Button, Container, Group, Textarea} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import useAxios from "axios-hooks";
 import { useContext } from "react";
-import { SettingsContext } from "../../../../core/utils/settingsContext";
+import { SettingsContext } from "@/core/utils/settingsContext";
 
 export function ImportProject() {
     const {local_backend} = useContext(SettingsContext);
