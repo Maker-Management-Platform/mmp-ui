@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {Dropzone} from "@mantine/dropzone";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 import useAxios from "axios-hooks";
-import {ProjectForm} from "@/projects/components/project-form/ProjectForm.tsx";
+import {ProjectForm} from "@/projects/components/parts/project-form/ProjectForm";
 import {Project} from "@/projects/entities/Project.ts";
 import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
@@ -31,8 +31,8 @@ export function CreateProject() {
     };
 
     const onSave = (project: Project) => {
-        project.initialized = true;
-        executeSave({data: project, url: `${local_backend}/projects/${project.uuid}`}).then(() => nextStep());
+        console.log(project)
+        nextStep();
     }
 
     useEffect(() => {
@@ -83,7 +83,7 @@ export function CreateProject() {
                 </Stepper.Step>
                 <Stepper.Step label="Configuration" description="Configure Project">
                     <h1>{project?.name}</h1>
-                    <ProjectForm project={project} loading={saving} onSave={onSave}/>
+                    <ProjectForm project={project} onProjectChange={onSave}/>
                 </Stepper.Step>
                 <Stepper.Step label="Done" description="Enjoy your project">
                     <Text>Enjoy :)</Text>

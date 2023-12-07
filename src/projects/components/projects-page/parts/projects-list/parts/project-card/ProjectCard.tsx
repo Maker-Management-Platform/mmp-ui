@@ -1,7 +1,7 @@
 import {Card, Text, Center, useMantineTheme, Group, rem} from '@mantine/core';
 import {IconEye, IconMessageCircle} from '@tabler/icons-react';
 import classes from './ProjectCard.module.css';
-import {Project} from "../../entities/Project.ts";
+import {Project} from "@/projects/entities/Project.ts";
 import {Link} from "react-router-dom";
 import { SettingsContext } from '@/core/utils/settingsContext.ts';
 import { useContext } from 'react';

@@ -1,7 +1,7 @@
 import {Button, Card, Group, TagsInput, Text, TextInput} from '@mantine/core';
 import classes from './ProjectFilterCard.module.css';
 import {useEffect, useState} from "react";
-import {Project} from "../../entities/Project.ts";
+import {Project} from "@/projects/entities/Project.ts";
 
 
 type ProjectFilterCardProps = {

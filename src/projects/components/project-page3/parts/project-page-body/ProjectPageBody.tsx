@@ -11,8 +11,8 @@ import { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
 import { IconPhoto, IconSettings, IconFile3d, IconLayersIntersect, IconFile, IconFiles } from "@tabler/icons-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { AddAsset } from "../add-asset/AddAsset.tsx";
-import { EditProject } from "../edit-project/EditProject.tsx";
+import { AddAsset } from "./parts/add-asset/AddAsset.tsx";
+import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
 import { SliceDetailPane } from "@/assets/components/slice/slice-detail-pane/SliceDetailPane.tsx";
@@ -34,9 +34,10 @@ const assetTypeMap: Map<string, (props: AssetCardProps) => JSX.Element> = new Ma
 type ProjectAssetsListProps = {
     projectUuid: string;
     project?: Project;
+    onProjectChange: (p: Project) => void;
 }
 
-export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps) {
+export function ProjectPageBody({ projectUuid, project, onProjectChange }: ProjectAssetsListProps) {
     const { local_backend } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -118,7 +119,7 @@ export function ProjectPageBody({ projectUuid, project }: ProjectAssetsListProps
                         <AddAsset projectUuid={projectUuid} />
                     </Tabs.Panel>
                     <Tabs.Panel value="settings" p={'xs'}>
-                        {project && <EditProject project={project} />}
+                        {project && <EditProject onProjectChange={onProjectChange} project={project} />}
                     </Tabs.Panel>
                 </Tabs>
                 <SimpleGrid cols={(selectedAsset || selectedModels.length > 0) ? 2 : 1} mt={'sm'}>
