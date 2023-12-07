@@ -2,9 +2,9 @@ import { Button, Group, TagsInput, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Project } from "../../../entities/Project.ts";
 import useAxios from "axios-hooks";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
-
+import { notifications } from '@mantine/notifications';
 type ProjectFormProps = {
     project: Project;
     onProjectChange: (p: Project) => void;
@@ -33,7 +33,24 @@ export function ProjectForm({ project, onProjectChange }: ProjectFormProps) {
             data: {
                 ...project,
             }
-        }).then(({ data }) => onProjectChange(data));
+        })
+            .then(({ data }) => {
+                onProjectChange(data)
+                notifications.show({
+                    title: 'Great Success!',
+                    message: 'Project updated',
+                    color: 'indigo',
+                })
+            })
+            .catch(({ message }) => {
+                console.log(message)
+                notifications.show({
+                    title: 'Ops... Error updating project!',
+                    message,
+                    color: 'red',
+                    autoClose: false
+                })
+            });
     };
 
     return (

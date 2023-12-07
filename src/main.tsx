@@ -19,10 +19,12 @@ import '@mantine/core/styles/Flex.css';
 import '@mantine/core/styles/AppShell.css';
 import '@mantine/core/styles/Tabs.css';
 import '@mantine/dropzone/styles.css';
-import {createTheme, MantineProvider} from '@mantine/core';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import '@mantine/notifications/styles.css';
+import { createTheme, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import {routes as projectRoutes} from "./projects/routes.tsx";
+import { routes as projectRoutes } from "./projects/routes.tsx";
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -32,7 +34,7 @@ const theme = createTheme({
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App/>,
+        element: <App />,
         children: [
             {
                 path: "projects",
@@ -46,7 +48,8 @@ console.log(router);
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-            <RouterProvider router={router}/>
+            <Notifications limit={5} />
+            <RouterProvider router={router} />
         </MantineProvider>
     </React.StrictMode>
 )

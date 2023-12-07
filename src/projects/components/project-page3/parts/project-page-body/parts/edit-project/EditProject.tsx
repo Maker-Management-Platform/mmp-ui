@@ -1,7 +1,7 @@
 import { Container, Tabs } from "@mantine/core";
 import { ProjectForm } from "@/projects/components/parts/project-form/ProjectForm.tsx";
 import { Project } from "@/projects/entities/Project.ts";
-import { ProjectOprations } from "@/projects/components/parts/project-operations/ProjectOperations.tsx";
+import { ProjectOprations } from "./parts/project-operations/ProjectOperations";
 
 
 type EditProjectProps = {
