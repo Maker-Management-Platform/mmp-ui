@@ -1,5 +1,7 @@
 .card {
     background-color: var(--mantine-color-body);
+    min-width: rem(280px);
+    width: rem(280px);
 }
 
 .title {

@@ -4,7 +4,7 @@ import { Project } from "../../entities/Project.ts";
 import { useContext, useEffect, useState } from "react";
 import { ProjectPageBody } from "./parts/project-page-body/ProjectPageBody.tsx";
 import { ProjectHeader } from "@/projects/components/parts/project-header/ProjectHeader.tsx";
-import { SettingsContext } from "../../../core/utils/settingsContext.ts";
+import { SettingsContext } from "@/core/utils/settingsContext.ts";
 
 
 export function ProjectPage3() {
