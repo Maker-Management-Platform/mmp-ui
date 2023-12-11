@@ -16,6 +16,7 @@ import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
 import { SliceDetailPane } from "@/assets/components/slice/slice-detail-pane/SliceDetailPane.tsx";
+import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
 
 const iconStyle = { width: rem(12), height: rem(12) };
 const supportedAssetTypes: { name: string, label: string, icon: JSX.Element }[] = [
@@ -147,7 +148,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         models={selectedModels} />}
                     {project && selectedAsset &&
                         <Alert color="gray" title={selectedAsset.name} withCloseButton onClose={() => setSelectedAsset(undefined)} >
-                            {selectedAsset.asset_type == 'slice' && <SliceDetailPane project={project} asset={selectedAsset} />}
+                            <AssetDetails asset={selectedAsset} />
                         </Alert>
                     }
                 </SimpleGrid>

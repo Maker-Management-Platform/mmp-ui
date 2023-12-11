@@ -1,9 +1,13 @@
+export type AssetType = 'image' | 'model' | 'file' | 'slice'
+
 export interface Asset {
     sha1: string
     name: string
     project_uuid: string
     path: string
-    asset_type: 'image' | 'model' | 'file' | 'slice'
+    mod_time: string
+    size: number
+    asset_type: AssetType
     extension: string
     mime_type: string
     model?: Model
