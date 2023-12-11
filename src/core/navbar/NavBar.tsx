@@ -18,9 +18,10 @@ import {
     IconMoon,
     IconBrandMantine
 } from '@tabler/icons-react';
-import {menuItems as projectMenuItems} from "../../projects/menu";
+import { menuItems as projectMenuItems } from "@/projects/menu";
+import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import classes from './NavBar.module.css';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;
@@ -41,7 +42,8 @@ function NavbarLink({ icon: Icon, label, active, onClick, href }: NavbarLinkProp
 }
 
 const menuItems = [
-    ...projectMenuItems
+    ...projectMenuItems,
+    ...tempFileMenuItems
 ];
 
 export function NavBar() {
