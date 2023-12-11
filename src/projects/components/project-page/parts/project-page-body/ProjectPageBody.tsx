@@ -2,36 +2,20 @@ import { Alert, Container, Flex, rem, SimpleGrid, Skeleton, Tabs } from "@mantin
 import useAxios from "axios-hooks";
 import { Asset } from "@/assets/entities/Assets.ts";
 import { AssetCardProps } from "@/assets/components/AssetCardProps.ts";
-import { ImageCard } from "@/assets/components/image-card/ImageCard.tsx";
-import { ModelCard } from "@/assets/components/model/model-card/ModelCard.tsx";
-import { SliceCard } from "@/assets/components/slice/slice-card/SliceCard.tsx";
-import { FileCard } from "@/assets/components/file-card/FileCard.tsx";
 import { useListState } from "@mantine/hooks";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
-import { IconPhoto, IconSettings, IconFile3d, IconLayersIntersect, IconFile, IconFiles } from "@tabler/icons-react";
+import { IconSettings, IconFiles } from "@tabler/icons-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AddAsset } from "./parts/add-asset/AddAsset.tsx";
 import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
-import { SliceDetailPane } from "@/assets/components/slice/slice-detail-pane/SliceDetailPane.tsx";
+import { assetTypeMap, supportedAssetTypes } from "@/assets/utils/assetMapping.tsx";
 import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
 
 const iconStyle = { width: rem(12), height: rem(12) };
-const supportedAssetTypes: { name: string, label: string, icon: JSX.Element }[] = [
-    { name: "model", label: "Models", icon: <IconFile3d style={iconStyle} /> },
-    { name: "slice", label: "Slices", icon: <IconLayersIntersect style={iconStyle} /> },
-    { name: "image", label: "Images", icon: <IconPhoto style={iconStyle} /> },
-    { name: "file", label: "Files", icon: <IconFile style={iconStyle} /> },
-]
-const assetTypeMap: Map<string, (props: AssetCardProps) => JSX.Element> = new Map([
-    ["image", (props: AssetCardProps) => <ImageCard {...props} />],
-    ["model", (props: AssetCardProps) => <ModelCard {...props} />],
-    ["slice", (props: AssetCardProps) => <SliceCard {...props} />],
-    ["file", (props: AssetCardProps) => <FileCard {...props} />],
-    ["other", (props: AssetCardProps) => <FileCard {...props} />],
-]);
+
 type ProjectAssetsListProps = {
     projectUuid: string;
     project?: Project;
@@ -108,7 +92,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         <Tabs.Tab value="all" leftSection={<IconFiles style={iconStyle} />}>
                             All
                         </Tabs.Tab>
-                        {supportedAssetTypes.map(type => <Tabs.Tab value={type.name} leftSection={type.icon}>{type.label}</Tabs.Tab>)}
+                        {supportedAssetTypes.map(type => <Tabs.Tab value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)}
                         <Tabs.Tab ml="auto" value="add_asset" leftSection={<IconSettings style={iconStyle} />}>
                             Add Asset
                         </Tabs.Tab>
