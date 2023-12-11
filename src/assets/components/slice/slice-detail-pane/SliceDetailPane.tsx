@@ -1,14 +1,11 @@
 import {Grid, Input } from "@mantine/core";
-import { Project } from "@/projects/entities/Project.ts";
 import { Asset } from "@/assets/entities/Assets.ts";
 
 type SliceDetailPaneProps = {
-    project: Project;
     asset: Asset;
 }
 
 export function SliceDetailPane({ asset }: SliceDetailPaneProps) {
-    console.log(asset.name);
     return (
         <>
             <Grid mt='sm'>
