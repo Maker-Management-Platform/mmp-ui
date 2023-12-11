@@ -1,8 +1,7 @@
-import {Card, Text, Center, useMantineTheme, Group, rem} from '@mantine/core';
-import {IconEye, IconMessageCircle} from '@tabler/icons-react';
+import { Card, Text, Group, rem } from '@mantine/core';
 import classes from './ProjectCard.module.css';
-import {Project} from "@/projects/entities/Project.ts";
-import {Link} from "react-router-dom";
+import { Project } from "@/projects/entities/Project.ts";
+import { Link } from "react-router-dom";
 import { SettingsContext } from '@/core/utils/settingsContext.ts';
 import { useContext } from 'react';
 
@@ -10,37 +9,36 @@ type ProjectCardProps = {
     project: Project,
 }
 
-export function ProjectCard({project}: ProjectCardProps) {
-    const {local_backend} = useContext(SettingsContext);
-    const theme = useMantineTheme();
+export function ProjectCard({ project }: ProjectCardProps) {
+    const { local_backend } = useContext(SettingsContext);
 
     const size = rem('280px');
     return (
-        <Card style={{height: size, minHeight: size, minWidth: size, width: size}}
-              p="lg"
-              shadow="lg"
-              className={classes.card}
-              radius="md"
-              component={Link}
-              to={`/projects/${project.uuid}`}
+        <Card style={{ height: size, minHeight: size, minWidth: size, width: size }}
+            p="lg"
+            shadow="lg"
+            className={classes.card}
+            radius="md"
+            component={Link}
+            to={`/projects/${project.uuid}`}
         >
             {project.default_image_path &&
-            <div
-                className={classes.image}
-                style={{
-                    backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_path})`,
-                    backgroundPosition: 'center',
-                }}
-            />}
+                <div
+                    className={classes.image}
+                    style={{
+                        backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_path})`,
+                        backgroundPosition: 'center',
+                    }}
+                />}
             {!project.default_image_path &&
-            <div
-                className={classes.image}
-                style={{
-                    backgroundImage: `url(https://picsum.photos/seed/${project.uuid}/280)`,
-                    backgroundPosition: 'center',
-                }}
-            />}
-            <div className={classes.overlay}/>
+                <div
+                    className={classes.image}
+                    style={{
+                        backgroundImage: `url(https://picsum.photos/seed/${project.uuid}/280)`,
+                        backgroundPosition: 'center',
+                    }}
+                />}
+            <div className={classes.overlay} />
 
             <div className={classes.content}>
                 <div>
@@ -50,7 +48,7 @@ export function ProjectCard({project}: ProjectCardProps) {
                             {project.name}
                         </Text>
 
-                        <Group gap="lg">
+                        {/*<Group gap="lg">
                             <Center>
                                 <IconEye
                                     style={{width: rem(16), height: rem(16)}}
@@ -71,7 +69,7 @@ export function ProjectCard({project}: ProjectCardProps) {
                                     5
                                 </Text>
                             </Center>
-                        </Group>
+                        </Group>*/}
                     </Group>
                 </div>
             </div>
