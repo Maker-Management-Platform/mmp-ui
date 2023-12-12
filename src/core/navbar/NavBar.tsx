@@ -35,7 +35,7 @@ function NavbarLink({ icon: Icon, label, active, onClick, href }: NavbarLinkProp
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
             <UnstyledButton component={Link} to={href} onClick={onClick} className={classes.link} data-active={active || undefined}>
-                <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+                <Icon stroke={1.5} />
             </UnstyledButton>
         </Tooltip>
     );
@@ -47,7 +47,7 @@ const menuItems = [
 ];
 
 export function NavBar() {
-    const [active, setActive] = useState(2);
+    const [active, setActive] = useState(1);
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
