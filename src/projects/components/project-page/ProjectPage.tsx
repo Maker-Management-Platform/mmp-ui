@@ -3,7 +3,7 @@ import useAxios from "axios-hooks";
 import { Project } from "../../entities/Project.ts";
 import { useContext, useEffect, useState } from "react";
 import { ProjectPageBody } from "./parts/project-page-body/ProjectPageBody.tsx";
-import { ProjectHeader } from "@/projects/components/parts/project-header/ProjectHeader.tsx";
+import { Header } from "@/core/header/Header.tsx";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
 
 
@@ -22,16 +22,16 @@ export function ProjectPage3() {
 
     return (
         <>
-            <ProjectHeader
-                name={project?.name || ''}
-                description={project?.description || ''}
-                tags={project?.tags || []}
-                imagePath={`${local_backend}/projects/${project?.uuid}/assets/${project?.default_image_path}` || ''}
+            <Header
+                title={project?.name}
+                description={project?.description}
+                tags={project?.tags}
+                imagePath={`${local_backend}/projects/${project?.uuid}/assets/${project?.default_image_path}`}
             />
             {error && <p>Error!</p>}
             {loading && <p>Loading...</p>}
-            {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={(p)=>{
-                console.log("onProjectChange",p)
+            {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={(p) => {
+                console.log("onProjectChange", p)
                 setProject(p)
             }} />}
         </>
