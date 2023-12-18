@@ -22,12 +22,12 @@ export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
 
     function sentToPrinter(p: Printer) {
         executeSendToPrinter({
-            url: `${local_backend}/printers/${p.uuid}/print/${sha1}`
+            url: `${local_backend}/printers/${p.uuid}/send/${sha1}`
         })
             .then(() => {
                 notifications.show({
                     title: 'Great Success!',
-                    message: 'Printer deleted!',
+                    message: 'File sent to printer!',
                     color: 'indigo',
                 })
             })
@@ -49,12 +49,12 @@ export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
         withinPortal
     >
         <Menu.Target>
-            <ActionIcon variant="subtle" color="gray" loading={loading}>
+            <ActionIcon variant="subtle" color="gray" loading={loading || sLoading}>
                 <IconPrinter style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-            {printers.map((p) => <Menu.Item onClick={() => sentToPrinter(p.address)}>{p.name}</Menu.Item>)}
+            {printers.map((p) => <Menu.Item onClick={() => sentToPrinter(p)}>{p.name}</Menu.Item>)}
         </Menu.Dropdown>
     </Menu>)
 }
