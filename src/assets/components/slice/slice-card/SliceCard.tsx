@@ -4,6 +4,7 @@ import { DropDownMenu } from '../../parts/drop-down-menu/DropDownMenu';
 import { AssetCardProps } from '../../AssetCardProps';
 import { SettingsContext } from '@/core/utils/settingsContext';
 import { useCallback, useContext, useState } from 'react';
+import { SendToPrinterBtn } from '@/printers/components/parts/sent-to-printer-btn/SendToPrinterBtn';
 
 export function SliceCard({projectUuid, asset, selected, onSelectChange, onDelete}: AssetCardProps) {
     const {local_backend} = useContext(SettingsContext);
@@ -35,6 +36,7 @@ export function SliceCard({projectUuid, asset, selected, onSelectChange, onDelet
             <Card.Section className={classes.footer}>
                 <Group justify="flex-end">
                     <Group gap={0}>
+                        <SendToPrinterBtn sha1={asset.sha1}/>
                         <DropDownMenu
                             projectUuid={projectUuid}
                             sha1={asset.sha1}

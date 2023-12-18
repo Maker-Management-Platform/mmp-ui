@@ -25,7 +25,8 @@ import { Notifications } from '@mantine/notifications';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { routes as projectRoutes } from "./projects/routes.tsx";
-import { routes as tempFiles } from "./tempfiles/routes.tsx";
+import { routes as tempFilesRoutes } from "./tempfiles/routes.tsx";
+import { routes as printersRoutes } from "./printers/routes.tsx";
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "tempfiles",
-                children: [...tempFiles]
+                children: [...tempFilesRoutes]
+            },
+            {
+                path: "printers",
+                children: [...printersRoutes]
             },
         ],
     },

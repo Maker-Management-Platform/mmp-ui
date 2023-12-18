@@ -20,6 +20,7 @@ import {
 } from '@tabler/icons-react';
 import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
+import { menuItems as printersMenuItems } from "@/printers/menu";
 import classes from './NavBar.module.css';
 import { Link } from "react-router-dom";
 
@@ -43,7 +44,8 @@ function NavbarLink({ icon: Icon, label, active, onClick, href }: NavbarLinkProp
 
 const menuItems = [
     ...projectMenuItems,
-    ...tempFileMenuItems
+    ...tempFileMenuItems,
+    ...printersMenuItems
 ];
 
 export function NavBar() {
