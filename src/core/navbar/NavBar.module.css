@@ -26,7 +26,6 @@
     }
 
     &.active {
-        background-color: brown;
         &,
         &:hover {
             box-shadow: var(--mantine-shadow-sm);
