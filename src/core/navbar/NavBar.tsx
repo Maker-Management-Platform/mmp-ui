@@ -1,19 +1,15 @@
-import { useState } from 'react';
 import cx from 'clsx';
 import {
     Center,
     Tooltip,
     UnstyledButton,
     Stack,
-    rem,
     AppShell,
     useMantineColorScheme,
-    useComputedColorScheme, ActionIcon
+    useComputedColorScheme
 } from '@mantine/core';
 import {
     IconHome2,
-    IconLogout,
-    IconSwitchHorizontal,
     IconSun,
     IconMoon,
     IconBrandMantine
@@ -22,20 +18,28 @@ import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
 import classes from './NavBar.module.css';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;
     label: string;
     href: string;
-    active?: boolean;
-    onClick?(): void;
 }
 
-function NavbarLink({ icon: Icon, label, active, onClick, href }: NavbarLinkProps) {
+function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <UnstyledButton component={Link} to={href} onClick={onClick} className={classes.link} data-active={active || undefined}>
+            <UnstyledButton
+                className={classes.link}
+                renderRoot={({ className, ...others }) => (
+                    <NavLink
+                        to={href}
+                        className={({ isActive }) =>
+                            cx(className, isActive && classes.active)
+                        }
+                        {...others}
+                    />
+                )}>
                 <Icon stroke={1.5} />
             </UnstyledButton>
         </Tooltip>
@@ -49,7 +53,6 @@ const menuItems = [
 ];
 
 export function NavBar() {
-    const [active, setActive] = useState(1);
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
@@ -57,8 +60,6 @@ export function NavBar() {
         <NavbarLink
             {...link}
             key={link.label}
-            active={index === active}
-            onClick={() => setActive(index)}
         />
     ));
 
@@ -75,17 +76,14 @@ export function NavBar() {
             </div>
 
             <Stack justify="center" gap={0}>
-                <ActionIcon
-                    onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-                    variant="default"
-                    size="xl"
-                    aria-label="Toggle color scheme"
-                >
-                    <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
-                    <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
-                </ActionIcon>
-                <NavbarLink icon={IconSwitchHorizontal} href={'change'} label="Change account" />
-                <NavbarLink icon={IconLogout} href={'logout'} label="Logout" />
+                <Tooltip label={'Toggle color scheme'} position="right" transitionProps={{ duration: 0 }}>
+                    <UnstyledButton className={classes.link} onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}>
+                        {computedColorScheme == 'dark' && <IconSun stroke={1.5} />}
+                        {computedColorScheme == 'light' && <IconMoon stroke={1.5} />}
+                    </UnstyledButton>
+                </Tooltip>
+                {/*<NavbarLink icon={IconSwitchHorizontal} href={'change'} label="Change account" />*/}
+                {/*<NavbarLink icon={IconLogout} href={'logout'} label="Logout" />*/}
             </Stack>
         </AppShell.Navbar>
     );

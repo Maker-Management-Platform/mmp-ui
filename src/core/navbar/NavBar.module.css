@@ -25,37 +25,13 @@
         background-color: var(--mantine-color-blue-7);
     }
 
-    &[data-active] {
+    &.active {
+        background-color: brown;
         &,
         &:hover {
             box-shadow: var(--mantine-shadow-sm);
             background-color: var(--mantine-color-white);
             color: var(--mantine-color-blue-6);
         }
-    }
-}
-
-.icon {
-    width: rem(30px);
-    height: rem(30px);
-}
-
-.dark {
-    @mixin dark {
-        display: none;
-    }
-
-    @mixin light {
-        display: block;
-    }
-}
-
-.light {
-    @mixin light {
-        display: none;
-    }
-
-    @mixin dark {
-        display: block;
     }
 }
