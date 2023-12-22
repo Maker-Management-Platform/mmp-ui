@@ -44,14 +44,8 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
                     color: 'indigo',
                 })
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error updating project!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
             });
     };
 
@@ -65,14 +59,8 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
                     form.setFieldValue('state', data.state)
                     form.setFieldValue('status', data.status)
                 })
-                .catch(({ message }) => {
-                    console.log(message)
-                    notifications.show({
-                        title: 'Ops... Error connecting to the printer!',
-                        message,
-                        color: 'red',
-                        autoClose: false
-                    })
+                .catch((e) => {
+                    console.log(e)
                 });
         }
 

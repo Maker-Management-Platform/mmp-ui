@@ -39,14 +39,8 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
                     color: 'indigo',
                 })
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error updating project main image!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
             });
     }, [projectUuid]);
     const [value, toggle] = useToggle([false, true]);

@@ -33,14 +33,8 @@ export function PrintersPage() {
                 copy.splice(i, 1)
                 setPrinters(copy)
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error deleting printer!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
             });
 
     }

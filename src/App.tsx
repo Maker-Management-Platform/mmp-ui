@@ -4,6 +4,7 @@ import {NavBar} from "./core/navbar/NavBar.tsx";
 import {Outlet} from "react-router-dom";
 import {SettingsContext} from './core/utils/settingsContext.ts';
 import useAxios from 'axios-hooks';
+import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.tsx';
 
 function App() {
     const [opened, {toggle}] = useDisclosure();
@@ -32,6 +33,7 @@ function App() {
                 </AppShell.Main>
                 <AppShell.Aside p="md">Aside</AppShell.Aside>
             </AppShell>}
+            <AxiosErrorHandler/>
         </SettingsContext.Provider>
     )
 }

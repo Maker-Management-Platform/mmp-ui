@@ -55,14 +55,8 @@ export function TempFiles() {
                 })
                 setActionLoading((s)=>!s)
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error moving temporary!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
                 setActionLoading((s)=>!s)
             });
 
@@ -85,14 +79,8 @@ export function TempFiles() {
                 })
                 setActionLoading((s)=>!s)
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error deleting temporary!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
                 setActionLoading((s)=>!s)
             });
     }
