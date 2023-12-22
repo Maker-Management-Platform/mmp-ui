@@ -1,10 +1,11 @@
 import { SettingsContext } from "@/core/utils/settingsContext";
 import useAxios from "axios-hooks";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PrinterForm } from "../parts/printer-form/PrinterForm";
 
 export function EditPrinterPage() {
+    const navigate = useNavigate();
     const { local_backend } = useContext(SettingsContext);
     const { id } = useParams();
 
@@ -13,7 +14,7 @@ export function EditPrinterPage() {
     );
     return (<>
         <PrinterForm printer={data} onPrinterChange={function (p: any): void {
-            throw new Error("Function not implemented.");
-        } }/>
+            navigate("/printers")
+        }} />
     </>)
 }
