@@ -42,14 +42,8 @@ export function ProjectForm({ project, onProjectChange }: ProjectFormProps) {
                     color: 'indigo',
                 })
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error updating project!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
             });
     };
 

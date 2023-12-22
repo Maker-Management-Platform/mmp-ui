@@ -38,14 +38,8 @@ export function AddAsset({ projectUuid }: AddAssetProps) {
                         color: 'indigo',
                     })
                 })
-                .catch(({ message }) => {
-                    console.log(message)
-                    notifications.show({
-                        title: 'Ops... Error adding asset!',
-                        message,
-                        color: 'red',
-                        autoClose: false
-                    })
+                .catch((e) => {
+                    console.log(e)
                 });
         }
     };

@@ -38,14 +38,8 @@ export function ProjectOprations({ project, onProjectChange }: ProjectOperations
                 color: 'indigo',
             })
         })
-        .catch(({ message }) => {
-            console.log(message)
-            notifications.show({
-                title: 'Ops... Error moving project!',
-                message,
-                color: 'red',
-                autoClose: false
-            })
+        .catch((e) => {
+            console.log(e)
         });
     }
     return (<>

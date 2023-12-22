@@ -31,14 +31,8 @@ export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
                     color: 'indigo',
                 })
             })
-            .catch(({ message }) => {
-                console.log(message)
-                notifications.show({
-                    title: 'Ops... Error sending file to printer!',
-                    message,
-                    color: 'red',
-                    autoClose: false
-                })
+            .catch((e) => {
+                console.log(e)
             });
     }
 
