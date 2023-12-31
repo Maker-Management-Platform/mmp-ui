@@ -22,7 +22,7 @@ export function SliceCard({projectUuid, asset, selected, onSelectChange, onDelet
                 <AspectRatio ratio={16 / 9}>
 
                     <Image
-                        src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image.sha1}`}
+                        src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_sha1}`}
                         alt={asset.name}
                     />
                 </AspectRatio>

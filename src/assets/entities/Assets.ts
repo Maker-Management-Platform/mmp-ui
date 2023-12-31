@@ -34,7 +34,7 @@ export interface ProjectFile {
 }
 
 export interface Slice {
-    image: Image
+    image_sha1: string
     slicer: string
     filament: Filament
     cost: number
