@@ -8,9 +8,10 @@ import { notifications } from '@mantine/notifications';
 type ProjectFormProps = {
     project: Project;
     onProjectChange: (p: Project) => void;
+    avoidSave: Boolean;
 };
 
-export function ProjectForm({ project, onProjectChange }: ProjectFormProps) {
+export function ProjectForm({ project, onProjectChange, avoidSave = false }: ProjectFormProps) {
     const { local_backend } = useContext(SettingsContext);
     const [{ data, loading, error }, executeSave] = useAxios(
         {
@@ -28,6 +29,12 @@ export function ProjectForm({ project, onProjectChange }: ProjectFormProps) {
         },
     });
     const onSave = (project: Project) => {
+        // TODO: ugly temporal. We probably should refactor this a bit more.
+        if (avoidSave) {
+            onProjectChange(project);
+            return;
+        }
+
         executeSave({
             url: `${local_backend}/projects/${project.uuid}`,
             data: {
