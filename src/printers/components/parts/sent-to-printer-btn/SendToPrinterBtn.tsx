@@ -13,7 +13,7 @@ type SentToPrinterBtnProps = {
 export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
     const { local_backend } = useContext(SettingsContext);
     const [printers, setPrinters] = useState<Printer[]>([])
-    const [{ data, loading }] = useAxios({ url: `${local_backend}/printers` })
+    const [{ data, loading }] = useAxios<Printer[]>({ url: `${local_backend}/printers` })
     const [{ loading: sLoading }, executeSendToPrinter] = useAxios({}, { manual: true })
     useEffect(() => {
         if (!data) return;

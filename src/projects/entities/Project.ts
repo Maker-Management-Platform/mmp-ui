@@ -1,4 +1,4 @@
-import {Asset} from "../../assets/entities/Assets.ts";
+import { Asset } from "../../assets/entities/Assets.ts";
 
 export interface Project {
     uuid: string
@@ -6,8 +6,12 @@ export interface Project {
     description: string
     path: string
     external_link: string
-    tags: string[]
+    tags: Tag[]
     default_image_path: string
     initialized: boolean
     assets: Array<Asset>
+}
+
+export interface Tag {
+    value: string
 }

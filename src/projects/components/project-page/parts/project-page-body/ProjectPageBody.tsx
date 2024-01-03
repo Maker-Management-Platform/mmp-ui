@@ -30,7 +30,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
-    const [{ data: assets, loading, error }] = useAxios(
+    const [{ data: assets, loading, error }] = useAxios<Asset[]>(
         `${local_backend}/projects/${projectUuid}/assets`
     );
     useEffect(() => {

@@ -1,6 +1,6 @@
 import { Button, Group, TagsInput, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Project } from "../../../entities/Project.ts";
+import { Project, Tag } from "../../../entities/Project.ts";
 import useAxios from "axios-hooks";
 import { useContext, useState } from "react";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
@@ -72,6 +72,8 @@ export function ProjectForm({ project, onProjectChange, avoidSave = false }: Pro
                     label="Tags"
                     maxDropdownHeight={200}
                     {...form.getInputProps('tags')}
+                    value={form.values.tags.map(t => t.value)}
+                    onChange={(v) => form.setFieldValue('tags', v.map((s) => ({ value: s })))}
                 />
                 <Group justify="flex-end" mt="md">
                     <Button type="submit" loading={loading}>Submit</Button>
