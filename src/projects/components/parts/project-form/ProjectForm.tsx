@@ -21,6 +21,7 @@ export function ProjectForm({ project, onProjectChange, avoidSave = false }: Pro
     )
     const form = useForm({
         initialValues: {
+            tags: [],
             ...project,
         },
         validate: {
