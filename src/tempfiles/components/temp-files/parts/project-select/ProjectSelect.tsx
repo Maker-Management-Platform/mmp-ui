@@ -1,5 +1,5 @@
 import { Project } from "@/projects/entities/Project";
-import { CheckIcon, Combobox, Group, InputBase, Loader, TextInput, useCombobox } from "@mantine/core";
+import { CheckIcon, Combobox, Group, InputBase, Loader, useCombobox } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 type ProjectSelectProps = {
