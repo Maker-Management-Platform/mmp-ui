@@ -52,7 +52,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
         if (selected) {
             selectedModelsHandlers.append(asset)
         } else {
-            selectedModelsHandlers.filter((a) => a.sha1 != asset.sha1);
+            selectedModelsHandlers.filter((a) => a.id != asset.id);
         }
     };
 
@@ -64,16 +64,16 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
         const props: AssetCardProps = {
             projectUuid,
             asset,
-            selected: selectedAsset?.sha1 === asset.sha1 || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1),
+            selected: selectedAsset?.id === asset.id || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.id === asset.id) > -1),
             onSelectChange: () => setSelectedAsset(asset),
-            onDelete: (projectUuid: string, sha1: string) => {
-                assetListHandlers.remove(assetList.findIndex((a) => a.sha1 === sha1))
+            onDelete: (projectUuid: string, id: string) => {
+                assetListHandlers.remove(assetList.findIndex((a) => a.id === id))
 
                 return true
             }
         };
         if (asset.asset_type === 'model') {
-            props.view3d = selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1;
+            props.view3d = selectedModels.findIndex((a) => a.id === asset.id) > -1;
             props.onView3dChange = (v: boolean) => { handleModelSelection(asset, v) };
         }
 

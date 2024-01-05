@@ -16,7 +16,7 @@ type ModelProps = {
 
 function Model({model, projectUuid}: ModelProps) {
     const {local_backend} = useContext(SettingsContext);
-    const geom = useLoader(STLLoader, `${local_backend}/projects/${projectUuid}/assets/${model.sha1}`);
+    const geom = useLoader(STLLoader, `${local_backend}/projects/${projectUuid}/assets/${model.id}`);
     const meshRef = useRef<THREE.Mesh>(null!)
 
     const [active, setActive] = useState(false)
@@ -26,7 +26,7 @@ function Model({model, projectUuid}: ModelProps) {
     return (
         <>
             <mesh
-                name={model.sha1}
+                name={model.id}
                 onClick={(event) => setActive(!active)}
                 ref={meshRef}
                 rotation={[-Math.PI / 2, 0, 0]}
@@ -56,7 +56,7 @@ function Scene({models, projectUuid}: SceneProps) {
                 <Suspense fallback={<Progress/>}>
                     <MoveCamera models={models}>
                         {models.map((model) => (
-                            <Model key={model.sha1} model={model} projectUuid={projectUuid}/>
+                            <Model key={model.id} model={model} projectUuid={projectUuid}/>
                         ))}
                     </MoveCamera>
                 </Suspense>
@@ -75,8 +75,8 @@ function MoveCamera({children, models}) {
     useEffect(() => {
         const box = new THREE.Box3();
         models.forEach((model) => {
-            console.log(model.sha1, scene.getObjectByName(model.sha1));
-            box.expandByObject(scene.getObjectByName(model.sha1));
+            console.log(model.id, scene.getObjectByName(model.id));
+            box.expandByObject(scene.getObjectByName(model.id));
         });
         const offset = 1.25
         console.log('weee', models)

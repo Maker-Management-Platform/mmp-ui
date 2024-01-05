@@ -21,7 +21,7 @@ export function ProjectPage() {
                 title={project?.name}
                 description={project?.description}
                 tags={project?.tags}
-                imagePath={`${local_backend}/projects/${project?.uuid}/assets/${project?.default_image_path}`}
+                imagePath={`${local_backend}/projects/${project?.uuid}/assets/${project?.default_image_id}`}
             />
             {error && <p>Error!</p>}
             {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={(p) => {

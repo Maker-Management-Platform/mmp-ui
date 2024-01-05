@@ -7,10 +7,10 @@ import { useContext, useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
 
 type SentToPrinterBtnProps = {
-    sha1: string
+    id: string
 }
 
-export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
+export function SendToPrinterBtn({ id }: SentToPrinterBtnProps) {
     const { local_backend } = useContext(SettingsContext);
     const [printers, setPrinters] = useState<Printer[]>([])
     const [{ data, loading }] = useAxios<Printer[]>({ url: `${local_backend}/printers` })
@@ -22,7 +22,7 @@ export function SendToPrinterBtn({ sha1 }: SentToPrinterBtnProps) {
 
     function sentToPrinter(p: Printer) {
         executeSendToPrinter({
-            url: `${local_backend}/printers/${p.uuid}/send/${sha1}`
+            url: `${local_backend}/printers/${p.uuid}/send/${id}`
         })
             .then(() => {
                 notifications.show({

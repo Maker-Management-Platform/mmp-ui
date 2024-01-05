@@ -5,7 +5,7 @@ import useAxios from "axios-hooks";
 import { useContext } from "react";
 
 type DropDownMenuProps = {
-    sha1: string;
+    id: string;
     projectUuid: string;
     children?: React.ReactNode;
     downloadURL?: string
@@ -14,11 +14,11 @@ type DropDownMenuProps = {
     toggleLoad?: () => void;
 }
 
-export function DropDownMenu({ sha1, children, downloadURL, onDelete, openDetails, toggleLoad }: DropDownMenuProps) {
+export function DropDownMenu({ id, children, downloadURL, onDelete, openDetails, toggleLoad }: DropDownMenuProps) {
     const { local_backend } = useContext(SettingsContext);
     const [{ }, callDelete] = useAxios(
         {
-            url: `${local_backend}/assets/${sha1}/delete`,
+            url: `${local_backend}/assets/${id}/delete`,
             method: 'POST'
         },
         { manual: true }

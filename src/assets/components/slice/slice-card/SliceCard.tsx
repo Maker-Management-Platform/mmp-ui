@@ -22,7 +22,7 @@ export function SliceCard({projectUuid, asset, selected, onSelectChange, onDelet
                 <AspectRatio ratio={16 / 9}>
 
                     <Image
-                        src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_sha1}`}
+                        src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
                         alt={asset.name}
                     />
                 </AspectRatio>
@@ -36,13 +36,13 @@ export function SliceCard({projectUuid, asset, selected, onSelectChange, onDelet
             <Card.Section className={classes.footer}>
                 <Group justify="flex-end">
                     <Group gap={0}>
-                        <SendToPrinterBtn sha1={asset.sha1}/>
+                        <SendToPrinterBtn id={asset.id}/>
                         <DropDownMenu
                             projectUuid={projectUuid}
-                            sha1={asset.sha1}
+                            id={asset.id}
                                 openDetails={()=>onSelectChange(true)}
-                                downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
-                                onDelete={() => onDelete(projectUuid, asset.sha1)}
+                                downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                                onDelete={() => onDelete(projectUuid, asset.id)}
                                 toggleLoad={toggleLoadingCallback}>
                             </DropDownMenu>
                     </Group>

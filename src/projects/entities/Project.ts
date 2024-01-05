@@ -7,7 +7,7 @@ export interface Project {
     path: string
     external_link: string
     tags: Tag[]
-    default_image_path: string
+    default_image_id: string
     initialized: boolean
     assets: Array<Asset>
 }

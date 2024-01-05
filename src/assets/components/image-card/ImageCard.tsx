@@ -28,7 +28,7 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
         callSetMainImage({
             data: {
                 uuid: projectUuid,
-                default_image_path: asset.sha1
+                default_image_path: asset.id
             }
         })
             .then(({ data }) => {
@@ -48,12 +48,12 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
 
     return (<>
         <Modal opened={value} onClose={() => toggle()}>
-            <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.sha1}`} />
+            <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`} />
         </Modal>
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => toggle()}>
                 <AspectRatio ratio={16 / 9}>
-                    <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.sha1}`} />
+                    <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`} />
                 </AspectRatio>
             </Card.Section>
 
@@ -74,10 +74,10 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
                         </ActionIcon>
                         <DropDownMenu
                             projectUuid={projectUuid}
-                            sha1={asset.sha1}
+                            id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
-                            onDelete={() => onDelete(projectUuid, asset.sha1)}
+                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                             <Menu.Item onClick={setMainImage} leftSection={<IconHeart style={{ width: rem(14), height: rem(14) }} />}>
                                 Set as main image
