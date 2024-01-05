@@ -28,7 +28,7 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
         callSetMainImage({
             data: {
                 uuid: projectUuid,
-                default_image_path: asset.id
+                default_image_id: asset.id
             }
         })
             .then(({ data }) => {
