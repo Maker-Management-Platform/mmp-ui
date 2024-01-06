@@ -49,6 +49,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     }, [selectedModels]);
 
     const handleModelSelection = (asset: Asset, selected: boolean) => {
+        setSelectedAsset(undefined)
         if (selected) {
             selectedModelsHandlers.append(asset)
         } else {
@@ -65,7 +66,10 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
             projectUuid,
             asset,
             selected: selectedAsset?.id === asset.id || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.id === asset.id) > -1),
-            onSelectChange: () => setSelectedAsset(asset),
+            onSelectChange: () => {
+                selectedModelsHandlers.setState([])
+                setSelectedAsset(asset)
+            },
             onDelete: (projectUuid: string, id: string) => {
                 assetListHandlers.remove(assetList.findIndex((a) => a.id === id))
 
