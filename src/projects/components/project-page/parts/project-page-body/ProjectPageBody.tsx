@@ -26,17 +26,12 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     const { local_backend } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [assetList, assetListHandlers] = useListState<Asset>([]);
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
-    const [{ data: assets, loading, error }] = useAxios<Asset[]>(
+    const [{ data: assets, loading, error }, refetch] = useAxios<Asset[]>(
         `${local_backend}/projects/${projectUuid}/assets`
     );
-    useEffect(() => {
-        if (!assets) return;
-        assets.forEach((a: Asset) => assetListHandlers.append(a))
-    }, [assets]);
 
     useEffect(() => {
         if (selectedModels.length == 0) {
@@ -71,8 +66,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                 setSelectedAsset(asset)
             },
             onDelete: (projectUuid: string, id: string) => {
-                assetListHandlers.remove(assetList.findIndex((a) => a.id === id))
-
+                refetch()
                 return true
             }
         };
@@ -119,7 +113,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         direction="row"
                         wrap="wrap"
                     >
-                        {loading && Array.from(Array(50))
+                        {loading && Array.from(Array(3))
                             .map((_, i) => <Skeleton
                                 style={{
                                     height: rem('280px'),
@@ -130,7 +124,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                                 key={i}
                                 visible={true} />)}
 
-                        {assetList.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
+                        {assets?.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
                     </Flex>
                     {selectedModels.length > 0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
                         models={selectedModels} />}
