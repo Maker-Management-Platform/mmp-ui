@@ -1,5 +1,5 @@
-import { Container, Flex, Group, Pagination, rem, Select, Skeleton, TextInput } from "@mantine/core";
-import { Filter, ProjectFilterCard } from "./parts/project-filter-card/ProjectFilterCard.tsx";
+import { Container, Flex, Group, Pagination, rem, Select, Skeleton } from "@mantine/core";
+import { Filter } from "./parts/project-filter-card/ProjectFilterCard.tsx";
 import { ProjectCard } from "./parts/project-card/ProjectCard.tsx";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useState } from "react";
