@@ -1,10 +1,11 @@
-import { Container, Flex, Group, Pagination, rem, Select, Skeleton } from "@mantine/core";
+import { Container, Flex, Group, Pagination, rem, Select, Skeleton, TextInput } from "@mantine/core";
 import { Filter, ProjectFilterCard } from "./parts/project-filter-card/ProjectFilterCard.tsx";
 import { ProjectCard } from "./parts/project-card/ProjectCard.tsx";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useState } from "react";
 import { Project } from "@/projects/entities/Project.ts";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
+import { ProjectFilter } from "./parts/project-filter/ProjectFilter.tsx";
 
 export function ProjectsList() {
     const { local_backend } = useContext(SettingsContext);
@@ -14,7 +15,7 @@ export function ProjectsList() {
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const size = rem('280px');
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length>0?'&tags='+filter.tags?.join(","):''}`
+        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}`
     );
     useEffect(() => {
         if (!data?.items) return;
@@ -25,8 +26,9 @@ export function ProjectsList() {
 
     return (
         <Container fluid my='xs'>
-            <Group my="sm" justify="flex-end">
-                <Select placeholder="Pick value" data={['10', '20', '50', '100']} value={perPage} onChange={(v) => { if (v) { setPage(1); setPerPage(v) } }} />
+            <Group mb="md" >
+                <ProjectFilter onChange={setFilter}/>
+                <Select ml="auto" placeholder="Pick value" data={['10', '20', '50', '100']} value={perPage} onChange={(v) => { if (v) { setPage(1); setPerPage(v) } }} />
                 <Pagination total={data?.total_pages} value={data?.page + 1} onChange={setPage} withEdges onNextPage={() => { setPage(page + 1) }} onPreviousPage={() => { setPage(page - 1) }} />
             </Group>
             <Flex
@@ -36,7 +38,6 @@ export function ProjectsList() {
                 direction="row"
                 wrap="wrap"
             >
-                <ProjectFilterCard onChange={setFilter} />
                 {loading && Array.from(Array(3))
                     .map((_, i) => <Skeleton
                         style={{ height: size, minHeight: size, minWidth: size, width: size }}

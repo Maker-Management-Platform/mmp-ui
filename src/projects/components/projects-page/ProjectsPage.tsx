@@ -3,7 +3,6 @@ import { IconPhoto, IconSettings } from "@tabler/icons-react";
 import { ProjectsList } from "./parts/projects-list/ProjectsList.tsx";
 import { CreateProject } from "./parts/create-project/CreateProject.tsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Header } from "@/core/header/Header.tsx";
 import { ImportProject } from "./parts/import-project/ImportProject.tsx";
 
 export function ProjectsPage() {
@@ -12,9 +11,7 @@ export function ProjectsPage() {
     const [searchParams] = useSearchParams();
 
     return (
-        <>
-            <Header imagePath={'https://images.unsplash.com/photo-1563520239648-a24e51d4b570?q=80&w=2000&h=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'} />
-            <Tabs keepMounted={false} defaultValue="list" value={searchParams.get('tab')}
+        <><Tabs keepMounted={false} defaultValue="list" value={searchParams.get('tab')}
                 onChange={(value) => navigate(`/projects?tab=${value}`)}>
                 <Tabs.List>
                     <Tabs.Tab value="list" leftSection={<IconPhoto style={iconStyle} />}>
