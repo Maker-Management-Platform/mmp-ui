@@ -12,9 +12,9 @@ export const supportedAssetTypes: { name: string, label: string, icon: JSX.Eleme
     { name: "file", label: "Files", icon: <IconFile /> },
 ]
 export const assetTypeMap: Map<string, (props: AssetCardProps) => JSX.Element> = new Map([
-    ["image", (props: AssetCardProps) => <ImageCard {...props} />],
-    ["model", (props: AssetCardProps) => <ModelCard {...props} />],
-    ["slice", (props: AssetCardProps) => <SliceCard {...props} />],
-    ["file", (props: AssetCardProps) => <FileCard {...props} />],
-    ["other", (props: AssetCardProps) => <FileCard {...props} />],
+    ["image", (props: AssetCardProps) => <ImageCard {...props} key={props.asset.id} />],
+    ["model", (props: AssetCardProps) => <ModelCard {...props} key={props.asset.id} />],
+    ["slice", (props: AssetCardProps) => <SliceCard {...props} key={props.asset.id} />],
+    ["file", (props: AssetCardProps) => <FileCard {...props} key={props.asset.id} />],
+    ["other", (props: AssetCardProps) => <FileCard {...props} key={props.asset.id} />],
 ]);
