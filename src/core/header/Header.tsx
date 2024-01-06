@@ -13,7 +13,8 @@ type HeaderProps = {
 
 export function Header({ title, description, loading, imagePath, tags }: HeaderProps) {
     const theme = useMantineTheme();
-    const img = imagePath || 'https://images.unsplash.com/photo-1563520239648-a24e51d4b570?q=80&w=2000&h=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    const fallbackImage = 'https://images.unsplash.com/photo-1563520239648-a24e51d4b570?q=80&w=2000&h=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    const img = imagePath || fallbackImage;
     const tagWrap = tags?.map((tag, i) =>
         i < 10 ?
             <Badge color={theme.colors.blue[stringToNumber(tag.value, 10)]} key={i} size="xl" mx={2}>{tag.value}</Badge> : null)
@@ -24,7 +25,7 @@ export function Header({ title, description, loading, imagePath, tags }: HeaderP
     return (
         <div
             className={classes.wrapper}
-            style={{ backgroundImage: `url(${img})` }}
+            style={{ backgroundImage: `url(${loading ? fallbackImage : img})` }}
         >
             <Overlay color="#000" opacity={0.65} zIndex={1} />
 

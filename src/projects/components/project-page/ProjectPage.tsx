@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import { Project } from "../../entities/Project.ts";
-import { useContext} from "react";
+import { useContext } from "react";
 import { ProjectPageBody } from "./parts/project-page-body/ProjectPageBody.tsx";
 import { Header } from "@/core/header/Header.tsx";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
@@ -17,7 +17,7 @@ export function ProjectPage() {
     return (
         <>
             <Header
-            loading={loading}
+                loading={loading}
                 title={project?.name}
                 description={project?.description}
                 tags={project?.tags}
