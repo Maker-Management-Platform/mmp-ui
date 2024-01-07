@@ -8,6 +8,7 @@ import {ProjectForm} from "@/projects/components/parts/project-form/ProjectForm"
 import {Project} from "@/projects/entities/Project.ts";
 import { SettingsContext } from '@/core/utils/settingsContext.ts';
 import { notifications } from '@mantine/notifications';
+import { UploadPreview } from './upload-preview/UploadPreview';
 
 export function CreateProject() {
     const {local_backend} = useContext(SettingsContext);
@@ -20,7 +21,7 @@ export function CreateProject() {
         path: "projectPath",
         external_link: "",
         tags: [],
-        default_image_path: "",
+        default_image_id: "",
         initialized: false,
         assets: []
     };
@@ -96,7 +97,9 @@ export function CreateProject() {
                     </div>
                 </Group>
             </Dropzone>
-
+            <UploadPreview files={files} onChange={function (name: string): void {
+                throw new Error('Function not implemented.');
+            } } />
             <ProjectForm project={emptyProject} onProjectChange={onSave} avoidSave={true}/>
         </Container>
     );
