@@ -27,9 +27,12 @@ export function ProjectsList() {
     return (
         <Container fluid my='xs'>
             <Group mb="md" >
-                <ProjectFilter onChange={setFilter}/>
+                <ProjectFilter onChange={setFilter} />
                 <Select ml="auto" placeholder="Pick value" data={['10', '20', '50', '100']} value={perPage} onChange={(v) => { if (v) { setPage(1); setPerPage(v) } }} />
-                <Pagination total={data?.total_pages} value={data?.page + 1} onChange={setPage} withEdges onNextPage={() => { setPage(page + 1) }} onPreviousPage={() => { setPage(page - 1) }} />
+                <Pagination total={data?.total_pages} value={data?.page + 1}
+                    onChange={setPage}
+                    onNextPage={() => { setPage(page + 1) }}
+                    onPreviousPage={() => { setPage(page - 1) }}/>
             </Group>
             <Flex
                 gap="md"

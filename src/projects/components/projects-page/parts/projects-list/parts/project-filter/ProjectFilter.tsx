@@ -1,6 +1,8 @@
 import { SettingsContext } from "@/core/utils/settingsContext";
 import { Tag } from "@/projects/entities/Project";
-import { Button, TagsInput, TextInput } from "@mantine/core";
+import { ActionIcon, Group, TagsInput, TextInput, Transition, rem } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconFilter, IconSearch, IconX } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useState } from "react";
 
@@ -30,22 +32,37 @@ export function ProjectFilter({ onChange }: ProjectFilterProps) {
     const clear = () => {
         setFilter({ name: '', tags: [] })
         onChange({ name: '', tags: [] })
-        return;
     }
+
+    const [opened, handlers] = useDisclosure(false, {
+        onClose: () => {
+            clear()
+        }
+    });
     return (
-        <>
-            <TextInput placeholder="Name" value={filter.name} onChange={(e) => setFilter((f) => { return { ...f, name: e.target.value } })} />
-            <TagsInput
-                placeholder="Tags"
-                data={tags}
-                maxDropdownHeight={200}
-                value={filter.tags}
-                onChange={(v) => setFilter((f) => { return { ...f, tags: v } })}
-                splitChars={[',', ' ', '|']}
-                clearable
-            />
-            <Button loading={loading} onClick={() => onChange(filter)}>Apply</Button>
-            <Button loading={loading} variant="light" onClick={clear}>Clear</Button>
-        </>
+        <Group gap="xs">
+            <ActionIcon loading={loading} onClick={handlers.toggle}>
+                {!opened && <IconFilter style={{ width: rem(20), height: rem(20) }} />}
+                {opened && <IconX style={{ width: rem(20), height: rem(20) }} />}
+            </ActionIcon>
+            <Transition mounted={opened} transition='scale-x' >
+                {(styles) =>
+                    <Group style={styles}>
+                        <TextInput placeholder="Name" value={filter.name} onChange={(e) => setFilter((f) => { return { ...f, name: e.target.value } })} />
+                        <TagsInput
+                            placeholder="Tags"
+                            data={tags}
+                            maxDropdownHeight={200}
+                            value={filter.tags}
+                            onChange={(v) => setFilter((f) => { return { ...f, tags: v } })}
+                            splitChars={[',', ' ', '|']}
+                            clearable
+                        />
+                        <ActionIcon loading={loading} onClick={() => onChange(filter)}>
+                            <IconSearch style={{ width: rem(20), height: rem(20) }} />
+                        </ActionIcon>
+                    </Group>}
+            </Transition>
+        </Group>
     )
 }
