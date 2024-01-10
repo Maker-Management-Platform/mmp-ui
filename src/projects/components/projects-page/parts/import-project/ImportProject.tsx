@@ -1,4 +1,4 @@
-import {Button, Container, Group, Textarea} from "@mantine/core";
+import {Anchor, Button, Container, Group, Text, Textarea} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import useAxios from "axios-hooks";
 import { useContext } from "react";
@@ -36,9 +36,10 @@ export function ImportProject() {
                     <Textarea
                         placeholder={'https://www.thingiverse.com/thing:2631794\nthing:4739346'}
                         mb="sm"
-                        label="Urls"
+                        label="Thingiverse urls"
                         {...form.getInputProps('urls')}
                     />
+                    <Text>Check out <Anchor href="https://github.com/Maker-Management-Platform/mmp-companion">MMP Companion</Anchor> to import from more platforms.</Text>
                     <Group justify="flex-end" mt="md">
                         <Button type="submit" loading={loading}>Submit</Button>
                     </Group>
