@@ -12,7 +12,6 @@ import { notifications } from "@mantine/notifications";
 export function TempFiles() {
     const { local_backend } = useContext(SettingsContext);
     const [tempFiles, setTempFiles] = useState<TempFile[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
     const [actionLoading, setActionLoading] = useState(false);
     const [{ }, callSendToProject] = useAxios({ url: `${local_backend}/tempfiles/xxx`, method: 'post' }, { manual: true })
     const [{ }, callDeleteTemp] = useAxios({ url: `${local_backend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
@@ -23,12 +22,9 @@ export function TempFiles() {
         setTempFiles(data);
     }, [data]);
 
-    const [{ data: pData, loading: pLoading, error: pError }] = useAxios(
-        `${local_backend}/projects`
+    const [{ data: projects, loading: pLoading, error: pError }] = useAxios<Project[]>(
+        `${local_backend}/projects/list`
     );
-    useEffect(() => {
-        setProjects(pData);
-    }, [pData]);
 
     const setProjectUUID = (i: number, p: Project) => {
         const copy = [...tempFiles]

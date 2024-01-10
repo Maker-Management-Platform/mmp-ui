@@ -39,10 +39,10 @@ export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelet
                     <Group gap={0}>
                         <DropDownMenu
                             projectUuid={projectUuid}
-                            sha1={asset.sha1}
+                            id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
-                            onDelete={() => onDelete(projectUuid, asset.sha1)}
+                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                         </DropDownMenu>
                     </Group>

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
+import '@mantine/core/styles/global.css';
 import '@mantine/core/styles.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';
@@ -18,6 +19,8 @@ import '@mantine/core/styles/Input.css';
 import '@mantine/core/styles/Flex.css';
 import '@mantine/core/styles/AppShell.css';
 import '@mantine/core/styles/Tabs.css';
+import '@mantine/core/styles/Pagination.css';
+import '@mantine/core/styles/Checkbox.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';

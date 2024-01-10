@@ -22,15 +22,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
             component={Link}
             to={`/projects/${project.uuid}`}
         >
-            {project.default_image_path &&
+            {project.default_image_id &&
                 <div
                     className={classes.image}
                     style={{
-                        backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_path})`,
+                        backgroundImage: `url(${local_backend}/projects/${project.uuid}/assets/${project.default_image_id})`,
                         backgroundPosition: 'center',
                     }}
                 />}
-            {!project.default_image_path &&
+            {!project.default_image_id &&
                 <div
                     className={classes.image}
                     style={{

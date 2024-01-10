@@ -1,4 +1,4 @@
-import {ProjectPage3} from "./components/project-page/ProjectPage.tsx";
+import {ProjectPage} from "./components/project-page/ProjectPage.tsx";
 import {ProjectsPage} from "./components/projects-page/ProjectsPage.tsx";
 
 export const routes = [
@@ -9,6 +9,6 @@ export const routes = [
     },
     {
         path: ':id',
-        element: <ProjectPage3/>
+        element: <ProjectPage/>
     }
 ]

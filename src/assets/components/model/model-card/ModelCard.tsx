@@ -20,14 +20,14 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ minWidth: size, width: size, borderColor: selected ? 'red' : '' }} >
             <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-                    {asset?.model?.image_sha1 &&
+                    {asset?.model?.image_id &&
                         <Image
-                            src={`${local_backend}/projects/${projectUuid}/assets/${asset?.model?.image_sha1}`}
+                            src={`${local_backend}/projects/${projectUuid}/assets/${asset?.model?.image_id}`}
                             alt={asset.name}
                         />}
-                    {!asset?.model?.image_sha1 &&
+                    {!asset?.model?.image_id &&
                         <Image
-                            src={`https://picsum.photos/seed/${asset.sha1}/280`}
+                            src={`https://picsum.photos/seed/${asset.id}/280`}
                             alt={asset.name}
                         />}
                 </AspectRatio>
@@ -47,10 +47,10 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
                             <SelectBtn selected={view3d} onChange={onView3dChange} icon={<Icon3dRotate />} />}
                         <DropDownMenu
                             projectUuid={projectUuid}
-                            sha1={asset.sha1}
+                            id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.sha1}?download=true'`}
-                            onDelete={() => onDelete(projectUuid, asset.sha1)}
+                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset.id}?download=true'`}
+                            onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                         </DropDownMenu>
                     </Group>

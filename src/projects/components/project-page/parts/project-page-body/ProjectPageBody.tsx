@@ -26,17 +26,12 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     const { local_backend } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [assetList, assetListHandlers] = useListState<Asset>([]);
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
-    const [{ data: assets, loading, error }] = useAxios(
+    const [{ data: assets, loading, error }, refetch] = useAxios<Asset[]>(
         `${local_backend}/projects/${projectUuid}/assets`
     );
-    useEffect(() => {
-        if (!assets) return;
-        assets.forEach((a: Asset) => assetListHandlers.append(a))
-    }, [assets]);
 
     useEffect(() => {
         if (selectedModels.length == 0) {
@@ -49,10 +44,11 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     }, [selectedModels]);
 
     const handleModelSelection = (asset: Asset, selected: boolean) => {
+        setSelectedAsset(undefined)
         if (selected) {
             selectedModelsHandlers.append(asset)
         } else {
-            selectedModelsHandlers.filter((a) => a.sha1 != asset.sha1);
+            selectedModelsHandlers.filter((a) => a.id != asset.id);
         }
     };
 
@@ -64,16 +60,18 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
         const props: AssetCardProps = {
             projectUuid,
             asset,
-            selected: selectedAsset?.sha1 === asset.sha1 || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1),
-            onSelectChange: () => setSelectedAsset(asset),
-            onDelete: (projectUuid: string, sha1: string) => {
-                assetListHandlers.remove(assetList.findIndex((a) => a.sha1 === sha1))
-
+            selected: selectedAsset?.id === asset.id || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.id === asset.id) > -1),
+            onSelectChange: () => {
+                selectedModelsHandlers.setState([])
+                setSelectedAsset(asset)
+            },
+            onDelete: (projectUuid: string, id: string) => {
+                refetch()
                 return true
             }
         };
         if (asset.asset_type === 'model') {
-            props.view3d = selectedModels.findIndex((a) => a.sha1 === asset.sha1) > -1;
+            props.view3d = selectedModels.findIndex((a) => a.id === asset.id) > -1;
             props.onView3dChange = (v: boolean) => { handleModelSelection(asset, v) };
         }
 
@@ -92,7 +90,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         <Tabs.Tab value="all" leftSection={<IconFiles style={iconStyle} />}>
                             All
                         </Tabs.Tab>
-                        {supportedAssetTypes.map(type => <Tabs.Tab value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)}
+                        {supportedAssetTypes.map((type, i) => <Tabs.Tab key={i} value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)}
                         <Tabs.Tab ml="auto" value="add_asset" leftSection={<IconSettings style={iconStyle} />}>
                             Add Asset
                         </Tabs.Tab>
@@ -115,7 +113,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         direction="row"
                         wrap="wrap"
                     >
-                        {loading && Array.from(Array(50))
+                        {loading && Array.from(Array(3))
                             .map((_, i) => <Skeleton
                                 style={{
                                     height: rem('280px'),
@@ -126,7 +124,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                                 key={i}
                                 visible={true} />)}
 
-                        {assetList.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
+                        {assets?.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
                     </Flex>
                     {selectedModels.length > 0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
                         models={selectedModels} />}
