@@ -4,10 +4,10 @@ import { IconTrash, IconFileArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Table, Group, Center, Skeleton } from "@mantine/core";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useState } from "react";
-import { ProjectSelect } from "./parts/project-select/ProjectSelect";
 import { Project } from "@/projects/entities/Project";
 import { Header } from "@/core/header/Header";
 import { notifications } from "@mantine/notifications";
+import { ProjectSelect } from "@/core/form-fields/project-select/ProjectSelect";
 
 export function TempFiles() {
     const { local_backend } = useContext(SettingsContext);

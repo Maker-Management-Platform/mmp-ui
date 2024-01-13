@@ -1,16 +1,17 @@
 import { Project } from "@/projects/entities/Project";
-import { CheckIcon, Combobox, Group, InputBase, Loader, useCombobox } from "@mantine/core";
+import { CheckIcon, Combobox, ComboboxProps, Group, InputBase, Loader, useCombobox } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 type ProjectSelectProps = {
     boosted: string[];
-    projects: Project[];
+    projects: Project[] | undefined;
     value: string;
     onChange: (p: Project) => void;
     loading: boolean;
-}
 
-export function ProjectSelect({ boosted, projects, value, onChange, loading }: ProjectSelectProps) {
+} & ComboboxProps
+
+export function ProjectSelect({ boosted, projects, value, onChange, loading, ...props }: ProjectSelectProps) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
@@ -57,7 +58,7 @@ export function ProjectSelect({ boosted, projects, value, onChange, loading }: P
         <Combobox store={combobox} onOptionSubmit={(optionValue) => {
             setSValue(optionValue)
             combobox.closeDropdown();
-        }}>
+        }} {...props}>
             <Combobox.Target>
                 <InputBase
                     placeholder="Project"

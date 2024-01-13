@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.5.0",
     "@mantine/carousel": "^7.4.0",
     "@mantine/code-highlight": "^7.4.0",
     "@mantine/core": "^7.4.0",

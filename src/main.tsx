@@ -30,6 +30,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes as projectRoutes } from "./projects/routes.tsx";
 import { routes as tempFilesRoutes } from "./tempfiles/routes.tsx";
 import { routes as printersRoutes } from "./printers/routes.tsx";
+import { routes as costsRoutes } from "./costs/routes.tsx";
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
             {
                 path: "printers",
                 children: [...printersRoutes]
+            },
+            {
+                path: "costs",
+                children: [...costsRoutes]
             },
         ],
     },

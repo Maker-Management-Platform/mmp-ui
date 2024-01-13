@@ -17,6 +17,7 @@ import {
 import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
+import { menuItems as costsMenuItems } from "@/costs/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
 
@@ -49,7 +50,8 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 const menuItems = [
     ...projectMenuItems,
     ...tempFileMenuItems,
-    ...printersMenuItems
+    ...printersMenuItems,
+    ...costsMenuItems
 ];
 
 export function NavBar() {
