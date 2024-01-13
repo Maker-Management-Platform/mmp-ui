@@ -79,6 +79,8 @@ export function ProjectForm({ project, onProjectChange, withUpload }: ProjectFor
                     {...form.getInputProps('tags')}
                     value={form.values.tags.map(t => t.value)}
                     onChange={(v) => form.setFieldValue('tags', v.map((s) => ({ value: s })))}
+                    splitChars={[',', ' ', '|']}
+                    clearable
                 />
                 {withUpload && <>
                     <Dropzone onDrop={onDrop} mih={100}>
