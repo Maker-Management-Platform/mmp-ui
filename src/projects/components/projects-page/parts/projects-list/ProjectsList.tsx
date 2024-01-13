@@ -2,12 +2,13 @@ import { Container, Flex, Group, Pagination, rem, Select, Skeleton } from "@mant
 import { Filter } from "./parts/project-filter-card/ProjectFilterCard.tsx";
 import { ProjectCard } from "./parts/project-card/ProjectCard.tsx";
 import useAxios from "axios-hooks";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Project } from "@/projects/entities/Project.ts";
 import { SettingsContext } from "@/core/utils/settingsContext.ts";
 import { ProjectFilter } from "./parts/project-filter/ProjectFilter.tsx";
 
 export function ProjectsList() {
+    const intervalRef = useRef(Math.floor(1000 + Math.random() * 9000));
     const { local_backend } = useContext(SettingsContext);
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState('20')
@@ -15,7 +16,7 @@ export function ProjectsList() {
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const size = rem('280px');
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}`
+        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}&_=${intervalRef.current}`
     );
     useEffect(() => {
         if (!data?.items) return;
@@ -32,7 +33,7 @@ export function ProjectsList() {
                 <Pagination total={data?.total_pages} value={data?.page + 1}
                     onChange={setPage}
                     onNextPage={() => { setPage(page + 1) }}
-                    onPreviousPage={() => { setPage(page - 1) }}/>
+                    onPreviousPage={() => { setPage(page - 1) }} />
             </Group>
             <Flex
                 gap="md"
