@@ -8,6 +8,7 @@ import { SettingsContext } from '@/core/utils/settingsContext.ts';
 import { useCallback, useContext, useState } from 'react';
 import useAxios from 'axios-hooks';
 import { notifications } from '@mantine/notifications';
+import { Lightbox } from "react-modal-image";
 
 export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDelete }: AssetCardProps) {
     const { local_backend } = useContext(SettingsContext);
@@ -47,9 +48,12 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
     const theme = useMantineTheme();
 
     return (<>
-        <Modal opened={value} onClose={() => toggle()}>
-            <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`} />
-        </Modal>
+        {value && <Lightbox
+            medium={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
+            large={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
+            hideDownload={true}
+            onClose={toggle}
+        />}
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => toggle()}>
                 <AspectRatio ratio={16 / 9}>
