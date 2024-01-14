@@ -3,27 +3,28 @@ import { TempFile } from "@/tempfiles/entities/TempFile";
 import { IconTrash, IconFileArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Table, Group, Center, Skeleton } from "@mantine/core";
 import useAxios from "axios-hooks";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ProjectSelect } from "./parts/project-select/ProjectSelect";
 import { Project } from "@/projects/entities/Project";
 import { Header } from "@/core/header/Header";
 import { notifications } from "@mantine/notifications";
 
 export function TempFiles() {
+    const reload = useRef(Math.floor(1000 + Math.random() * 9000));
     const { local_backend } = useContext(SettingsContext);
     const [tempFiles, setTempFiles] = useState<TempFile[]>([]);
     const [actionLoading, setActionLoading] = useState(false);
     const [{ }, callSendToProject] = useAxios({ url: `${local_backend}/tempfiles/xxx`, method: 'post' }, { manual: true })
     const [{ }, callDeleteTemp] = useAxios({ url: `${local_backend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/tempfiles`
+        `${local_backend}/tempfiles?_=${reload.current}`
     );
     useEffect(() => {
         setTempFiles(data);
     }, [data]);
 
     const [{ data: projects, loading: pLoading, error: pError }] = useAxios<Project[]>(
-        `${local_backend}/projects/list`
+        `${local_backend}/projects/list?_=${reload.current}`
     );
 
     const setProjectUUID = (i: number, p: Project) => {
