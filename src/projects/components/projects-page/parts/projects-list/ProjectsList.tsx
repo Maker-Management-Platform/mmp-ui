@@ -8,7 +8,7 @@ import { SettingsContext } from "@/core/utils/settingsContext.ts";
 import { ProjectFilter } from "./parts/project-filter/ProjectFilter.tsx";
 
 export function ProjectsList() {
-    const intervalRef = useRef(Math.floor(1000 + Math.random() * 9000));
+    const reload = useRef(Math.floor(1000 + Math.random() * 9000));
     const { local_backend } = useContext(SettingsContext);
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState('20')
@@ -16,7 +16,7 @@ export function ProjectsList() {
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const size = rem('280px');
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}&_=${intervalRef.current}`
+        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}&_=${reload.current}`
     );
     useEffect(() => {
         if (!data?.items) return;
