@@ -68,6 +68,10 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
             onDelete: (projectUuid: string, id: string) => {
                 refetch()
                 return true
+            },
+            onChange: (projectUuid: string, id: string) => {
+                onProjectChange(project)
+                return true
             }
         };
         if (asset.asset_type === 'model') {
