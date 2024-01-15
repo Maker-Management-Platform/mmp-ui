@@ -10,7 +10,7 @@ import useAxios from 'axios-hooks';
 import { notifications } from '@mantine/notifications';
 import { Lightbox } from "react-modal-image";
 
-export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDelete }: AssetCardProps) {
+export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
     const { local_backend } = useContext(SettingsContext);
     const [{ }, callSetMainImage] = useAxios(
         {
@@ -39,6 +39,7 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
                     message: 'Project main image updated!',
                     color: 'indigo',
                 })
+                onChange(projectUuid, asset.id)
             })
             .catch((e) => {
                 console.log(e)
