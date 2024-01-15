@@ -8,4 +8,5 @@ export type AssetCardProps = {
     view3d?: boolean,
     onView3dChange?: (arg0: boolean) => void;
     onDelete: (projectUuid: string, id: string) => void;
+    onChange: (projectUuid: string, id: string) => void;
 }
