@@ -3,20 +3,26 @@ interface CostType {
     group: string
     costPerUnit: number
     units: number
+    markup: number
     isTime: boolean
-    hasAsset: boolean
+    assetId: string | null
+}
+
+interface CostInstance extends CostType {
+    cost: number
+    value: number
 }
 
 interface ProjectCosts {
     name: string
+    description: string
     projectUuid: string
     costs: Array<CostInstance>
-}
-
-interface CostInstance {
-    type: string
-    units: number
-    isTime: boolean
-    value: number
-    assetId: string | null
+    globalMarkup: number
+    totalCost: number
+    totalValue: number
+    totalHours: number
+    producedUnits: number
+    valuePerUnit: number
+    costPerUnit: number
 }

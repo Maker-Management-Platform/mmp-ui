@@ -4,7 +4,6 @@ import { IconTrash, IconFileArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Table, Group, Center, Skeleton } from "@mantine/core";
 import useAxios from "axios-hooks";
 import { useContext, useEffect,  useRef, useState } from "react";
-import { ProjectSelect } from "./parts/project-select/ProjectSelect";
 import { Project } from "@/projects/entities/Project";
 import { Header } from "@/core/header/Header";
 import { notifications } from "@mantine/notifications";

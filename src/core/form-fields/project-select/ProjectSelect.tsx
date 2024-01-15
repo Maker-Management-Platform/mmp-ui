@@ -55,10 +55,10 @@ export function ProjectSelect({ boosted, projects, value, onChange, loading, ...
 
 
     return (
-        <Combobox store={combobox} onOptionSubmit={(optionValue) => {
+        <Combobox  {...props} store={combobox} onOptionSubmit={(optionValue) => {
             setSValue(optionValue)
             combobox.closeDropdown();
-        }} {...props}>
+        }}>
             <Combobox.Target>
                 <InputBase
                     placeholder="Project"
