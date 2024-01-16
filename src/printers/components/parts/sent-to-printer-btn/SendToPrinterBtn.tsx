@@ -48,7 +48,7 @@ export function SendToPrinterBtn({ id }: SentToPrinterBtnProps) {
             </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-            {printers.map((p) => <Menu.Item onClick={() => sentToPrinter(p)}>{p.name}</Menu.Item>)}
+            {printers.map((p, i) => <Menu.Item key={i} onClick={() => sentToPrinter(p)}>{p.name}</Menu.Item>)}
         </Menu.Dropdown>
     </Menu>)
 }
