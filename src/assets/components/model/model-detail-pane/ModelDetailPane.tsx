@@ -106,7 +106,7 @@ function MoveCamera({ children, models }: { children: JSX.Element[], models: Ass
         const box3Helper = new THREE.Box3Helper(box, 0x00ff00);
         box3Helper.material.linewidth = 3;
         group.current.add(box3Helper);
-        
+
         const axesHelper = new THREE.AxesHelper(5);
         const center = new THREE.Vector3();
         box.getCenter(center)
@@ -144,15 +144,14 @@ export function ModelDetailPane({ models, projectUuid, onClose }: ModelDetailPan
     console.log(models);
     const { ref, width } = useElementSize();
     return (
-        <>
-            <Alert variant="filled" color="gray" withCloseButton onClose={onClose} title={' '} ref={ref}>
-                <Canvas shadows raycaster={{ params: { Line: { threshold: 0.15 } } }}
-                    camera={{ position: [0, 0, 0], fov: 20 }}
-                    style={{ height: width * (9 / 16) }}>
-                    <Scene models={models} projectUuid={projectUuid} />
-                </Canvas>
-            </Alert>
-        </>
+        <Alert variant="filled" color="gray" withCloseButton onClose={onClose} title={' '} ref={ref} style={{ height: width * (9 / 16) }}>
+            <Canvas shadows raycaster={{ params: { Line: { threshold: 0.15 } } }}
+                camera={{ position: [0, 0, 0], fov: 20 }}
+                style={{ height: (width * (9 / 16)) - 20 }}
+            >
+                <Scene models={models} projectUuid={projectUuid} />
+            </Canvas>
+        </Alert>
     );
 }
 
