@@ -6,8 +6,9 @@ import { Icon3dRotate } from '@tabler/icons-react';
 import { AssetCardProps } from '../../AssetCardProps';
 import { SettingsContext } from '@/core/utils/settingsContext';
 import { useCallback, useContext, useState } from 'react';
+import { SetAsMain } from '../../parts/set-as-main/SetAsMain';
 
-export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d, onView3dChange, onDelete }: AssetCardProps) {
+export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d, onView3dChange, onDelete, onChange }: AssetCardProps) {
     const { local_backend } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
@@ -52,6 +53,7 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
                             downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.model?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>
