@@ -1,7 +1,7 @@
 import { Asset, AssetType } from "@/assets/entities/Assets";
 import { Grid, Input, Tabs } from "@mantine/core";
 import { SliceDetailPane } from "../slice/slice-detail-pane/SliceDetailPane";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from "react";
 
 type AssetDetailsProps = {
@@ -23,6 +23,7 @@ export function AssetDetails({ asset }: AssetDetailsProps) {
         }else{
             setAssetElement(undefined)
             setTab('file')
+
         }
     }, [asset])
     const formatBytes = (bytes: number, decimals: number) => {
