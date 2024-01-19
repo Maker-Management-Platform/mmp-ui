@@ -1,30 +1,43 @@
 import { Asset, AssetType } from "@/assets/entities/Assets";
 import { Grid, Input, Tabs } from "@mantine/core";
 import { SliceDetailPane } from "../slice/slice-detail-pane/SliceDetailPane";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
+import React, { useEffect, useState } from "react";
 
 type AssetDetailsProps = {
     asset: Asset;
 }
 
-const assetTypeMap: Map<AssetType, (asset: Asset) => JSX.Element> = new Map([
-    ["slice", (asset: Asset) => <SliceDetailPane asset={asset} />],
+const assetTypeMap: Map<AssetType, JSX.Element> = new Map([
+    ["slice", <SliceDetailPane asset={{} as Asset} />],
 ]);
 
 export function AssetDetails({ asset }: AssetDetailsProps) {
-    const a = assetTypeMap.get(asset.asset_type);
+    const [tab, setTab] = useState<string | null>('file')
+    const [assetElement, setAssetElement] = useState<JSX.Element | undefined>()
+    useEffect(() => {
+        const e = assetTypeMap.get(asset.asset_type)
+        if (e) {
+            setAssetElement(assetTypeMap.get(asset.asset_type))
+            setTab('details')
+        }else{
+            setAssetElement(undefined)
+            setTab('file')
+
+        }
+    }, [asset])
     const formatBytes = (bytes: number, decimals: number) => {
         if (bytes == 0) return '0 Bytes';
-        var k = 1024,
+        const k = 1024,
             dm = decimals || 2,
             sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
-    return (<>
-        <Tabs value={a ? 'details' : 'file'}>
+    return (
+        <Tabs value={tab} onChange={setTab}>
             <Tabs.List>
-                {a && <Tabs.Tab value="details">
+                {assetElement && <Tabs.Tab value="details">
                     Details
                 </Tabs.Tab>}
                 <Tabs.Tab value="file">
@@ -32,8 +45,8 @@ export function AssetDetails({ asset }: AssetDetailsProps) {
                 </Tabs.Tab>
             </Tabs.List>
 
-            {a && <Tabs.Panel value="details">
-                {a(asset)}
+            {assetElement && <Tabs.Panel value="details">
+                {React.cloneElement(assetElement, { asset })}
             </Tabs.Panel>}
 
             <Tabs.Panel value="file">
@@ -61,6 +74,6 @@ export function AssetDetails({ asset }: AssetDetailsProps) {
                 </Grid>
             </Tabs.Panel>
         </Tabs>
-    </>)
+    )
 
 }
