@@ -1,4 +1,4 @@
-import { Fieldset, TextInput } from "@mantine/core";
+import { Fieldset, Switch, TagsInput, TextInput } from "@mantine/core";
 import { useFormContext } from "../context";
 
 export function Library() {
@@ -6,8 +6,13 @@ export function Library() {
     return (
         <Fieldset legend="Library">
             <TextInput label="Path" {...form.getInputProps(`library.path`)} />
-            <TextInput label="blacklist" {...form.getInputProps(`library.blacklist`)} />
-            <TextInput label="ignore_dot_files" {...form.getInputProps(`library.ignore_dot_files`)} />
+            <TagsInput
+                mb="sm"
+                label="Blacklist"
+                {...form.getInputProps(`library.blacklist`)}
+                splitChars={[' ', '|']}
+            />
+            <Switch mt={'sm'} {...form.getInputProps(`library.ignore_dot_files`)} label="Ignore dot Files" />
         </Fieldset>
     )
 }

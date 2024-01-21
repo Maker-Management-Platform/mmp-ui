@@ -51,14 +51,24 @@ const menuItems = [
     ...projectMenuItems,
     ...tempFileMenuItems,
     ...printersMenuItems,
-    ...settingsMenuItems
 ];
+
+const operationalItems = [
+    ...settingsMenuItems
+]
 
 export function NavBar() {
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    const links = menuItems.map((link, index) => (
+    const featureLinks = menuItems.map((link, index) => (
+        <NavbarLink
+            {...link}
+            key={link.label}
+        />
+    ));
+
+    const opsLinks = operationalItems.map((link, index) => (
         <NavbarLink
             {...link}
             key={link.label}
@@ -73,11 +83,12 @@ export function NavBar() {
 
             <div className={classes.navbarMain}>
                 <Stack justify="center" gap={0}>
-                    {links}
+                    {featureLinks}
                 </Stack>
             </div>
 
             <Stack justify="center" gap={0}>
+                {opsLinks}
                 <Tooltip label={'Toggle color scheme'} position="right" transitionProps={{ duration: 0 }}>
                     <UnstyledButton className={classes.link} onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}>
                         {computedColorScheme == 'dark' && <IconSun stroke={1.5} />}
