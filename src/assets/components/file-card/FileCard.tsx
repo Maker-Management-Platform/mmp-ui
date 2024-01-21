@@ -8,24 +8,24 @@ import { SettingsContext } from '@/core/utils/settingsContext.ts';
 
 
 export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelete }: AssetCardProps) {
-    const {local_backend} = useContext(SettingsContext);
+    const { local_backend } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
-        setLoading((l)=>{
+        setLoading((l) => {
             return !l
         })
-    },[loading])
+    }, [loading])
     const iconMap = new Map<string, JSX.Element>();
     iconMap.set('.pdf', <IconFileTypePdf />);
     iconMap.set('.jpg', <IconFile />);
 
 
     const size = rem('280px');
-    return (<>
-        <Card withBorder padding="lg" radius="md" className={classes.card} style={{ position:'relative', minWidth: size, width: size, borderColor: selected ? 'red' : '' }}>
+    return (
+        <Card withBorder padding="lg" radius="md" className={classes.card} style={{ position: 'relative', minWidth: size, width: size, borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-                    {iconMap.get(asset.extension) || <IconFile />}
+                    {iconMap.get(asset.extension) ?? <IconFile />}
                 </AspectRatio>
             </Card.Section>
 
@@ -49,6 +49,5 @@ export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelet
                 </Group>
             </Card.Section>
         </Card>
-        </>
     );
 }
