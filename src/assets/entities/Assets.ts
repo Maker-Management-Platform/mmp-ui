@@ -3,6 +3,7 @@ export type AssetType = 'image' | 'model' | 'file' | 'slice'
 export interface Asset {
     id: string
     name: string
+    generated: boolean
     project_uuid: string
     path: string
     mod_time: string

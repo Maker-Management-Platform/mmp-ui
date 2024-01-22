@@ -5,9 +5,11 @@ import { AssetCardProps } from '../../AssetCardProps';
 import { SettingsContext } from '@/core/utils/settingsContext';
 import { useCallback, useContext, useState } from 'react';
 import { SendToPrinterBtn } from '@/printers/components/parts/sent-to-printer-btn/SendToPrinterBtn';
+import { SetAsMain } from '../../parts/set-as-main/SetAsMain';
 import { IconFile } from '@tabler/icons-react';
 
-export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDelete }: AssetCardProps) {
+export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
+
     const { local_backend } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
@@ -46,6 +48,7 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
                             downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.slice?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>

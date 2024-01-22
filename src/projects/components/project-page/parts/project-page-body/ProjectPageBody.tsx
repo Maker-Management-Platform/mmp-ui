@@ -128,7 +128,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                                 key={i}
                                 visible={true} />)}
 
-                        {assets?.filter(asset => typeFilter === 'all' || asset.asset_type === typeFilter).map(assetMap)}
+                        {assets?.filter(asset => (typeFilter === 'all' && !asset.generated) || asset.asset_type === typeFilter).map(assetMap)}
                     </Flex>
                     {selectedModels.length > 0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
                         models={selectedModels} />}
