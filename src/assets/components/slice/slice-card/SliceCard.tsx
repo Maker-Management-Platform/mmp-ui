@@ -6,8 +6,10 @@ import { SettingsContext } from '@/core/utils/settingsContext';
 import { useCallback, useContext, useState } from 'react';
 import { SendToPrinterBtn } from '@/printers/components/parts/sent-to-printer-btn/SendToPrinterBtn';
 import { SetAsMain } from '../../parts/set-as-main/SetAsMain';
+import { IconFile } from '@tabler/icons-react';
 
 export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
+
     const { local_backend } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
@@ -21,11 +23,12 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ minWidth: size, width: size, borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-
-                    <Image
-                        src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
-                        alt={asset.name}
-                    />
+                    {asset?.slice?.image_id === "" ? <IconFile /> :
+                        <Image
+                            src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
+                            alt={asset.name}
+                        />
+                    }
                 </AspectRatio>
             </Card.Section>
 
