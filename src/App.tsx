@@ -7,6 +7,7 @@ import useAxios from 'axios-hooks';
 import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.tsx';
 import { ScrollToTop } from './core/scroll-to-top/ScrollToTop.tsx';
 import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
+import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetprovider.tsx';
 
 function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -38,6 +39,7 @@ function App() {
                 </AppShell>}
                 <ScrollToTop />
                 <AxiosErrorHandler />
+                <PrinterWidgetProvider/>
             </DashboardProvider>
         </SettingsContext.Provider>
     )
