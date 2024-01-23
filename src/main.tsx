@@ -27,6 +27,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { routes as dashboardRoutes } from "./dashboard/routes.tsx";
 import { routes as projectRoutes } from "./projects/routes.tsx";
 import { routes as tempFilesRoutes } from "./tempfiles/routes.tsx";
 import { routes as printersRoutes } from "./printers/routes.tsx";
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <App />,
         children: [
+            {
+                path: "",
+                children: [...dashboardRoutes]
+            },
             {
                 path: "projects",
                 children: [...projectRoutes]

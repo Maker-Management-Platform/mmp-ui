@@ -14,6 +14,7 @@ import {
     IconMoon,
     IconBrandMantine
 } from '@tabler/icons-react';
+import { menuItems as dashboardMenuItems } from "@/dashboard/menu";
 import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
@@ -47,6 +48,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 }
 
 const menuItems = [
+    ...dashboardMenuItems,
     ...projectMenuItems,
     ...tempFileMenuItems,
     ...printersMenuItems
