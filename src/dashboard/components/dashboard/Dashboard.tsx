@@ -3,7 +3,7 @@ import "/node_modules/react-grid-layout/css/styles.css"
 import "/node_modules/react-resizable/css/styles.css"
 import { useContext } from "react";
 import { Widget, } from "./parts/widget/Widget";
-import { Box, Paper } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { dashboardContext } from "@/dashboard/provider/DashboardContext";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -37,7 +37,7 @@ export function Dashboard() {
             rowHeight={50}
 
         >
-            {widgets.map((widget) => <Box key={widget.id} shadow="xs" withBorder p={0}><Widget model={widget} edit={edit} /></Box>)}
+            {widgets.map((widget) => <Box key={widget.id}><Widget model={widget} edit={edit} /></Box>)}
         </ReactGridLayout>
 
     </>)
