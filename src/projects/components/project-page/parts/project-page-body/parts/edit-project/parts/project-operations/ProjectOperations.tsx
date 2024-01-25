@@ -6,13 +6,14 @@ import { IconHomeMove } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
 import { useContext, useState } from "react";
 import { DeleteBtn } from "./delete-btn/DeleteBtn";
+import { DiscoverBtn } from "./discover-btn/DiscoverBtn";
 
 type ProjectOperationsProps = {
     project: Project;
     onProjectChange: (p: Project) => void;
 }
 
-export function ProjectOprations({ project, onProjectChange }: ProjectOperationsProps) {
+export function ProjectOperations({ project, onProjectChange }: ProjectOperationsProps) {
     const { local_backend } = useContext(SettingsContext);
 
     const [path, setPath] = useState(project.path);
@@ -58,6 +59,7 @@ export function ProjectOprations({ project, onProjectChange }: ProjectOperations
             }
         />
         <Group mt='md' justify="flex-end">
+            <DiscoverBtn projectUuid={project.uuid} />
             <DeleteBtn projectUuid={project.uuid} />
         </Group>
 
