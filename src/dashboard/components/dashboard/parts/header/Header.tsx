@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Drawer, Group, Stack, UnstyledButton, Text, useMantineTheme, SimpleGrid } from "@mantine/core";
-import { IconLock, IconLockOpen, IconPlus } from "@tabler/icons-react";
+import { IconLock, IconLockOpen, IconPlus, IconSettings, IconSettingsOff } from "@tabler/icons-react";
 import { DashboardItem, Widget, WidgetType } from "@/dashboard/entities/WidgetType";
 import { useDisclosure } from "@mantine/hooks";
 import { dashboardContext } from "@/dashboard/provider/DashboardContext";
@@ -50,8 +50,8 @@ export function Header({ addItem, locked, toggleLock, edit, toggleEdit }: Header
                 {!locked && <IconLockOpen />}
             </ActionIcon>
             <ActionIcon onClick={toggleEdit} variant="transparent" >
-                {edit && <IconLock />}
-                {!edit && <IconLockOpen />}
+                {edit && <IconSettingsOff />}
+                {!edit && <IconSettings />}
             </ActionIcon>
             <ActionIcon onClick={open} variant="transparent" >
                 <IconPlus />
