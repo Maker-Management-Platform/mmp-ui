@@ -6,6 +6,7 @@ export interface Printer {
     status: string
     state: string
     version: string
+    apiKey?: string
 }
 
-export const printerTypes = new Map<string, any>([["klipper", { type: 'klipper', name: 'Klipper', logo: 'images/klipper-logo.png' }]])
+export const printerTypes = new Map<string, any>([["klipper", { type: 'klipper', name: 'Klipper', logo: 'images/klipper-logo.png' }], ["octoPrint", { type: 'octoPrint', name: 'op', logo: 'images/klipper-logo.png' }]])
