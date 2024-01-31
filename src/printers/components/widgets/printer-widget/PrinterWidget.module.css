@@ -5,10 +5,18 @@
     bottom: 0;
     left: 0;
     right: 0;
+    display: flex;
   }
   
   .section {
     border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  }
+
+  .pictureSection{
+    flex-grow: 1;
+    & img{
+      object-position: center;
+    }
   }
   
   .like {
@@ -21,4 +29,8 @@
     text-transform: uppercase;
     font-size: var(--mantine-font-size-xs);
     font-weight: 700;
+  }
+
+  .footer{
+    height: 40px;
   }
