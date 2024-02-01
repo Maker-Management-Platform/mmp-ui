@@ -8,6 +8,7 @@ import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.
 import { ScrollToTop } from './core/scroll-to-top/ScrollToTop.tsx';
 import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
 import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetprovider.tsx';
+import { EventSourceProvider } from 'react-sse-hooks';
 
 function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -16,31 +17,33 @@ function App() {
 
     return (
         <SettingsContext.Provider value={data}>
-            <DashboardProvider>
-                <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
-                {!loading && <AppShell
-                    withBorder={true}
-                    header={{ height: 60, collapsed: matches }}
-                    //footer={{height: 60}}
-                    navbar={{ width: 80, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-                    aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: true, mobile: true } }}
-                    padding="md"
-                >
-                    <AppShell.Header>
-                        <Group h="100%" px="md">
-                            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                        </Group>
-                    </AppShell.Header>
-                    <NavBar />
-                    <AppShell.Main>
-                        <Outlet />
-                    </AppShell.Main>
-                    <AppShell.Aside p="md">Aside</AppShell.Aside>
-                </AppShell>}
-                <ScrollToTop />
-                <AxiosErrorHandler />
-                <PrinterWidgetProvider/>
-            </DashboardProvider>
+            <EventSourceProvider>
+                <DashboardProvider>
+                    <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
+                    {!loading && <AppShell
+                        withBorder={true}
+                        header={{ height: 60, collapsed: matches }}
+                        //footer={{height: 60}}
+                        navbar={{ width: 80, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+                        aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: true, mobile: true } }}
+                        padding="md"
+                    >
+                        <AppShell.Header>
+                            <Group h="100%" px="md">
+                                <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                            </Group>
+                        </AppShell.Header>
+                        <NavBar />
+                        <AppShell.Main>
+                            <Outlet />
+                        </AppShell.Main>
+                        <AppShell.Aside p="md">Aside</AppShell.Aside>
+                    </AppShell>}
+                    <ScrollToTop />
+                    <AxiosErrorHandler />
+                    <PrinterWidgetProvider />
+                </DashboardProvider>
+            </EventSourceProvider>
         </SettingsContext.Provider>
     )
 }

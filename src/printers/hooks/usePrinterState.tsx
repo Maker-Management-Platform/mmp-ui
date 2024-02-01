@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/core/utils/settingsContext";
 
-const streamMap = new Map<string, EventSource>();
-
 export function usePrinterState(printerUUID: string) {
 
     const { local_backend } = useContext(SettingsContext);
@@ -11,9 +9,8 @@ export function usePrinterState(printerUUID: string) {
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        setLoading(true);
-        streamMap.get(printerUUID)
-        const source = new EventSource(`${local_backend}/printers/${printerUUID}/status`);
+        //setLoading(true);
+        /*const source = new EventSource(`${local_backend}/printers/${printerUUID}/status`);
 
 
         source.onmessage = (event) => {
@@ -42,7 +39,7 @@ export function usePrinterState(printerUUID: string) {
 
         return () => {
             source.close();
-        };
+        };*/
     }, [printerUUID]);
 
     return {
