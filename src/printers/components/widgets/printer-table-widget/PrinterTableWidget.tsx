@@ -1,6 +1,6 @@
 import { Widget } from "@/dashboard/entities/WidgetType";
 import { Card, Group, Text } from "@mantine/core";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/core/utils/settingsContext";
 import { Printer } from "@/printers/entities/Printer";
 import useAxios from "axios-hooks";
@@ -8,32 +8,41 @@ import { PrintProgressBar } from "../parts/print-progress-bar/PrintProgressBar";
 import Printer3dNozzleHeatOutlineIcon from "mdi-react/Printer3dNozzleHeatOutlineIcon";
 import { IconPercentage, IconSkateboarding } from "@tabler/icons-react";
 import RadiatorDisabledIcon from "mdi-react/RadiatorDisabledIcon";
-import { useEventSource, useEventSourceListener } from "react-sse-hooks";
+import { SSEContext } from "@/core/sse2/SSEContext";
+import { useId } from '@mantine/hooks';
 
 export function PrinterTableWidget(w: Widget) {
     const { local_backend } = useContext(SettingsContext);
+    const subscriberId = useId();
     const [{ data: printer, loading }] = useAxios<Printer>({ url: `${local_backend}/printers/${w.config.printer}` })
-    //const { state, loading: l, error } = usePrinterState(w.config.printer)
+    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
     const state = {}
     const [extruder, setExtruder] = useState<{ temperature: number, target?: number }>({ temperature: 0 });
-
-    const evSource = useEventSource({
-        source: `${local_backend}/printers/${w.config.printer}/status?qwe=1`,
-        options: {
-            // withCredentials: true,
-        },
-    });
-    useEventSourceListener<{ temperature: number, target?: number }>(
-        {
-            source: evSource,
-            startOnInit: true,
-            event: {
-                name: 'heater_bed',
-                listener: ({ data }) => setExtruder(data),
-            },
-        },
-        [evSource],
-    );
+    const [heaterBed, setHeaterBed] = useState<{ temperature: number, target?: number }>({ temperature: 0 });
+    useEffect(() => {
+        if (!connected) return;
+        console.log(w.config.printer)
+        setExtruder({ temperature: 0 });
+        setHeaterBed({ temperature: 0 });
+        const subscription = {
+            subscriberId,
+            provider: `printers/${w.config.printer}`,
+        }
+        subscribe({
+            ...subscription,
+            event: `${w.config.printer}.extruder`,
+            callback: setExtruder
+        })
+        /*const unSubBed = subscribe({
+            ...subscription,
+            event: `${w.config.printer}.heater_bed`,
+            callback: setHeaterBed
+        })*/
+        return () => {
+            unsubscribe(subscriberId)
+            //unSubBed()
+        }
+    }, [w.config.printer, connected])
 
     if (loading) return <>Loading...</>;
     return (
@@ -71,7 +80,7 @@ export function PrinterTableWidget(w: Widget) {
                 <Group justify="space-between">
                     <RadiatorDisabledIcon />
                     <Text fw={500}>Bed</Text>
-                    <Text fw={500}>{(state?.heater_bed?.temperature ?? 0).toFixed(1)}°C</Text>
+                    <Text fw={500}>{(heaterBed?.temperature ?? 0).toFixed(1)}°C</Text>
                 </Group>
             </Card.Section>
         </Card>

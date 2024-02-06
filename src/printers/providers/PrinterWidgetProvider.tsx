@@ -29,33 +29,6 @@ export function PrinterWidgetProvider() {
             configElement: <PrinterWidgetConfig {...{} as WidgetConfig} />,
             layout
         })
-        addWidgetType({
-            name: 'Printer 2',
-            type: 'printer2',
-            description: 'asd',
-            icon: <IconPrinter />,
-            element: <PrinterWidget {...{} as Widget} />,
-            configElement: <PrinterWidgetConfig {...{} as WidgetConfig} />,
-            layout
-        })
-        addWidgetType({
-            name: 'Printer 3',
-            type: 'printer',
-            description: 'asd',
-            icon: <IconPrinter />,
-            element: <PrinterWidget {...{} as Widget} />,
-            configElement: <PrinterWidgetConfig {...{} as WidgetConfig} />,
-            layout
-        })
-        addWidgetType({
-            name: 'Printer 4',
-            type: 'printer3',
-            description: 'asd',
-            icon: <IconPrinter />,
-            element: <PrinterWidget {...{} as Widget} />,
-            configElement: <PrinterWidgetConfig {...{} as WidgetConfig} />,
-            layout
-        })
     }, [])
 
 

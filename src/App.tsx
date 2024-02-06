@@ -7,8 +7,8 @@ import useAxios from 'axios-hooks';
 import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.tsx';
 import { ScrollToTop } from './core/scroll-to-top/ScrollToTop.tsx';
 import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
-import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetprovider.tsx';
-import { EventSourceProvider } from 'react-sse-hooks';
+import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetProvider.tsx';
+import { SSEProvider } from './core/sse2/SSEProvider.tsx';
 
 function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -17,9 +17,9 @@ function App() {
 
     return (
         <SettingsContext.Provider value={data}>
-            <EventSourceProvider>
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
+            {!loading && <SSEProvider>
                 <DashboardProvider>
-                    <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
                     {!loading && <AppShell
                         withBorder={true}
                         header={{ height: 60, collapsed: matches }}
@@ -43,7 +43,7 @@ function App() {
                     <AxiosErrorHandler />
                     <PrinterWidgetProvider />
                 </DashboardProvider>
-            </EventSourceProvider>
+            </SSEProvider>}
         </SettingsContext.Provider>
     )
 }

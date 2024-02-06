@@ -5,20 +5,16 @@ import { useContext } from "react";
 import { SettingsContext } from "@/core/utils/settingsContext";
 import { Printer } from "@/printers/entities/Printer";
 import useAxios from "axios-hooks";
-import { usePrinterState } from "@/printers/hooks/usePrinterState";
 import { ExtruderTemp } from "../parts/heater-temp/ExtruderTemp";
 import { BedTemp } from "../parts/bed-temp/BedTemp";
 import { PrintProgress } from "../parts/print-progress/PrintProgress";
 import { PrintProgressBar } from "../parts/print-progress-bar/PrintProgressBar";
-import { useEventSource } from "react-sse-hooks";
 
 export function PrinterWidget(w: Widget) {
     const { local_backend } = useContext(SettingsContext);
     const [{ data: printer, loading }] = useAxios<Printer>({ url: `${local_backend}/printers/${w.config.printer}` })
-    const { state, loading: l, error } = usePrinterState(w.config.printer)
-    const evSource = useEventSource({ source: `${local_backend}/printers/${w.config.printer}/status?qwe=1` });
-
-    if (loading || l) return <>Loading...</>;
+    const state = {};
+    if (loading) return <>Loading...</>;
     return (
         <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section className={classes.pictureSection}>
@@ -34,7 +30,7 @@ export function PrinterWidget(w: Widget) {
             </Card.Section>
 
             <Card.Section className={classes.section}>
-                <PrintProgressBar state={state} evSource={evSource} />
+                <PrintProgressBar state={state} />
             </Card.Section>
             <Card.Section className={classes.section} p="xs">
                 <Group justify="apart">

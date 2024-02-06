@@ -20,6 +20,7 @@ import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
+import { StatusIcon } from '../sse2/components/status-icon/StatusIcon';
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;
@@ -78,6 +79,7 @@ export function NavBar() {
             </div>
 
             <Stack justify="center" gap={0}>
+                <StatusIcon className={classes.link} />
                 <Tooltip label={'Toggle color scheme'} position="right" transitionProps={{ duration: 0 }}>
                     <UnstyledButton className={classes.link} onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}>
                         {computedColorScheme == 'dark' && <IconSun stroke={1.5} />}
