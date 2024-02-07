@@ -1,12 +1,35 @@
+import SSEContext from "@/core/sse/SSEContext";
+import { Job } from "@/printers/entities/Printer";
 import { Progress } from "@mantine/core";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useId } from '@mantine/hooks';
 
 interface PrintProgressBarProps {
-    state: any;
+    printerUuid: string;
 }
-export function PrintProgressBar({ state }: PrintProgressBarProps) {
-    const [displayStatus, setDisplayStatus] = useState<{ progress: number }>({ progress: 0 });
+export function PrintProgressBar({ printerUuid }: PrintProgressBarProps) {
+    const subscriberId = useId();
+    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
+    const [error, setError] = useState<Error | null>(null);
+    const [job, setJob] = useState<Job>({ progress: 0 });
+
+    useEffect(() => {
+        if (!connected) return;
+        setJob({ progress: 0 });
+        const subscription = {
+            subscriberId,
+            provider: `printers/${printerUuid}`,
+        }
+        subscribe({
+            ...subscription,
+            event: `${printerUuid}.extruder`,
+            callback: setJob
+        }).catch(setError);
+        return () => {
+            unsubscribe(subscriberId)
+        }
+    }, [printerUuid, connected])
     return (
-        <Progress value={displayStatus.progress * 100} radius={0} size="xs" />
+        <Progress value={job.progress * 100} radius={0} size="xs" />
     )
 }
