@@ -38,6 +38,7 @@
     "react-grid-layout": "^1.4.4",
     "react-modal-image": "^2.6.0",
     "react-router-dom": "^6.18.0",
+    "reconnecting-eventsource": "^1.6.2",
     "three": "^0.158.0"
   },
   "devDependencies": {

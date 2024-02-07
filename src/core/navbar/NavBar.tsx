@@ -20,7 +20,7 @@ import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
-import { StatusIcon } from '../sse2/components/status-icon/StatusIcon';
+import { StatusIcon } from '../sse/components/status-icon/StatusIcon';
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;

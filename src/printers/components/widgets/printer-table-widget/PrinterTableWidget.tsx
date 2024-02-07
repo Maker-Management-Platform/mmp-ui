@@ -8,7 +8,7 @@ import { PrintProgressBar } from "../parts/print-progress-bar/PrintProgressBar";
 import Printer3dNozzleHeatOutlineIcon from "mdi-react/Printer3dNozzleHeatOutlineIcon";
 import { IconPercentage, IconSkateboarding } from "@tabler/icons-react";
 import RadiatorDisabledIcon from "mdi-react/RadiatorDisabledIcon";
-import { SSEContext } from "@/core/sse2/SSEContext";
+import { SSEContext } from "@/core/sse/SSEContext";
 import { useId } from '@mantine/hooks';
 
 export function PrinterTableWidget(w: Widget) {
@@ -16,6 +16,7 @@ export function PrinterTableWidget(w: Widget) {
     const subscriberId = useId();
     const [{ data: printer, loading }] = useAxios<Printer>({ url: `${local_backend}/printers/${w.config.printer}` })
     const { connected, subscribe, unsubscribe } = useContext(SSEContext)
+    const [error, setError] = useState<Error | null>(null);
     const state = {}
     const [extruder, setExtruder] = useState<{ temperature: number, target?: number }>({ temperature: 0 });
     const [heaterBed, setHeaterBed] = useState<{ temperature: number, target?: number }>({ temperature: 0 });
@@ -32,15 +33,14 @@ export function PrinterTableWidget(w: Widget) {
             ...subscription,
             event: `${w.config.printer}.extruder`,
             callback: setExtruder
-        })
-        /*const unSubBed = subscribe({
+        }).catch(setError);
+        subscribe({
             ...subscription,
             event: `${w.config.printer}.heater_bed`,
             callback: setHeaterBed
-        })*/
+        })
         return () => {
             unsubscribe(subscriberId)
-            //unSubBed()
         }
     }, [w.config.printer, connected])
 
@@ -59,7 +59,7 @@ export function PrinterTableWidget(w: Widget) {
                 <Group justify="space-between">
                     <IconSkateboarding />
                     <Text fw={500}>State</Text>
-                    <Text fw={500}>{state?.display_status?.message}</Text>
+                    <Text fw={500}>{state?.display_status?.message}{error?.message}</Text>
                 </Group>
             </Card.Section>
             <Card.Section withBorder inheritPadding py="xs">

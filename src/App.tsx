@@ -8,7 +8,7 @@ import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.
 import { ScrollToTop } from './core/scroll-to-top/ScrollToTop.tsx';
 import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
 import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetProvider.tsx';
-import { SSEProvider } from './core/sse2/SSEProvider.tsx';
+import { SSEProvider } from './core/sse/SSEProvider.tsx';
 
 function App() {
     const [opened, { toggle }] = useDisclosure();
