@@ -7,8 +7,8 @@ import { Box } from "@mantine/core";
 import { dashboardContext } from "@/dashboard/provider/DashboardContext";
 import { useDisclosure } from "@mantine/hooks";
 
-import RGL, { WidthProvider } from "react-grid-layout";
-const ReactGridLayout = WidthProvider(RGL);
+import { Responsive, WidthProvider } from "react-grid-layout";
+const ReactGridLayout = WidthProvider(Responsive);
 export function Dashboard() {
     const { widgets, setWidgets, layout, setLayout } = useContext(dashboardContext)
     const [locked, { toggle: toggleLocked }] = useDisclosure(true);
@@ -22,23 +22,36 @@ export function Dashboard() {
             toggleEdit={toggleEdit}
             addItem={(item) => {
                 console.log(item);
+                const l = { ...layout }
+                if (!l.lg) l.lg = []
+                l.lg.push(item.layout)
+                setLayout(l)
                 setWidgets([...widgets, item.widget])
-                setLayout([...layout, item.layout])
             }} />
         <ReactGridLayout
             className="layout"
             isDraggable={!locked}
-            onLayoutChange={(l) => {
-                setLayout(l)
-                console.log(l);
+            isResizable={!locked}
+            onLayoutChange={(l, ls) => {
+                console.log(l, ls['lg'] ? ls['lg'][0] : ls['lg']);
+                setLayout(prev => {
+                    const newLayout = { ...prev }
+                    for (const k of Object.keys(ls)) {
+                        if (ls[k] && ls[k].length > 0) {
+                            newLayout[k] = ls[k]
+                        }
+                    }
+                    console.log(ls, newLayout);
+                    return newLayout
+                })
             }}
-            layout={layout}
-            cols={24}
+            //layouts={layout}
+            cols={{ lg: 24, md: 6, sm: 4, xs: 2, xxs: 1 }}
             rowHeight={50}
 
         >
-            {widgets.map((widget) => <Box key={widget.id}><Widget model={widget} edit={edit} /></Box>)}
-        </ReactGridLayout>
+            {widgets.map((widget) => <Box key={widget.id} data-grid={widget.layout}><Widget model={widget} edit={edit} /></Box>)}
+        </ReactGridLayout >
 
     </>)
 }

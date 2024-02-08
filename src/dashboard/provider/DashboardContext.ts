@@ -7,8 +7,8 @@ interface DashboardContextType {
     addWidgetType: (widgetTypes: WidgetType) => void;
     widgets: Widget[];
     setWidgets: (widgets: Widget[]) => void;
-    layout: Layout[]
-    setLayout: (layout: Layout[]) => void;
+    layout: any
+    setLayout: (layout: any) => void;
 }
 
 export const dashboardContext = createContext<DashboardContextType>({} as DashboardContextType)

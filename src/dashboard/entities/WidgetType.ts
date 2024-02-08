@@ -26,7 +26,8 @@ export interface WidgetType {
 export interface Widget {
   id: string,
   type: string,
-  config: any
+  config: any,
+  layout: Layout
 }
 
 export interface WidgetConfig {

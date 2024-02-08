@@ -10,9 +10,9 @@ export function DashboardProvider({ children }: any) {
         key: 'dashboard-widgets',
         defaultValue: []
     })
-    const [layout, setLayout] = useLocalStorage<Layout[]>({
+    const [layout, setLayout] = useLocalStorage<any>({
         key: 'dashboard-layout',
-        defaultValue: []
+        defaultValue: {}
     })
     const [widgetTypes, actions] = useMap<string, WidgetType>([])
 

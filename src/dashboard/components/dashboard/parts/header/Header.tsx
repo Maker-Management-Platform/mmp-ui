@@ -1,7 +1,7 @@
 import { ActionIcon, Button, Drawer, Group, Stack, UnstyledButton, Text, useMantineTheme, SimpleGrid } from "@mantine/core";
 import { IconLock, IconLockOpen, IconPlus, IconSettings, IconSettingsOff } from "@tabler/icons-react";
 import { DashboardItem, Widget, WidgetType } from "@/dashboard/entities/WidgetType";
-import { useDisclosure } from "@mantine/hooks";
+import { randomId, useDisclosure } from "@mantine/hooks";
 import { dashboardContext } from "@/dashboard/provider/DashboardContext";
 import React, { useCallback, useContext, useState } from "react";
 import classes from './Header.module.css';
@@ -23,13 +23,14 @@ export function Header({ addItem, locked, toggleLock, edit, toggleEdit }: Header
 
     const addWidget = useCallback(() => {
         if (!selectedType) return;
-        const id = `${selectedType.type}-${(new Date()).getTime()}`
+        const id = `${selectedType.type}-${randomId()}`
         addItem(
             {
                 widget: {
                     id,
                     type: selectedType.type,
                     config,
+                    layout: { i: id, x: 0, y: 0, ...selectedType.layout }
                 },
                 layout: { i: id, x: 0, y: 0, ...selectedType.layout }
             })
