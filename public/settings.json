@@ -1,1 +1,1 @@
-{"local_backend":"/api"}
+{"local_backend":"http://localhost:8000/api"}

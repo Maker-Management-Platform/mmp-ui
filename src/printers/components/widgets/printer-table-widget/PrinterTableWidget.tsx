@@ -50,7 +50,7 @@ export function PrinterTableWidget(w: Widget) {
 
     if (loading) return <>Loading...</>;
     return (
-        <Card withBorder radius="md" p="md">
+        <Card withBorder radius="md" p="md" style={{width:'100%'}}>
             <Card.Section withBorder inheritPadding py="xs">
                 <Group justify="space-between">
                     <Text fw={500} component="a" href={printer?.address} target="_blank">{printer?.name}</Text>
