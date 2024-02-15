@@ -17,6 +17,7 @@ import {
 import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
+import { menuItems as settingsMenuItems } from "@/settings/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
 
@@ -49,14 +50,25 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 const menuItems = [
     ...projectMenuItems,
     ...tempFileMenuItems,
-    ...printersMenuItems
+    ...printersMenuItems,
 ];
+
+const operationalItems = [
+    ...settingsMenuItems
+]
 
 export function NavBar() {
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
-    const links = menuItems.map((link, index) => (
+    const featureLinks = menuItems.map((link, index) => (
+        <NavbarLink
+            {...link}
+            key={link.label}
+        />
+    ));
+
+    const opsLinks = operationalItems.map((link, index) => (
         <NavbarLink
             {...link}
             key={link.label}
@@ -71,11 +83,12 @@ export function NavBar() {
 
             <div className={classes.navbarMain}>
                 <Stack justify="center" gap={0}>
-                    {links}
+                    {featureLinks}
                 </Stack>
             </div>
 
             <Stack justify="center" gap={0}>
+                {opsLinks}
                 <Tooltip label={'Toggle color scheme'} position="right" transitionProps={{ duration: 0 }}>
                     <UnstyledButton className={classes.link} onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}>
                         {computedColorScheme == 'dark' && <IconSun stroke={1.5} />}
