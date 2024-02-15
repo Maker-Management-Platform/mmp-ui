@@ -4,7 +4,7 @@ import { ServerOperations } from "./parts/server-operations/ServerOperations";
 
 export function SettingsPage() {
     return (
-        <Tabs defaultValue="edit" orientation="vertical" placement="right">
+        <Tabs defaultValue="settings" orientation="vertical" placement="right">
             <Tabs.List>
                 <Tabs.Tab value="settings">Settings</Tabs.Tab>
                 <Tabs.Tab value="operations">Operations</Tabs.Tab>

@@ -6,8 +6,9 @@ import { Settings, SettingsContext } from './core/utils/settingsContext.ts';
 import useAxios from 'axios-hooks';
 import { AxiosErrorHandler } from './core/axios-error-handler/AxiosErrorHandler.tsx';
 import { useEffect, useState } from 'react';
+import { ScrollToTop } from './core/scroll-to-top/ScrollToTop.tsx';
 
-function App() {
+export default function App() {
     const [opened, { toggle }] = useDisclosure();
     const matches = useMediaQuery('(min-width: 900px)');
     const [ready, setReady] = useState(false);
@@ -50,11 +51,9 @@ function App() {
                         <Outlet />
                     </AppShell.Main>
                     <AppShell.Aside p="md">Aside</AppShell.Aside>
-                </AppShell>
-            }
+                </AppShell>}
+            <ScrollToTop />
             <AxiosErrorHandler />
         </SettingsContext.Provider>
     )
 }
-
-export default App
