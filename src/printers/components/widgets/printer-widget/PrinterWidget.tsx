@@ -30,7 +30,7 @@ export function PrinterWidget(w: Widget) {
             </Card.Section>
 
             <Card.Section className={classes.section}>
-                <PrintProgressBar state={state} />
+                <PrintProgressBar printerUuid={w.config.printer} />
             </Card.Section>
             <Card.Section className={classes.section} p="xs">
                 <Group justify="apart">
@@ -43,8 +43,8 @@ export function PrinterWidget(w: Widget) {
                 </Group>
             </Card.Section>
             <Group justify="center" className={classes.footer}>
-                <ExtruderTemp state={state} />
-                <BedTemp state={state} />
+                <ExtruderTemp printerUuid={w.config.printer} />
+                <BedTemp printerUuid={w.config.printer} />
                 <PrintProgress state={state} />
             </Group>
         </Card>

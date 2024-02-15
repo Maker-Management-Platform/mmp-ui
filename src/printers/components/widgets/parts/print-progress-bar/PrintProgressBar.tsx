@@ -3,6 +3,7 @@ import { Job } from "@/printers/entities/Printer";
 import { Progress } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { useId } from '@mantine/hooks';
+import { useCumulativeEvent } from "@/core/sse/useCumulativeEvent";
 
 interface PrintProgressBarProps {
     printerUuid: string;
@@ -11,7 +12,7 @@ export function PrintProgressBar({ printerUuid }: PrintProgressBarProps) {
     const subscriberId = useId();
     const { connected, subscribe, unsubscribe } = useContext(SSEContext)
     const [error, setError] = useState<Error | null>(null);
-    const [job, setJob] = useState<Job>({ progress: 0 });
+    const [job, setJob] = useCumulativeEvent<Job>({ progress: 0 });
 
     useEffect(() => {
         if (!connected) return;
@@ -22,7 +23,7 @@ export function PrintProgressBar({ printerUuid }: PrintProgressBarProps) {
         }
         subscribe({
             ...subscription,
-            event: `${printerUuid}.extruder`,
+            event: `printer.update.${printerUuid}.job_status`,
             callback: setJob
         }).catch(setError);
         return () => {

@@ -14,6 +14,10 @@ export function Dashboard() {
     const [locked, { toggle: toggleLocked }] = useDisclosure(true);
     const [edit, { toggle: toggleEdit }] = useDisclosure(false);
 
+    const deleteWidget = (index: number) => {
+        setWidgets(widgets.filter((_, i) => i !== index))
+    }
+
     return (<>
         <Header
             locked={locked}
@@ -22,10 +26,6 @@ export function Dashboard() {
             toggleEdit={toggleEdit}
             addItem={(item) => {
                 console.log(item);
-                const l = { ...layout }
-                if (!l.lg) l.lg = []
-                l.lg.push(item.layout)
-                setLayout(l)
                 setWidgets([...widgets, item.widget])
             }} />
         <ReactGridLayout
@@ -34,23 +34,15 @@ export function Dashboard() {
             isResizable={!locked}
             onLayoutChange={(l, ls) => {
                 console.log(l, ls['lg'] ? ls['lg'][0] : ls['lg']);
-                setLayout(prev => {
-                    const newLayout = { ...prev }
-                    for (const k of Object.keys(ls)) {
-                        if (ls[k] && ls[k].length > 0) {
-                            newLayout[k] = ls[k]
-                        }
-                    }
-                    console.log(ls, newLayout);
-                    return newLayout
-                })
+                setLayout(ls)
             }}
-            //layouts={layout}
-            cols={{ lg: 24, md: 6, sm: 4, xs: 2, xxs: 1 }}
+            layouts={layout}
+            breakpoints={{ xlg: 1900, lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+            cols={{ xlg: 16, lg: 12, md: 6, sm: 4, xs: 2, xxs: 1 }}
             rowHeight={50}
 
         >
-            {widgets.map((widget) => <Box key={widget.id} data-grid={widget.layout}><Widget model={widget} edit={edit} /></Box>)}
+            {widgets.map((widget, i) => <Box key={widget.id} data-grid={widget.layout}><Widget model={widget} edit={edit} onDelete={() => { deleteWidget(i) }} /></Box>)}
         </ReactGridLayout >
 
     </>)
