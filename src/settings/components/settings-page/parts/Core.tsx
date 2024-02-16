@@ -6,7 +6,7 @@ export function Core() {
     return (
         <Fieldset legend="Core">
             <TextInput label="Log Path" {...form.getInputProps(`core.log.path`)} />
-            <Switch mt={'sm'} {...form.getInputProps(`core.log.enable_file`)} label="Log Enable File" />
+            <Switch mt={'sm'} {...form.getInputProps(`core.log.enable_file`, { type: 'checkbox' })} label="Log Enable File" />
         </Fieldset>
     )
 }

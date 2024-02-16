@@ -12,7 +12,7 @@ export function Library() {
                 {...form.getInputProps(`library.blacklist`)}
                 splitChars={[' ', '|']}
             />
-            <Switch mt={'sm'} {...form.getInputProps(`library.ignore_dot_files`)} label="Ignore dot Files" />
+            <Switch mt={'sm'} {...form.getInputProps(`library.ignore_dot_files`, { type: 'checkbox' })} label="Ignore dot Files" />
         </Fieldset>
     )
 }
