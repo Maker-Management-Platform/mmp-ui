@@ -14,12 +14,14 @@ import {
     IconMoon,
     IconBrandMantine
 } from '@tabler/icons-react';
+import { menuItems as dashboardMenuItems } from "@/dashboard/menu";
 import { menuItems as projectMenuItems } from "@/projects/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
 import { menuItems as settingsMenuItems } from "@/settings/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
+import { StatusIcon } from '../sse/components/status-icon/StatusIcon';
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;
@@ -48,6 +50,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 }
 
 const menuItems = [
+    ...dashboardMenuItems,
     ...projectMenuItems,
     ...tempFileMenuItems,
     ...printersMenuItems,
@@ -95,6 +98,7 @@ export function NavBar() {
                         {computedColorScheme == 'light' && <IconMoon stroke={1.5} />}
                     </UnstyledButton>
                 </Tooltip>
+                <StatusIcon className={classes.link} />
                 {/*<NavbarLink icon={IconSwitchHorizontal} href={'change'} label="Change account" />*/}
                 {/*<NavbarLink icon={IconLogout} href={'logout'} label="Logout" />*/}
             </Stack>
