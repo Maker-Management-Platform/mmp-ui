@@ -4,11 +4,11 @@ import classes from './FileCard.module.css';
 import { DropDownMenu } from '../parts/drop-down-menu/DropDownMenu.tsx';
 import { AssetCardProps } from '../AssetCardProps.ts';
 import { useCallback, useContext, useState } from 'react';
-import { SettingsContext } from '@/core/utils/settingsContext.ts';
+import { SettingsContext } from '@/core/settings/settingsContext.ts';
 
 
 export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelete }: AssetCardProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
         setLoading((l) => {
@@ -41,7 +41,7 @@ export function FileCard({ asset, projectUuid, selected, onSelectChange, onDelet
                             projectUuid={projectUuid}
                             id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                         </DropDownMenu>

@@ -22,6 +22,8 @@ import { menuItems as settingsMenuItems } from "@/settings/menu";
 import classes from './NavBar.module.css';
 import { NavLink } from "react-router-dom";
 import { StatusIcon } from '../sse/components/status-icon/StatusIcon';
+import { useContext, useEffect, useState } from 'react';
+import { SettingsContext } from '../settings/settingsContext';
 
 interface NavbarLinkProps {
     icon: typeof IconHome2;
@@ -49,8 +51,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
     );
 }
 
-const menuItems = [
-    ...dashboardMenuItems,
+const stdMenuItems = [
     ...projectMenuItems,
     ...tempFileMenuItems,
     ...printersMenuItems,
@@ -62,7 +63,17 @@ const operationalItems = [
 
 export function NavBar() {
     const { setColorScheme } = useMantineColorScheme();
+    const { settings } = useContext(SettingsContext);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+    const [menuItems, setMenuItems] = useState(stdMenuItems)
+
+    useEffect(() => {
+        if (settings.experimental.dashboard) {
+            setMenuItems([...dashboardMenuItems, ...stdMenuItems])
+        } else {
+            setMenuItems(stdMenuItems)
+        }
+    }, [settings.experimental])
 
     const featureLinks = menuItems.map((link, index) => (
         <NavbarLink
@@ -98,7 +109,7 @@ export function NavBar() {
                         {computedColorScheme == 'light' && <IconMoon stroke={1.5} />}
                     </UnstyledButton>
                 </Tooltip>
-                <StatusIcon className={classes.link} />
+                {settings.experimental.dashboard && <StatusIcon className={classes.link} />}
                 {/*<NavbarLink icon={IconSwitchHorizontal} href={'change'} label="Change account" />*/}
                 {/*<NavbarLink icon={IconLogout} href={'logout'} label="Logout" />*/}
             </Stack>

@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Tag } from "@/projects/entities/Project";
 import { ActionIcon, Group, TagsInput, TextInput, Transition, rem } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -17,11 +17,11 @@ type ProjectFilterProps = {
 };
 
 export function ProjectFilter({ onChange }: ProjectFilterProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const [tags, setTags] = useState<string[]>([]);
     const [{ data, loading, error }] = useAxios<Tag[]>(
-        `${local_backend}/tags`
+        `${settings.localBackend}/tags`
     );
 
     useEffect(() => {

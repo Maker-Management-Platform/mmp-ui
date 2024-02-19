@@ -10,7 +10,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { AddAsset } from "./parts/add-asset/AddAsset.tsx";
 import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
-import { SettingsContext } from "@/core/utils/settingsContext.ts";
+import { SettingsContext } from "@/core/settings/settingsContext.ts";
 import { assetTypeMap, supportedAssetTypes } from "@/assets/utils/assetMapping.tsx";
 import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
 
@@ -23,14 +23,14 @@ type ProjectAssetsListProps = {
 }
 
 export function ProjectPageBody({ projectUuid, project, onProjectChange }: ProjectAssetsListProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
     const [{ data: assets, loading, error }, refetch] = useAxios<Asset[]>(
-        `${local_backend}/projects/${projectUuid}/assets`
+        `${settings.localBackend}/projects/${projectUuid}/assets`
     );
 
     useEffect(() => {

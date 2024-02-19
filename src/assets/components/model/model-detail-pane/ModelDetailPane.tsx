@@ -6,7 +6,7 @@ import { Asset } from "../../../entities/Assets.ts";
 import { Center, GizmoHelper, GizmoViewport, Grid, Html, OrbitControls, useProgress } from '@react-three/drei'
 import { useElementSize } from "@mantine/hooks";
 import { Alert, lighten } from "@mantine/core";
-import { SettingsContext } from '@/core/utils/settingsContext.ts';
+import { SettingsContext } from '@/core/settings/settingsContext.ts';
 
 
 type ModelProps = {
@@ -16,8 +16,8 @@ type ModelProps = {
 }
 
 function Model({ color, model, projectUuid }: ModelProps) {
-    const { local_backend } = useContext(SettingsContext);
-    const geom = useLoader(STLLoader, `${local_backend}/projects/${projectUuid}/assets/${model.id}`);
+    const { settings } = useContext(SettingsContext);
+    const geom = useLoader(STLLoader, `${settings.localBackend}/projects/${projectUuid}/assets/${model.id}`);
     const meshRef = useRef<THREE.Mesh>(null!)
 
     const [active, setActive] = useState(false)

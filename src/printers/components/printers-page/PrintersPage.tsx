@@ -1,7 +1,7 @@
 import useAxios from "axios-hooks";
 import { AddPrinter } from "./parts/add-printer/AddPrinter";
 import { useContext, useEffect, useRef, useState } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Anchor, Avatar, Badge, Group, Table, Text, ActionIcon, rem, Menu, Tabs } from "@mantine/core";
 import { Printer, printerTypes } from "@/printers/entities/Printer";
 import { IconDots, IconPhoto, IconReportAnalytics, IconSettings, IconTrash } from "@tabler/icons-react";
@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 export function PrintersPage() {
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
     const iconStyle = { width: rem(12), height: rem(12) };
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [printers, setPrinters] = useState<Printer[]>([])
-    const [{ data, loading: cLoading, error }] = useAxios({ url: `${local_backend}/printers?_=${reload.current}` })
+    const [{ data, loading: cLoading, error }] = useAxios({ url: `${settings.localBackend}/printers?_=${reload.current}` })
     const [{ loading: dLoading }, executeDelete] = useAxios({ method: 'POST' }, { manual: true })
     useEffect(() => {
         setPrinters(data)
@@ -22,7 +22,7 @@ export function PrintersPage() {
     function deletePrinter(i: number): void {
         const printer = printers[i];
         executeDelete({
-            url: `${local_backend}/printers/${printer.uuid}/delete`
+            url: `${settings.localBackend}/printers/${printer.uuid}/delete`
         })
             .then(() => {
                 notifications.show({

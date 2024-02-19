@@ -4,19 +4,19 @@ import { ProjectCard } from "./parts/project-card/ProjectCard.tsx";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Project } from "@/projects/entities/Project.ts";
-import { SettingsContext } from "@/core/utils/settingsContext.ts";
+import { SettingsContext } from "@/core/settings/settingsContext.ts";
 import { ProjectFilter } from "./parts/project-filter/ProjectFilter.tsx";
 
 export function ProjectsList() {
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState('20')
     const [projects, setProjects] = useState<Project[]>([])
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const size = rem('280px');
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}&_=${reload.current}`
+        `${settings.localBackend}/projects?page=${page - 1}&size=${perPage}${filter.name ? '&name=' + filter.name : ''}${filter.tags.length > 0 ? '&tags=' + filter.tags?.join(",") : ''}&_=${reload.current}`
     );
     useEffect(() => {
         if (!data?.items) return;

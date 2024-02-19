@@ -1,6 +1,6 @@
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useRef } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Button, Container, Fieldset, Group } from "@mantine/core";
 import { FormProvider, useForm } from "./context";
 import { Core } from "./parts/Core";
@@ -14,11 +14,11 @@ import { notifications } from "@mantine/notifications";
 
 export function SettingsForm() {
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
-    const { local_backend } = useContext(SettingsContext);
-    const [{ data, loading: cLoading, error }] = useAxios({ url: `${local_backend}/system/settings?_=${reload.current}` })
+    const { settings } = useContext(SettingsContext);
+    const [{ data, loading: cLoading, error }] = useAxios({ url: `${settings.localBackend}/system/settings?_=${reload.current}` })
 
     const [{ loading: sLoading }, executeSave] = useAxios({
-        url: `${local_backend}/system/settings`,
+        url: `${settings.localBackend}/system/settings`,
         method: 'POST'
     }, { manual: true })
 

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { SettingsContext } from "../utils/settingsContext";
+import { SettingsContext } from "../settings/settingsContext";
 import { SSEContext } from "./SSEContext";
 import { SubscriptionManager, createSubsManager } from "./SubscriptionManager";
 
 export function SSEProvider({ children }) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
 
     const [subManager, setSubManager] = useState<SubscriptionManager>()
 
@@ -15,11 +15,11 @@ export function SSEProvider({ children }) {
 
 
     useEffect(() => {
-        if (local_backend) {
+        if (settings.localBackend) {
             setLoading(true);
             setConnected(false);
             setError(null);
-            const subManager = createSubsManager(local_backend)
+            const subManager = createSubsManager(settings.localBackend)
             setSubManager(subManager);
             subManager.onConnect(() => {
                 setLoading(false);
@@ -28,7 +28,7 @@ export function SSEProvider({ children }) {
             subManager.onError((error) => {
                 setLoading(false);
                 setConnected(false);
-            
+
                 setError(error);
             })
             subManager.connect()
@@ -37,7 +37,7 @@ export function SSEProvider({ children }) {
             console.log('qweqew')
             subManager?.close();
         }
-    }, [local_backend])
+    }, [settings.localBackend])
 
 
 

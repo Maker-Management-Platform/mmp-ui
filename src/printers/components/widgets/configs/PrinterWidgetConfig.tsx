@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { WidgetConfig } from "@/dashboard/entities/WidgetType";
 import { Printer } from "@/printers/entities/Printer";
 import { Select } from "@mantine/core";
@@ -8,8 +8,8 @@ import { useContext, useRef, useState } from "react";
 export function PrinterWidgetConfig({ config, onChange }: WidgetConfig) {
     const [cfg, setCfg] = useState(config)
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
-    const { local_backend } = useContext(SettingsContext);
-    const [{ data, loading, error }] = useAxios<Printer[]>({ url: `${local_backend}/printers?_=${reload.current}` })
+    const { settings } = useContext(SettingsContext);
+    const [{ data, loading, error }] = useAxios<Printer[]>({ url: `${settings.localBackend}/printers?_=${reload.current}` })
 
     const proxyOnChange = (v: string | null) => {
         const c = { ...cfg, printer: v }

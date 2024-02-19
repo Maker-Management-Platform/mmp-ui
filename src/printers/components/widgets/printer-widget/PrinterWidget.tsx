@@ -2,7 +2,7 @@ import { Widget } from "@/dashboard/entities/WidgetType";
 import { Card, Image, Group, Badge, Anchor, Center } from "@mantine/core";
 import classes from './PrinterWidget.module.css';
 import { useContext } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Printer } from "@/printers/entities/Printer";
 import useAxios from "axios-hooks";
 import { ExtruderTemp } from "../parts/heater-temp/ExtruderTemp";
@@ -11,8 +11,8 @@ import { PrintProgress } from "../parts/print-progress/PrintProgress";
 import { PrintProgressBar } from "../parts/print-progress-bar/PrintProgressBar";
 
 export function PrinterWidget(w: Widget) {
-    const { local_backend } = useContext(SettingsContext);
-    const [{ data: printer, loading }] = useAxios<Printer>({ url: `${local_backend}/printers/${w.config.printer}` })
+    const { settings } = useContext(SettingsContext);
+    const [{ data: printer, loading }] = useAxios<Printer>({ url: `${settings.localBackend}/printers/${w.config.printer}` })
     const state = {};
     if (loading) return <>Loading...</>;
     return (
@@ -23,7 +23,7 @@ export function PrinterWidget(w: Widget) {
                         h={300}
                         w="auto"
                         fit="cover"
-                        src={`${local_backend}/printers/${w.config.printer}/stream`} /> :
+                        src={`${settings.localBackend}/printers/${w.config.printer}/stream`} /> :
                         <Image src={'https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80'} />}
 
                 </Center>

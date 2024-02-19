@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { Project } from "../../../entities/Project.ts";
 import useAxios from "axios-hooks";
 import { useContext, useState } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext.ts";
+import { SettingsContext } from "@/core/settings/settingsContext.ts";
 import { notifications } from '@mantine/notifications';
 import { Dropzone } from "@mantine/dropzone";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
@@ -15,7 +15,7 @@ type ProjectFormProps = {
 };
 
 export function ProjectForm({ project, onProjectChange, withUpload }: ProjectFormProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [files, setFiles] = useState<File[]>([]);
     const [{ data, loading, error }, executeSave] = useAxios(
         {
@@ -43,7 +43,7 @@ export function ProjectForm({ project, onProjectChange, withUpload }: ProjectFor
             files.forEach((file) => formData.append("files", file));
         }
         executeSave({
-            url: `${local_backend}/projects${project.uuid ? "/" + project.uuid : ''}`,
+            url: `${settings.localBackend}/projects${project.uuid ? "/" + project.uuid : ''}`,
             data: formData
         })
             .then(({ data }) => {

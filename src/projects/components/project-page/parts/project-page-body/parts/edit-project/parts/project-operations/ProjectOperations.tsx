@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Project } from "@/projects/entities/Project";
 import { ActionIcon, Autocomplete, Group, rem } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -14,7 +14,7 @@ type ProjectOperationsProps = {
 }
 
 export function ProjectOperations({ project, onProjectChange }: ProjectOperationsProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
 
     const [path, setPath] = useState(project.path);
     const [{ loading }, moveProject] = useAxios({
@@ -22,12 +22,12 @@ export function ProjectOperations({ project, onProjectChange }: ProjectOperation
     }, { manual: true })
     const [{ data: paths, loading: lPaths, error: ePaths }] = useAxios(
         {
-            url: `${local_backend}/system/paths`
+            url: `${settings.localBackend}/system/paths`
         }
     )
     const onMoveHandler = () => {
         moveProject({
-            url: `${local_backend}/projects/${project.uuid}/move`,
+            url: `${settings.localBackend}/projects/${project.uuid}/move`,
             data: {
                 uuid: project.uuid,
                 path: path
