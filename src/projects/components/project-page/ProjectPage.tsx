@@ -21,6 +21,7 @@ export function ProjectPage() {
                 title={project?.name}
                 description={project?.description}
                 tags={project?.tags}
+                link={project?.external_link}
                 imagePath={`${local_backend}/projects/${project?.uuid}/assets/${project?.default_image_id}`}
             />
             {error && <p>Error!</p>}
