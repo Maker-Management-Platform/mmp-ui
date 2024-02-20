@@ -1,7 +1,7 @@
 import { Widget } from "@/dashboard/entities/WidgetType";
 import { Card, Group, Text } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Job, Printer, Thermal } from "@/printers/entities/Printer";
 import useAxios from "axios-hooks";
 import { PrintProgressBar } from "../parts/print-progress-bar/PrintProgressBar";
@@ -13,9 +13,9 @@ import { useCumulativeEvent } from "@/core/sse/useCumulativeEvent";
 import { useId } from '@mantine/hooks';
 
 export function PrinterTableWidget(w: Widget) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const subscriberId = useId();
-    const [{ data: printer, loading }] = useAxios<Printer>({ url: `${local_backend}/printers/${w.config.printer}` })
+    const [{ data: printer, loading }] = useAxios<Printer>({ url: `${settings.localBackend}/printers/${w.config.printer}` })
     const { connected, subscribe, unsubscribe } = useContext(SSEContext)
     const [error, setError] = useState<Error | null>(null);
     const [extruder, setExtruder] = useCumulativeEvent<Thermal>({ temperature: 0 });

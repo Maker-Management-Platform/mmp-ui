@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { TempFile } from "@/tempfiles/entities/TempFile";
 import { IconTrash, IconFileArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Table, Group, Center, Skeleton } from "@mantine/core";
@@ -11,20 +11,20 @@ import { notifications } from "@mantine/notifications";
 
 export function TempFiles() {
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [tempFiles, setTempFiles] = useState<TempFile[]>([]);
     const [actionLoading, setActionLoading] = useState(false);
-    const [{ }, callSendToProject] = useAxios({ url: `${local_backend}/tempfiles/xxx`, method: 'post' }, { manual: true })
-    const [{ }, callDeleteTemp] = useAxios({ url: `${local_backend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
+    const [{ }, callSendToProject] = useAxios({ url: `${settings.localBackend}/tempfiles/xxx`, method: 'post' }, { manual: true })
+    const [{ }, callDeleteTemp] = useAxios({ url: `${settings.localBackend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/tempfiles?_=${reload.current}`
+        `${settings.localBackend}/tempfiles?_=${reload.current}`
     );
     useEffect(() => {
         setTempFiles(data);
     }, [data]);
 
     const [{ data: projects, loading: pLoading, error: pError }] = useAxios<Project[]>(
-        `${local_backend}/projects/list?_=${reload.current}`
+        `${settings.localBackend}/projects/list?_=${reload.current}`
     );
 
     const setProjectUUID = (i: number, p: Project) => {
@@ -37,7 +37,7 @@ export function TempFiles() {
         if (!tempFiles[i].project_uuid) return;
         setActionLoading((s)=>!s)
         callSendToProject({
-            url: `${local_backend}/tempfiles/${tempFiles[i].uuid}`,
+            url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}`,
             data: tempFiles[i]
         })
             .then(({ data }) => {
@@ -62,7 +62,7 @@ export function TempFiles() {
     const deleteTemp = (i: number) => {
         setActionLoading((s)=>!s)
         callDeleteTemp({
-            url: `${local_backend}/tempfiles/${tempFiles[i].uuid}/delete`
+            url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}/delete`
         })
             .then(({ data }) => {
                 console.log(data);

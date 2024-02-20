@@ -1,16 +1,16 @@
 import { ConfirmDialog } from "@/core/dialogs/confirm-dialog/ConfirmDialog";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Button, Fieldset } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import useAxios from "axios-hooks";
 import { useContext, useState, useCallback } from "react";
 
 export function ServerOperations() {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [isOpen, setIsOpen] = useState(false);
     const [{ loading }, doDiscovery] = useAxios(
         {
-            url: `${local_backend}/system/discovery`
+            url: `${settings.localBackend}/system/discovery`
         }, { manual: true })
 
     const onOk = useCallback(() => {

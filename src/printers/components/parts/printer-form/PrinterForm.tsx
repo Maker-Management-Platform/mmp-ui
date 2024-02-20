@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Printer, printerTypes } from "@/printers/entities/Printer";
 import { ActionIcon, Button, Group, Input, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -13,7 +13,7 @@ type PrinterFormProps = {
 }
 
 export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const form = useForm({
         initialValues: {
             ...printer,
@@ -23,13 +23,13 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
         },
     });
     const [{ loading }, executeSave] = useAxios({ method: 'POST' }, { manual: true })
-    const [{ loading: cLoading }, executTest] = useAxios({ method: 'POST', url: `${local_backend}/printers/test` }, { manual: true })
+    const [{ loading: cLoading }, executTest] = useAxios({ method: 'POST', url: `${settings.localBackend}/printers/test` }, { manual: true })
     useEffect(() => {
         if (!printer) return;
         form.setValues(printer)
     }, [printer])
     const onSave = () => {
-        const url = `${local_backend}/printers${printer?.uuid ? '/' + printer.uuid : ''}`
+        const url = `${settings.localBackend}/printers${printer?.uuid ? '/' + printer.uuid : ''}`
         executeSave({
             url,
             data: {

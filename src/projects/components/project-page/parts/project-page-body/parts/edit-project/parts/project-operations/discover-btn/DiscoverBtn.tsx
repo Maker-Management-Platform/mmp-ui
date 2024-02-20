@@ -1,5 +1,5 @@
 import { ConfirmDialog } from "@/core/dialogs/confirm-dialog/ConfirmDialog";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import useAxios from "axios-hooks";
@@ -10,11 +10,11 @@ interface DiscoverBtnProps {
 }
 
 export function DiscoverBtn({ projectUuid }: DiscoverBtnProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [isOpen, setIsOpen] = useState(false);
     const [{ loading }, doDiscovery] = useAxios(
         {
-            url: `${local_backend}/projects/${projectUuid}/discover`
+            url: `${settings.localBackend}/projects/${projectUuid}/discover`
         }, { manual: true })
 
     const onOk = useCallback(() => {

@@ -1,5 +1,5 @@
 import { ConfirmDialog } from "@/core/dialogs/confirm-dialog/ConfirmDialog";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import useAxios from "axios-hooks";
@@ -12,11 +12,11 @@ interface DeleteBtnProps {
 
 export function DeleteBtn({ projectUuid }: DeleteBtnProps) {
     const navigate = useNavigate();
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [isOpen, setIsOpen] = useState(false);
     const [{ loading }, doDelete] = useAxios(
         {
-            url: `${local_backend}/projects/${projectUuid}/delete`,
+            url: `${settings.localBackend}/projects/${projectUuid}/delete`,
             method: 'post',
         }, { manual: true })
 
