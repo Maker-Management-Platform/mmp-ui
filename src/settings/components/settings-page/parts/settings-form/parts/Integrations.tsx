@@ -5,7 +5,7 @@ export function Integrations() {
     const form = useFormContext();
     return (
         <Fieldset legend="Thingiverse">
-            <TextInput label="Token" {...form.getInputProps(`integrations.thingiverse.toke`)} />
+            <TextInput label="Token" {...form.getInputProps(`integrations.thingiverse.token`)} />
         </Fieldset>
     )
 }
