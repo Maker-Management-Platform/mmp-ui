@@ -13,12 +13,13 @@ export type Filter = {
 }
 
 type ProjectFilterProps = {
+    value: Filter;
     onChange: (f: Filter) => void;
 };
 
-export function ProjectFilter({ onChange }: ProjectFilterProps) {
+export function ProjectFilter({ value, onChange }: ProjectFilterProps) {
     const { settings } = useContext(SettingsContext);
-    const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
+    const [filter, setFilter] = useState<Filter>(value)
     const [tags, setTags] = useState<string[]>([]);
     const [{ data, loading, error }] = useAxios<Tag[]>(
         `${settings.localBackend}/tags`
@@ -39,6 +40,13 @@ export function ProjectFilter({ onChange }: ProjectFilterProps) {
             clear()
         }
     });
+
+    useEffect(() => {
+        setFilter(value)
+        if (value && (value.name != "" || value.tags.length > 0)) {
+            handlers.open()
+        }
+    }, [value])
     return (
         <Group gap="xs">
             <ActionIcon loading={loading} onClick={handlers.toggle}>

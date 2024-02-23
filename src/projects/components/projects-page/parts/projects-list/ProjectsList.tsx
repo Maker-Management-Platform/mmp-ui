@@ -1,6 +1,7 @@
 import { Container, Flex, Group, Pagination, rem, Select, Skeleton } from "@mantine/core";
 import { Filter } from "./parts/project-filter-card/ProjectFilterCard.tsx";
 import { ProjectCard } from "./parts/project-card/ProjectCard.tsx";
+import { useSearchParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Project } from "@/projects/entities/Project.ts";
@@ -8,6 +9,7 @@ import { SettingsContext } from "@/core/settings/settingsContext.ts";
 import { ProjectFilter } from "./parts/project-filter/ProjectFilter.tsx";
 
 export function ProjectsList() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
     const { settings } = useContext(SettingsContext);
     const [page, setPage] = useState(1);
@@ -22,13 +24,17 @@ export function ProjectsList() {
         if (!data?.items) return;
         setProjects(data.items)
     }, [data]);
+    useEffect(() => {
+        if (!searchParams.get('filter')) return;
+        setFilter(JSON.parse(searchParams.get('filter') ?? ''))
+    }, [searchParams])
 
     if (error) return <p>Error!</p>;
 
     return (
         <Container fluid my='xs'>
             <Group mb="md" >
-                <ProjectFilter onChange={setFilter} />
+                <ProjectFilter value={filter} onChange={(filter) => { setFilter(filter); setSearchParams({ ...searchParams, filter: JSON.stringify(filter) }); }} />
                 <Select ml="auto" placeholder="Pick value" data={['10', '20', '50', '100']} value={perPage} onChange={(v) => { if (v) { setPage(1); setPerPage(v) } }} />
                 <Pagination total={data?.total_pages} value={data?.page + 1}
                     onChange={setPage}

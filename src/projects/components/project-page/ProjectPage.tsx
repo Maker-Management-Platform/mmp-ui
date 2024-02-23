@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import { Project } from "../../entities/Project.ts";
 import { useContext } from "react";
@@ -8,6 +8,7 @@ import { SettingsContext } from "@/core/settings/settingsContext.ts";
 
 
 export function ProjectPage() {
+    const navigate = useNavigate();
     const { settings } = useContext(SettingsContext);
     const { id } = useParams();
 
@@ -23,6 +24,7 @@ export function ProjectPage() {
                 tags={project?.tags}
                 link={project?.external_link}
                 imagePath={`${settings.localBackend}/projects/${project?.uuid}/assets/${project?.default_image_id}`}
+                onTagClick={(t) => navigate(`/projects/list?filter=${JSON.stringify({ tags: [t.value] })}`)}
             />
             {error && <p>Error!</p>}
             {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={(p) => {

@@ -1,18 +1,23 @@
 import { rem, Tabs } from "@mantine/core";
 import { IconPhoto, IconSettings } from "@tabler/icons-react";
-import { ProjectsList } from "./parts/projects-list/ProjectsList.tsx";
-import { CreateProject } from "./parts/create-project/CreateProject.tsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { ImportProject } from "./parts/import-project/ImportProject.tsx";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export function ProjectsPage() {
+    const location = useLocation();
+    console.log(location.pathname.split('/').slice(1)[1]);
+
     const iconStyle = { width: rem(12), height: rem(12) };
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const [activeTab, setActiveTab] = useState<string | null>(location.pathname.split('/').slice(1)[1] ?? 'list');
+
 
     return (
-        <><Tabs keepMounted={false} defaultValue="list" value={searchParams.get('tab')}
-                onChange={(value) => navigate(`/projects?tab=${value}`)}>
+        <>
+            <Tabs value={activeTab} onChange={(v) => {
+                setActiveTab(v);
+                navigate(`/projects/${v}`);
+            }}>
                 <Tabs.List>
                     <Tabs.Tab value="list" leftSection={<IconPhoto style={iconStyle} />}>
                         Projects
@@ -24,19 +29,8 @@ export function ProjectsPage() {
                         New
                     </Tabs.Tab>
                 </Tabs.List>
-
-                <Tabs.Panel value="list">
-                    <ProjectsList />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="import" pt={'xl'}>
-                    <ImportProject />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="new" pt={'xl'}>
-                    <CreateProject />
-                </Tabs.Panel>
             </Tabs>
+            <Outlet />
         </>
     );
 }

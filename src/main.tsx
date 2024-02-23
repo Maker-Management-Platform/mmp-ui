@@ -71,8 +71,8 @@ console.log(router);
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-                <Notifications limit={10} />
-                <RouterProvider router={router} />
+            <Notifications limit={10} />
+            <RouterProvider router={router} />
         </MantineProvider>
     </React.StrictMode>
 )
