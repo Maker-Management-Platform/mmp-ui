@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { IconPrinter } from "@tabler/icons-react";
 import { Printer } from "@/printers/entities/Printer";
 import { ActionIcon, Menu, rem } from "@mantine/core";
@@ -11,9 +11,9 @@ type SentToPrinterBtnProps = {
 }
 
 export function SendToPrinterBtn({ id }: SentToPrinterBtnProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [printers, setPrinters] = useState<Printer[]>([])
-    const [{ data, loading }] = useAxios<Printer[]>({ url: `${local_backend}/printers` })
+    const [{ data, loading }] = useAxios<Printer[]>({ url: `${settings.localBackend}/printers` })
     const [{ loading: sLoading }, executeSendToPrinter] = useAxios({}, { manual: true })
     useEffect(() => {
         if (!data) return;
@@ -22,7 +22,7 @@ export function SendToPrinterBtn({ id }: SentToPrinterBtnProps) {
 
     function sentToPrinter(p: Printer) {
         executeSendToPrinter({
-            url: `${local_backend}/printers/${p.uuid}/send/${id}`
+            url: `${settings.localBackend}/printers/${p.uuid}/send/${id}`
         })
             .then(() => {
                 notifications.show({

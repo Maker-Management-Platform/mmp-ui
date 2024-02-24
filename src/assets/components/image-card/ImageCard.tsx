@@ -1,64 +1,38 @@
-import { ActionIcon, AspectRatio, Card, Group, Image, LoadingOverlay, Modal, rem, Text, useMantineTheme, Menu } from '@mantine/core';
-import { IconZoomScan, IconHeart } from '@tabler/icons-react';
+import { ActionIcon, AspectRatio, Card, Group, Image, LoadingOverlay, rem, Text, useMantineTheme } from '@mantine/core';
+import { IconZoomScan } from '@tabler/icons-react';
 import classes from './ImageCard.module.css';
 import { useToggle } from "@mantine/hooks";
 import { DropDownMenu } from "../parts/drop-down-menu/DropDownMenu.tsx";
 import { AssetCardProps } from '../AssetCardProps.ts';
-import { SettingsContext } from '@/core/utils/settingsContext.ts';
+import { SettingsContext } from '@/core/settings/settingsContext.ts';
 import { useCallback, useContext, useState } from 'react';
-import useAxios from 'axios-hooks';
-import { notifications } from '@mantine/notifications';
 import { Lightbox } from "react-modal-image";
+import { SetAsMain } from '../parts/set-as-main/SetAsMain.tsx';
 
 export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
-    const { local_backend } = useContext(SettingsContext);
-    const [{ }, callSetMainImage] = useAxios(
-        {
-            url: `${local_backend}/projects/${projectUuid}/image`,
-            method: 'POST'
-        },
-        { manual: true }
-    );
+    const { settings } = useContext(SettingsContext);
+
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
         setLoading((l) => {
             return !l
         })
     }, [loading])
-    const setMainImage = useCallback(() => {
-        callSetMainImage({
-            data: {
-                uuid: projectUuid,
-                default_image_id: asset.id
-            }
-        })
-            .then(({ data }) => {
-                console.log(data);
-                notifications.show({
-                    title: 'Great Success!',
-                    message: 'Project main image updated!',
-                    color: 'indigo',
-                })
-                onChange(projectUuid, asset.id)
-            })
-            .catch((e) => {
-                console.log(e)
-            });
-    }, [projectUuid]);
+
     const [value, toggle] = useToggle([false, true]);
     const theme = useMantineTheme();
 
     return (<>
         {value && <Lightbox
-            medium={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
-            large={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
+            medium={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`}
+            large={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`}
             hideDownload={true}
             onClose={toggle}
         />}
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => toggle()}>
                 <AspectRatio ratio={16 / 9}>
-                    <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`} />
+                    <Image src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`} />
                 </AspectRatio>
             </Card.Section>
 
@@ -81,12 +55,10 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
                             projectUuid={projectUuid}
                             id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
-                            <Menu.Item onClick={setMainImage} leftSection={<IconHeart style={{ width: rem(14), height: rem(14) }} />}>
-                                Set as main image
-                            </Menu.Item>
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.id} onChange={() => { onChange(projectUuid, asset.id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>

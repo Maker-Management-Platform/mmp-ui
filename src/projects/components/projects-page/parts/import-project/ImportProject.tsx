@@ -1,15 +1,15 @@
-import {Anchor, Button, Container, Group, Text, Textarea} from "@mantine/core";
-import {useForm} from "@mantine/form";
+import { Anchor, Button, Container, Group, Text, Textarea } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import useAxios from "axios-hooks";
 import { useContext } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 
 export function ImportProject() {
-    const {local_backend} = useContext(SettingsContext);
-    const [{loading, error}, fetchProject] = useAxios({
-        url:  `${local_backend}/downloader/fetch`,
+    const { settings } = useContext(SettingsContext);
+    const [{ loading, error }, fetchProject] = useAxios({
+        url: `${settings.localBackend}/downloader/fetch`,
         method: 'post',
-    }, {manual: true})
+    }, { manual: true })
     const form = useForm({
         initialValues: {
             urls: '',
@@ -24,7 +24,7 @@ export function ImportProject() {
             data: {
                 url: urls.join(',')
             }
-        }).then(({data}) => {
+        }).then(({ data }) => {
             console.log(data);
         })
     }

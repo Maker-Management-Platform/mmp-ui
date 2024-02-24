@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { ActionIcon, Menu, rem } from "@mantine/core";
 import { IconDotsVertical, IconDownload, IconTrash } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
@@ -15,10 +15,10 @@ type DropDownMenuProps = {
 }
 
 export function DropDownMenu({ id, children, downloadURL, onDelete, openDetails, toggleLoad }: DropDownMenuProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [{ }, callDelete] = useAxios(
         {
-            url: `${local_backend}/assets/${id}/delete`,
+            url: `${settings.localBackend}/assets/${id}/delete`,
             method: 'POST'
         },
         { manual: true }

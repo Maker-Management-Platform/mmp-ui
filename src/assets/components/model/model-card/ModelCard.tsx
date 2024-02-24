@@ -4,11 +4,12 @@ import { SelectBtn } from "@/assets/components/parts/select-btn/SelectBtn.tsx";
 import { DropDownMenu } from '../../parts/drop-down-menu/DropDownMenu';
 import { Icon3dRotate, IconFile3d } from '@tabler/icons-react';
 import { AssetCardProps } from '../../AssetCardProps';
-import { SettingsContext } from '@/core/utils/settingsContext';
+import { SettingsContext } from '@/core/settings/settingsContext';
 import { useCallback, useContext, useState } from 'react';
+import { SetAsMain } from '../../parts/set-as-main/SetAsMain';
 
-export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d, onView3dChange, onDelete }: AssetCardProps) {
-    const { local_backend } = useContext(SettingsContext);
+export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d, onView3dChange, onDelete, onChange }: AssetCardProps) {
+    const { settings } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
         setLoading((l) => {
@@ -22,7 +23,7 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
                 <AspectRatio ratio={16 / 9}>
                     {asset?.model?.image_id === "" ? <IconFile3d /> :
                         <Image
-                            src={`${local_backend}/projects/${projectUuid}/assets/${asset?.model?.image_id}`}
+                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.model?.image_id}`}
                             alt={asset.name}
                         />
                     }
@@ -45,9 +46,10 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
                             projectUuid={projectUuid}
                             id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset.id}?download=true'`}
+                            downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.model?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>
