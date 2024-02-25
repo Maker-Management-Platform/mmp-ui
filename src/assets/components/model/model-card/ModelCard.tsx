@@ -21,9 +21,9 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ minWidth: size, width: size, borderColor: selected ? 'red' : '' }} >
             <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-                    {asset?.model?.image_id === "" ? <IconFile3d /> :
+                    {asset?.image_id === "" ? <IconFile3d /> :
                         <Image
-                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.model?.image_id}`}
+                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.image_id}`}
                             alt={asset.name}
                         />
                     }
@@ -49,7 +49,7 @@ export function ModelCard({ projectUuid, asset, selected, onSelectChange, view3d
                             downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
-                            <SetAsMain projectUuid={projectUuid} assetId={asset.model?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.model?.image_id} onChange={() => { onChange(projectUuid, asset.image_id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>

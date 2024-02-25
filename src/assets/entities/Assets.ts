@@ -11,6 +11,7 @@ export interface Asset {
     asset_type: AssetType
     extension: string
     mime_type: string
+    image_id: string
     model?: Model
     project_image?: ProjectImage
     project_file?: ProjectFile

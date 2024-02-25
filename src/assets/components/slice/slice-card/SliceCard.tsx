@@ -23,9 +23,9 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ minWidth: size, width: size, borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => onSelectChange(true)}>
                 <AspectRatio ratio={16 / 9}>
-                    {asset?.slice?.image_id === "" ? <IconFile /> :
+                    {asset?.image_id === "" ? <IconFile /> :
                         <Image
-                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
+                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.image_id}`}
                             alt={asset.name}
                         />
                     }
@@ -48,7 +48,7 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
                             downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
-                            <SetAsMain projectUuid={projectUuid} assetId={asset.slice?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />
+                            <SetAsMain projectUuid={projectUuid} assetId={asset.slice?.image_id} onChange={() => { onChange(projectUuid, asset.image_id) }} />
                         </DropDownMenu>
                     </Group>
                 </Group>
