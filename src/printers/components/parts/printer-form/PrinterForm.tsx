@@ -1,7 +1,7 @@
 import { SettingsContext } from "@/core/settings/settingsContext";
 import { Printer, printerTypes } from "@/printers/entities/Printer";
 import { ActionIcon, Button, Group, Input, Select, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconPlugConnected } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
@@ -16,10 +16,14 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
     const { settings } = useContext(SettingsContext);
     const form = useForm({
         initialValues: {
-            ...printer,
+            name: '',
+            type: '',
+            address: '',
         },
         validate: {
-            name: (value) => (value.length < 2 ? 'Too short name' : null),
+            name: hasLength({ min: 3 }, "Use at least 3 characters"),
+            type: isNotEmpty("You must select a printer type."),
+            address: hasLength({ min: 8 }, "You must insert an address (with http://)")
         },
     });
     const [{ loading }, executeSave] = useAxios({ method: 'POST' }, { manual: true })
@@ -66,7 +70,7 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
 
     }
 
-    return (<>
+    return (
         <form onSubmit={form.onSubmit(onSave)}>
             <TextInput
                 mb="sm"
@@ -110,8 +114,8 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
                 {...form.getInputProps('state')}
             />}
             <Group justify="flex-end" mt="md">
-                <Button type="submit" loading={loading} onClick={onSave}>Save</Button>
+                <Button type="submit" loading={loading}>Save</Button>
             </Group>
         </form>
-    </>)
+    )
 }
