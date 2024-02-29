@@ -25,7 +25,7 @@ export function PrinterWidgetProvider() {
             icon: <IconPrinter />,
             element: <PrinterTableWidget {...{} as Widget} />,
             configElement: <PrinterWidgetConfig {...{} as WidgetConfig} />,
-            layout: { h: 5, w: 2, isResizable: false }
+            layout: { h: 5, w: 2, isResizable: true }
         })
     }, [])
 
