@@ -2,7 +2,7 @@ import { AspectRatio, Card, Group, Image, LoadingOverlay, rem, Text } from '@man
 import classes from './SliceCard.module.css';
 import { DropDownMenu } from '../../parts/drop-down-menu/DropDownMenu';
 import { AssetCardProps } from '../../AssetCardProps';
-import { SettingsContext } from '@/core/utils/settingsContext';
+import { SettingsContext } from '@/core/settings/settingsContext';
 import { useCallback, useContext, useState } from 'react';
 import { SendToPrinterBtn } from '@/printers/components/parts/sent-to-printer-btn/SendToPrinterBtn';
 import { SetAsMain } from '../../parts/set-as-main/SetAsMain';
@@ -10,7 +10,7 @@ import { IconFile } from '@tabler/icons-react';
 
 export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
 
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
         setLoading((l) => {
@@ -25,7 +25,7 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
                 <AspectRatio ratio={16 / 9}>
                     {asset?.slice?.image_id === "" ? <IconFile /> :
                         <Image
-                            src={`${local_backend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
+                            src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.slice?.image_id}`}
                             alt={asset.name}
                         />
                     }
@@ -45,7 +45,7 @@ export function SliceCard({ projectUuid, asset, selected, onSelectChange, onDele
                             projectUuid={projectUuid}
                             id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                             <SetAsMain projectUuid={projectUuid} assetId={asset.slice?.image_id} onChange={() => { onChange(projectUuid, asset.model?.image_id) }} />

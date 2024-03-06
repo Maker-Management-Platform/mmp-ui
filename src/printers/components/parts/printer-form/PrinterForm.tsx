@@ -1,7 +1,7 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Printer, printerTypes } from "@/printers/entities/Printer";
 import { ActionIcon, Button, Group, Input, Select, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconPlugConnected } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
@@ -13,23 +13,27 @@ type PrinterFormProps = {
 }
 
 export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const form = useForm({
         initialValues: {
-            ...printer,
+            name: '',
+            type: '',
+            address: '',
         },
         validate: {
-            name: (value) => (value.length < 2 ? 'Too short name' : null),
+            name: hasLength({ min: 3 }, "Use at least 3 characters"),
+            type: isNotEmpty("You must select a printer type."),
+            address: hasLength({ min: 8 }, "You must insert an address (with http://)")
         },
     });
     const [{ loading }, executeSave] = useAxios({ method: 'POST' }, { manual: true })
-    const [{ loading: cLoading }, executTest] = useAxios({ method: 'POST', url: `${local_backend}/printers/test` }, { manual: true })
+    const [{ loading: cLoading }, executTest] = useAxios({ method: 'POST', url: `${settings.localBackend}/printers/test` }, { manual: true })
     useEffect(() => {
         if (!printer) return;
         form.setValues(printer)
     }, [printer])
     const onSave = () => {
-        const url = `${local_backend}/printers${printer?.uuid ? '/' + printer.uuid : ''}`
+        const url = `${settings.localBackend}/printers${printer?.uuid ? '/' + printer.uuid : ''}`
         executeSave({
             url,
             data: {
@@ -66,7 +70,7 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
 
     }
 
-    return (<>
+    return (
         <form onSubmit={form.onSubmit(onSave)}>
             <TextInput
                 mb="sm"
@@ -118,8 +122,8 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
                 {...form.getInputProps('state')}
             />}
             <Group justify="flex-end" mt="md">
-                <Button type="submit" loading={loading} onClick={onSave}>Save</Button>
+                <Button type="submit" loading={loading}>Save</Button>
             </Group>
         </form>
-    </>)
+    )
 }

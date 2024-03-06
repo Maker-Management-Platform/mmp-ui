@@ -1,4 +1,4 @@
-import { Settings, SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { Menu, rem } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconHeart } from "@tabler/icons-react";
@@ -12,10 +12,10 @@ export type SetAsMainProps = {
 }
 
 export function SetAsMain({ projectUuid, assetId, onChange }: SetAsMainProps) {
-    const { local_backend } = useContext<Settings>(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [{ }, callSetMainImage] = useAxios(
         {
-            url: `${local_backend}/projects/${projectUuid}/image`,
+            url: `${settings.localBackend}/projects/${projectUuid}/image`,
             method: 'POST'
         },
         { manual: true }

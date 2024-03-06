@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { TempFile } from "@/tempfiles/entities/TempFile";
 import { IconTrash, IconFileArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Table, Group, Center, Skeleton } from "@mantine/core";
@@ -11,20 +11,21 @@ import { notifications } from "@mantine/notifications";
 
 export function TempFiles() {
     const reload = useRef(Math.floor(1000 + Math.random() * 9000));
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [tempFiles, setTempFiles] = useState<TempFile[]>([]);
     const [actionLoading, setActionLoading] = useState(false);
-    const [{ }, callSendToProject] = useAxios({ url: `${local_backend}/tempfiles/xxx`, method: 'post' }, { manual: true })
-    const [{ }, callDeleteTemp] = useAxios({ url: `${local_backend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
+    const [{ }, callSendToProject] = useAxios({ url: `${settings.localBackend}/tempfiles/xxx`, method: 'post' }, { manual: true })
+    const [{ }, callDeleteTemp] = useAxios({ url: `${settings.localBackend}/tempfiles/xxx/delete`, method: 'post' }, { manual: true })
     const [{ data, loading, error }] = useAxios(
-        `${local_backend}/tempfiles?_=${reload.current}`
+        `${settings.localBackend}/tempfiles?_=${reload.current}`
     );
     useEffect(() => {
+        if (!data) return;
         setTempFiles(data);
     }, [data]);
 
     const [{ data: projects, loading: pLoading, error: pError }] = useAxios<Project[]>(
-        `${local_backend}/projects/list?_=${reload.current}`
+        `${settings.localBackend}/projects/list?_=${reload.current}`
     );
 
     const setProjectUUID = (i: number, p: Project) => {
@@ -35,9 +36,9 @@ export function TempFiles() {
 
     const sendToProject = (i: number) => {
         if (!tempFiles[i].project_uuid) return;
-        setActionLoading((s)=>!s)
+        setActionLoading((s) => !s)
         callSendToProject({
-            url: `${local_backend}/tempfiles/${tempFiles[i].uuid}`,
+            url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}`,
             data: tempFiles[i]
         })
             .then(({ data }) => {
@@ -50,19 +51,19 @@ export function TempFiles() {
                     message: 'Tempory moved do project!',
                     color: 'indigo',
                 })
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             })
             .catch((e) => {
                 console.log(e)
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             });
 
     }
 
     const deleteTemp = (i: number) => {
-        setActionLoading((s)=>!s)
+        setActionLoading((s) => !s)
         callDeleteTemp({
-            url: `${local_backend}/tempfiles/${tempFiles[i].uuid}/delete`
+            url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}/delete`
         })
             .then(({ data }) => {
                 console.log(data);
@@ -74,11 +75,11 @@ export function TempFiles() {
                     message: 'Tempory sucessfuly deleted!',
                     color: 'indigo',
                 })
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             })
             .catch((e) => {
                 console.log(e)
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             });
     }
 
@@ -88,15 +89,13 @@ export function TempFiles() {
             <Table.Thead>
                 <Table.Tr>
                     <Table.Th>Name</Table.Th>
-                    <Table.Th>Modification Date</Table.Th>
                     <Table.Th>Project</Table.Th>
                     <Table.Th><Center>Actions</Center></Table.Th>
                 </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-                {tempFiles && tempFiles.map((t, i) => <Table.Tr key={t.uuid}>
+                {tempFiles.map((t, i) => <Table.Tr key={t.uuid}>
                     <Table.Td>{t.name}</Table.Td>
-                    <Table.Td>{t.project_uuid}</Table.Td>
                     <Table.Td>
                         <ProjectSelect boosted={t.matches} projects={projects} onChange={(p) => { setProjectUUID(i, p) }} loading={pLoading} value={t.project_uuid} />
                     </Table.Td>

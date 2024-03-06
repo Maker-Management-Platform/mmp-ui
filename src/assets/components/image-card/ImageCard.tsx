@@ -4,13 +4,13 @@ import classes from './ImageCard.module.css';
 import { useToggle } from "@mantine/hooks";
 import { DropDownMenu } from "../parts/drop-down-menu/DropDownMenu.tsx";
 import { AssetCardProps } from '../AssetCardProps.ts';
-import { SettingsContext } from '@/core/utils/settingsContext.ts';
+import { SettingsContext } from '@/core/settings/settingsContext.ts';
 import { useCallback, useContext, useState } from 'react';
 import { Lightbox } from "react-modal-image";
 import { SetAsMain } from '../parts/set-as-main/SetAsMain.tsx';
 
 export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDelete, onChange }: AssetCardProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
 
     const [loading, setLoading] = useState(false);
     const toggleLoadingCallback = useCallback(() => {
@@ -24,15 +24,15 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
 
     return (<>
         {value && <Lightbox
-            medium={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
-            large={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`}
+            medium={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`}
+            large={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`}
             hideDownload={true}
             onClose={toggle}
         />}
         <Card withBorder padding="lg" radius="md" className={classes.card} style={{ borderColor: selected ? 'red' : '' }}>
             <Card.Section mb="sm" onClick={() => toggle()}>
                 <AspectRatio ratio={16 / 9}>
-                    <Image src={`${local_backend}/projects/${projectUuid}/assets/${asset.id}`} />
+                    <Image src={`${settings.localBackend}/projects/${projectUuid}/assets/${asset.id}`} />
                 </AspectRatio>
             </Card.Section>
 
@@ -55,7 +55,7 @@ export function ImageCard({ projectUuid, asset, selected, onSelectChange, onDele
                             projectUuid={projectUuid}
                             id={asset.id}
                             openDetails={() => onSelectChange(true)}
-                            downloadURL={`${local_backend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
+                            downloadURL={`${settings.localBackend}/projects/${projectUuid}/assets/${asset?.id}?download=true'`}
                             onDelete={() => onDelete(projectUuid, asset.id)}
                             toggleLoad={toggleLoadingCallback}>
                             <SetAsMain projectUuid={projectUuid} assetId={asset.id} onChange={() => { onChange(projectUuid, asset.id) }} />

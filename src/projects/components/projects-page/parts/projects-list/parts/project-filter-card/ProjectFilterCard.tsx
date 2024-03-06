@@ -3,7 +3,7 @@ import classes from './ProjectFilterCard.module.css';
 import { useContext, useEffect, useState } from "react";
 import { Tag } from "@/projects/entities/Project.ts";
 import useAxios from 'axios-hooks';
-import { SettingsContext } from '@/core/utils/settingsContext';
+import { SettingsContext } from '@/core/settings/settingsContext';
 
 
 export type Filter = {
@@ -16,11 +16,11 @@ type ProjectFilterCardProps = {
 };
 
 export function ProjectFilterCard({ onChange }: ProjectFilterCardProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [filter, setFilter] = useState<Filter>({ name: '', tags: [] })
     const [tags, setTags] = useState<string[]>([]);
     const [{ data, loading, error }] = useAxios<Tag[]>(
-        `${local_backend}/tags`
+        `${settings.localBackend}/tags`
     );
 
     useEffect(() => {

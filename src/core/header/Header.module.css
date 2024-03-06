@@ -56,7 +56,14 @@
 .tags {
     display: flex;
     justify-content: flex-start;
-    @media (max-width: $ mantine-breakpoint-xs) {
+
+    @media (max-width: $mantine-breakpoint-xs) {
         flex-direction: column;
     }
+}
+
+.link {
+    position: absolute;
+    top: rem(10px);
+    right: rem(10px);
 }

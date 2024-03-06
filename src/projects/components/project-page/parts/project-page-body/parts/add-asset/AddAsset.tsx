@@ -3,7 +3,7 @@ import { Container, Group, rem, Text } from "@mantine/core";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import useAxios from "axios-hooks";
 import { useContext } from "react";
-import { SettingsContext } from "@/core/utils/settingsContext";
+import { SettingsContext } from "@/core/settings/settingsContext";
 import { notifications } from "@mantine/notifications";
 
 
@@ -12,10 +12,10 @@ type AddAssetProps = {
 }
 
 export function AddAsset({ projectUuid }: AddAssetProps) {
-    const { local_backend } = useContext(SettingsContext);
+    const { settings } = useContext(SettingsContext);
     const [{ loading }, executeSave] = useAxios(
         {
-            url: `${local_backend}/assets`,
+            url: `${settings.localBackend}/assets`,
             method: 'POST'
         },
         {
