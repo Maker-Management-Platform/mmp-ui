@@ -19,6 +19,7 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
             name: '',
             type: '',
             address: '',
+            apiKey: ''
         },
         validate: {
             name: hasLength({ min: 3 }, "Use at least 3 characters"),
