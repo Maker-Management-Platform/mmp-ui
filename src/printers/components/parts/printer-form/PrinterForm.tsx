@@ -19,6 +19,7 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
             name: '',
             type: '',
             address: '',
+            apiKey: ''
         },
         validate: {
             name: hasLength({ min: 3 }, "Use at least 3 characters"),
@@ -82,6 +83,14 @@ export function PrinterForm({ printer, onPrinterChange }: PrinterFormProps) {
                 label="Type"
                 {...form.getInputProps('type')}
                 data={Array.from(printerTypes.values()).map(t => t.type)} />
+
+            {form.values.type === 'octoPrint' && <Input.Wrapper label="Api Key">
+                <Input
+                    placeholder=""
+                    mb="sm"
+                    {...form.getInputProps('apiKey')}
+                />
+            </Input.Wrapper>}
             <Input.Wrapper label="Address">
                 <Input
                     placeholder="http://192.168.0.123"
