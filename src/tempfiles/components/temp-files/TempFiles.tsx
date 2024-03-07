@@ -20,6 +20,7 @@ export function TempFiles() {
         `${settings.localBackend}/tempfiles?_=${reload.current}`
     );
     useEffect(() => {
+        if (!data) return;
         setTempFiles(data);
     }, [data]);
 
@@ -35,7 +36,7 @@ export function TempFiles() {
 
     const sendToProject = (i: number) => {
         if (!tempFiles[i].project_uuid) return;
-        setActionLoading((s)=>!s)
+        setActionLoading((s) => !s)
         callSendToProject({
             url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}`,
             data: tempFiles[i]
@@ -50,17 +51,17 @@ export function TempFiles() {
                     message: 'Tempory moved do project!',
                     color: 'indigo',
                 })
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             })
             .catch((e) => {
                 console.log(e)
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             });
 
     }
 
     const deleteTemp = (i: number) => {
-        setActionLoading((s)=>!s)
+        setActionLoading((s) => !s)
         callDeleteTemp({
             url: `${settings.localBackend}/tempfiles/${tempFiles[i].uuid}/delete`
         })
@@ -74,11 +75,11 @@ export function TempFiles() {
                     message: 'Tempory sucessfuly deleted!',
                     color: 'indigo',
                 })
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             })
             .catch((e) => {
                 console.log(e)
-                setActionLoading((s)=>!s)
+                setActionLoading((s) => !s)
             });
     }
 
@@ -88,15 +89,13 @@ export function TempFiles() {
             <Table.Thead>
                 <Table.Tr>
                     <Table.Th>Name</Table.Th>
-                    <Table.Th>Modification Date</Table.Th>
                     <Table.Th>Project</Table.Th>
                     <Table.Th><Center>Actions</Center></Table.Th>
                 </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-                {tempFiles && tempFiles.map((t, i) => <Table.Tr key={t.uuid}>
+                {tempFiles.map((t, i) => <Table.Tr key={t.uuid}>
                     <Table.Td>{t.name}</Table.Td>
-                    <Table.Td>{t.project_uuid}</Table.Td>
                     <Table.Td>
                         <ProjectSelect boosted={t.matches} projects={projects} onChange={(p) => { setProjectUUID(i, p) }} loading={pLoading} value={t.project_uuid} />
                     </Table.Td>
