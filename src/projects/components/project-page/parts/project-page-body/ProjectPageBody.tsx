@@ -1,7 +1,6 @@
 import { Alert, Container, Flex, rem, SimpleGrid, Skeleton, Tabs } from "@mantine/core";
 import useAxios from "axios-hooks";
 import { Asset } from "@/assets/entities/Assets.ts";
-import { AssetCardProps } from "@/assets/components/AssetCardProps.ts";
 import { useListState } from "@mantine/hooks";
 import React, { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
@@ -11,15 +10,16 @@ import { AddAsset } from "./parts/add-asset/AddAsset.tsx";
 import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/settings/settingsContext.ts";
-import { assetTypeMap, supportedAssetTypes } from "@/assets/utils/assetMapping.tsx";
+import { supportedAssetTypes } from "@/assets/utils/assetMapping.tsx";
 import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
+import { AssetCard } from "@/assets/components/asset-card/AssetCard.tsx";
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
 type ProjectAssetsListProps = {
     projectUuid: string;
     project?: Project;
-    onProjectChange: (p: Project) => void;
+    onProjectChange: () => void;
 }
 
 export function ProjectPageBody({ projectUuid, project, onProjectChange }: ProjectAssetsListProps) {
@@ -52,34 +52,9 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
         }
     };
 
-    const assetMap = (asset: Asset) => {
-        let gen = assetTypeMap.get(asset.asset_type);
-        if (!gen) {
-            gen = assetTypeMap.get('other');
-        }
-        const props: AssetCardProps = {
-            projectUuid,
-            asset,
-            selected: selectedAsset?.id === asset.id || (asset.asset_type === 'model' && selectedModels.findIndex((a) => a.id === asset.id) > -1),
-            onSelectChange: () => {
-                selectedModelsHandlers.setState([])
-                setSelectedAsset(asset)
-            },
-            onDelete: (projectUuid: string, id: string) => {
-                refetch()
-                return true
-            },
-            onChange: (projectUuid: string, id: string) => {
-                onProjectChange(project)
-                return true
-            }
-        };
-        if (asset.asset_type === 'model') {
-            props.view3d = selectedModels.findIndex((a) => a.id === asset.id) > -1;
-            props.onView3dChange = (v: boolean) => { handleModelSelection(asset, v) };
-        }
-
-        return gen && gen(props);
+    const onFocus = (asset: Asset) => () => {
+        selectedModelsHandlers.setState([])
+        setSelectedAsset(asset)
     }
 
     return (
@@ -128,7 +103,16 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                                 key={i}
                                 visible={true} />)}
 
-                        {assets?.filter(asset => (typeFilter === 'all' && !asset.generated) || asset.asset_type === typeFilter).map(assetMap)}
+                        {assets?.filter(asset => asset.origin !== "render" && (typeFilter === 'all' || asset.asset_type === typeFilter))
+                            .map(a => <AssetCard key={a.id}
+                                asset={a}
+                                focused={selectedAsset?.id === a.id || (a.asset_type === 'model' && selectedModels.findIndex((sm) => sm.id === a.id) > -1)}
+                                onFocused={onFocus(a)}
+                                onDelete={refetch}
+                                onChange={onProjectChange}
+                                view3d={selectedModels.findIndex((sm) => a.id === sm.id) > -1}
+                                onView3dChange={(v: boolean) => { handleModelSelection(a, v) }}
+                            />)}
                     </Flex>
                     {selectedModels.length > 0 && <ModelDetailPane projectUuid={projectUuid} onClose={() => selectedModelsHandlers.setState([])}
                         models={selectedModels} />}

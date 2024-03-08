@@ -15,7 +15,7 @@ export function AddAsset({ projectUuid }: AddAssetProps) {
     const { settings } = useContext(SettingsContext);
     const [{ loading }, executeSave] = useAxios(
         {
-            url: `${settings.localBackend}/assets`,
+            url: `${settings.localBackend}/projects/${projectUuid}/assets`,
             method: 'POST'
         },
         {

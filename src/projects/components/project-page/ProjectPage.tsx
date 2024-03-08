@@ -27,8 +27,8 @@ export function ProjectPage() {
                 onTagClick={(t) => navigate(`/projects/list?filter=${JSON.stringify({ tags: [t.value] })}`)}
             />
             {error && <p>Error!</p>}
-            {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={(p) => {
-                console.log("onProjectChange", p)
+            {id && <ProjectPageBody projectUuid={id} project={project} onProjectChange={() => {
+                console.log("onProjectChange")
                 refetch()
             }} />}
         </>
