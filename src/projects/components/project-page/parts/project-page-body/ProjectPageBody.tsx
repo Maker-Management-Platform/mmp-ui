@@ -71,7 +71,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         <Tabs.Tab value="all" leftSection={<IconFiles style={iconStyle} />}>
                             All
                         </Tabs.Tab>
-                        {assetTypes && assetTypes.map((t) => <Tabs.Tab key={t.name} value={t.name}>{t.label}</Tabs.Tab>)}
+                        {assetTypes && assetTypes.sort((a, b) => a.order - b.order).map((t) => <Tabs.Tab key={t.name} value={t.name}>{t.label}</Tabs.Tab>)}
                         <Tabs.Tab value="other">Other</Tabs.Tab>
                         {/*supportedAssetTypes.map((type, i) => <Tabs.Tab key={i} value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)*/}
                         <Tabs.Tab ml="auto" value="add_asset" leftSection={<IconSettings style={iconStyle} />}>

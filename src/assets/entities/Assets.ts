@@ -18,4 +18,5 @@ export interface AssetType {
     name: string
     label: string
     extensions: string[]
-  }
+    order: number
+}
