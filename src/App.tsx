@@ -8,6 +8,7 @@ import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
 import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetProvider.tsx';
 import { SSEProvider } from './core/sse/SSEProvider.tsx';
 import { SettingsProvider } from './core/settings/settingsProvider.tsx';
+import { EventNotifications } from './system/components/event-notifications/EventNotifications.tsx';
 
 export default function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -40,6 +41,7 @@ export default function App() {
                     </AppShell>
                     <ScrollToTop />
                     <AxiosErrorHandler />
+                    <EventNotifications />
                     <PrinterWidgetProvider />
                 </DashboardProvider>
             </SSEProvider>
