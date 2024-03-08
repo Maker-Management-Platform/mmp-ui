@@ -1,29 +1,22 @@
-import { Asset, AssetType } from "@/assets/entities/Assets";
-import { Grid, Input, Tabs } from "@mantine/core";
-import { SliceDetailPane } from "../slice/slice-detail-pane/SliceDetailPane";
+import { Asset } from "@/assets/entities/Assets";
+import { Grid, Group, Input, ScrollArea, Tabs } from "@mantine/core";
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type AssetDetailsProps = {
     asset: Asset;
 }
 
-const assetTypeMap: Map<AssetType, JSX.Element> = new Map([
-    ["slice", <SliceDetailPane asset={{} as Asset} />],
-]);
 
 export function AssetDetails({ asset }: AssetDetailsProps) {
     const [tab, setTab] = useState<string | null>('file')
-    const [assetElement, setAssetElement] = useState<JSX.Element | undefined>()
-    useEffect(() => {
-        const e = assetTypeMap.get(asset.asset_type)
-        if (e) {
-            setAssetElement(assetTypeMap.get(asset.asset_type))
-            setTab('details')
-        }else{
-            setAssetElement(undefined)
-            setTab('file')
+    const [propFilter, setPropFilter] = useState("")
 
+    useEffect(() => {
+        if (asset && Object.keys(asset.properties).length > 0) {
+            setTab('properties')
+        } else {
+            setTab('file')
         }
     }, [asset])
     const formatBytes = (bytes: number, decimals: number) => {
@@ -37,16 +30,22 @@ export function AssetDetails({ asset }: AssetDetailsProps) {
     return (
         <Tabs value={tab} onChange={setTab}>
             <Tabs.List>
-                {assetElement && <Tabs.Tab value="details">
-                    Details
+                {asset && Object.keys(asset.properties).length > 0 && <Tabs.Tab value="properties">
+                    Properties
                 </Tabs.Tab>}
                 <Tabs.Tab value="file">
                     File
                 </Tabs.Tab>
             </Tabs.List>
 
-            {assetElement && <Tabs.Panel value="details">
-                {React.cloneElement(assetElement, { asset })}
+            {asset && Object.keys(asset.properties).length > 0 && <Tabs.Panel value="properties">
+                <Input mt='xs' placeholder="Filter" value={propFilter} onChange={(e) => setPropFilter(e.target.value)} />
+                <ScrollArea.Autosize mah={800} mx="auto">
+                    {Object.keys(asset.properties).filter(k => k.includes(propFilter)).map((k: any) =>
+                        <Group grow justify="center" mt='xs' key={k}><Input disabled value={k} /><Input disabled value={asset.properties[k]} /></Group>
+                    )}
+                </ScrollArea.Autosize>
+
             </Tabs.Panel>}
 
             <Tabs.Panel value="file">
