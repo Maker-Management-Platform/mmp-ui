@@ -1,6 +1,6 @@
 import { Alert, Container, Flex, rem, SimpleGrid, Skeleton, Tabs } from "@mantine/core";
 import useAxios from "axios-hooks";
-import { Asset } from "@/assets/entities/Assets.ts";
+import { Asset, AssetType } from "@/assets/entities/Assets.ts";
 import { useListState } from "@mantine/hooks";
 import React, { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
@@ -10,7 +10,6 @@ import { AddAsset } from "./parts/add-asset/AddAsset.tsx";
 import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/settings/settingsContext.ts";
-import { supportedAssetTypes } from "@/assets/utils/assetMapping.tsx";
 import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
 import { AssetCard } from "@/assets/components/asset-card/AssetCard.tsx";
 
@@ -29,6 +28,9 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
+    const [{ data: assetTypes, loading: tLoading, error: tError }] = useAxios<AssetType[]>(
+        `${settings.localBackend}/assettypes`
+    );
     const [{ data: assets, loading, error }, refetch] = useAxios<Asset[]>(
         `${settings.localBackend}/projects/${projectUuid}/assets`
     );
@@ -69,7 +71,9 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                         <Tabs.Tab value="all" leftSection={<IconFiles style={iconStyle} />}>
                             All
                         </Tabs.Tab>
-                        {supportedAssetTypes.map((type, i) => <Tabs.Tab key={i} value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)}
+                        {assetTypes && assetTypes.map((t) => <Tabs.Tab key={t.name} value={t.name}>{t.label}</Tabs.Tab>)}
+                        <Tabs.Tab value="other">Other</Tabs.Tab>
+                        {/*supportedAssetTypes.map((type, i) => <Tabs.Tab key={i} value={type.name} leftSection={React.cloneElement(type.icon, { style: iconStyle })}>{type.label}</Tabs.Tab>)*/}
                         <Tabs.Tab ml="auto" value="add_asset" leftSection={<IconSettings style={iconStyle} />}>
                             Add Asset
                         </Tabs.Tab>

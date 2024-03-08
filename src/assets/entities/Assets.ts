@@ -1,4 +1,3 @@
-export type AssetType = 'image' | 'model' | 'file' | 'slice'
 
 export interface Asset {
     id: string
@@ -8,9 +7,15 @@ export interface Asset {
     path: string
     mod_time: string
     size: number
-    asset_type: AssetType
+    asset_type: string
     extension: string
     mime_type: string
     image_id: string
     properties: any
 }
+
+export interface AssetType {
+    name: string
+    label: string
+    extensions: string[]
+  }
