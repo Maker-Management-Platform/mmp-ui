@@ -48,6 +48,9 @@ export const createSubsManager = (url: string): SubscriptionManager => {
                     return;
                 }
                 if (ev.event) {
+                    if (ev.data.name) {
+                        state.evSubs.get(`${ev.event}.${ev.data.name}`)?.forEach(sub => sub.callback(ev.data));
+                    }
                     if (ev.data.state) {
                         state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data.state));
                     } else if (Array.isArray(ev.data)) {

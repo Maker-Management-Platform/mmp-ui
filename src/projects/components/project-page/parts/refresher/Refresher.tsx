@@ -1,24 +1,28 @@
 import SSEContext from "@/core/sse/SSEContext";
 import { useId } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import { useContext, useEffect, useState } from "react";
 
-export function EventNotifications() {
+type RefresherProps = {
+    projectUUID: string;
+    refresh: () => void;
+}
+
+export function Refresher({ projectUUID, refresh }: RefresherProps) {
     const subscriberId = useId();
     const { connected, subscribe, unsubscribe } = useContext(SSEContext)
-    const [message, setMessage] = useState("")
+    const [projectUpdate, setProjectUpdate] = useState({} as any)
     const [error, setError] = useState<Error | null>(null);
     useEffect(() => {
         if (!connected) return;
-        setMessage("")
+        setProjectUpdate({})
         const subscription = {
             subscriberId,
             provider: `system/events`,
         }
         subscribe({
             ...subscription,
-            event: `system.state`,
-            callback: setMessage
+            event: `system.state.project.event`,
+            callback: setProjectUpdate
         }).catch(setError);
         return () => {
             unsubscribe(subscriberId)
@@ -26,11 +30,11 @@ export function EventNotifications() {
     }, [connected])
 
     useEffect(() => {
-        console.log(message)
-        notifications.show({
-            title: message,
-            message: message,
-        })
-    }, [message])
+        console.log(projectUpdate)
+        if (!projectUpdate.state) return;
+        if (projectUpdate.state.projectUUID == projectUUID && projectUpdate.state.type == "update") {
+            refresh();
+        }
+    }, [projectUpdate])
     return (<></>)
 }
