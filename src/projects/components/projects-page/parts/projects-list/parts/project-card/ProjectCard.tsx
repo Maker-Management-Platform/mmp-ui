@@ -26,7 +26,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <div
                     className={classes.image}
                     style={{
-                        backgroundImage: `url(${settings.localBackend}/projects/${project.uuid}/assets/${project.default_image_id})`,
+                        backgroundImage: `url(${settings.localBackend}/projects/${project.uuid}/assets/${project.default_image_id}/file)`,
                         backgroundPosition: 'center',
                     }}
                 />}

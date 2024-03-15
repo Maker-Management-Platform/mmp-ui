@@ -17,7 +17,7 @@ type ModelProps = {
 
 function Model({ color, model, projectUuid }: ModelProps) {
     const { settings } = useContext(SettingsContext);
-    const geom = useLoader(STLLoader, `${settings.localBackend}/projects/${projectUuid}/assets/${model.id}`);
+    const geom = useLoader(STLLoader, `${settings.localBackend}/projects/${projectUuid}/assets/${model.id}/file`);
     const meshRef = useRef<THREE.Mesh>(null!)
 
     const [active, setActive] = useState(false)

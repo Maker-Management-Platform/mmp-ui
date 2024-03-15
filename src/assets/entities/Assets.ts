@@ -2,6 +2,7 @@
 export interface Asset {
     id: string
     name: string
+    label: string
     origin: string
     project_uuid: string
     path: string

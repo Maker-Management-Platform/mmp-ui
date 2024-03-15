@@ -1,8 +1,8 @@
-import { Alert, Container, Flex, rem, SimpleGrid, Skeleton, Tabs } from "@mantine/core";
+import { Alert, Button, Container, Flex, rem, SimpleGrid, Skeleton, Tabs } from "@mantine/core";
 import useAxios from "axios-hooks";
 import { Asset, AssetType } from "@/assets/entities/Assets.ts";
 import { useListState } from "@mantine/hooks";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModelDetailPane } from "@/assets/components/model/model-detail-pane/ModelDetailPane.tsx";
 import { IconSettings, IconFiles } from "@tabler/icons-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import { EditProject } from "./parts/edit-project/EditProject.tsx";
 import { Project } from "../../../../entities/Project.ts";
 import { SettingsContext } from "@/core/settings/settingsContext.ts";
 import { AssetDetails } from "@/assets/components/asset-details/AssetDetails.tsx";
+import { Refresher } from "./parts/refresher/Refresher.tsx";
 import { AssetCard } from "@/assets/components/asset-card/AssetCard.tsx";
 
 const iconStyle = { width: rem(12), height: rem(12) };
@@ -25,15 +26,21 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
     const { settings } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const [assets, setAssets] = useState<Asset[]>([]);
     const [selectedModels, selectedModelsHandlers] = useListState<Asset>([]);
     const [selectedAsset, setSelectedAsset] = useState<Asset>();
     const [typeFilter, setTypeFilter] = useState<string | null>(searchParams.get('tab'));
     const [{ data: assetTypes, loading: tLoading, error: tError }] = useAxios<AssetType[]>(
         `${settings.localBackend}/assettypes`
     );
-    const [{ data: assets, loading, error }, refetch] = useAxios<Asset[]>(
+    const [{ data, loading, error }, refetch] = useAxios<Asset[]>(
         `${settings.localBackend}/projects/${projectUuid}/assets`
     );
+    useEffect(() => {
+        if (data) {
+            setAssets(data);
+        }
+    }, [data]);
 
     useEffect(() => {
         if (selectedModels.length == 0) {
@@ -127,6 +134,7 @@ export function ProjectPageBody({ projectUuid, project, onProjectChange }: Proje
                     }
                 </SimpleGrid>
             </Container>
+            <Refresher projectUUID={projectUuid} />
         </>
     );
 }

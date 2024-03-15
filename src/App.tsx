@@ -8,6 +8,9 @@ import { DashboardProvider } from './dashboard/provider/DashboardProvider.tsx';
 import { PrinterWidgetProvider } from './printers/providers/PrinterWidgetProvider.tsx';
 import { SSEProvider } from './core/sse/SSEProvider.tsx';
 import { SettingsProvider } from './core/settings/settingsProvider.tsx';
+import { DiscoveryNotifications } from './system/components/discovery-notifications/DiscoveryNotifications.tsx';
+import { NewProjectNotification } from './projects/notifications/new-project-notification/NewProjectNotification.tsx';
+import { Notifications } from '@mantine/notifications';
 
 export default function App() {
     const [opened, { toggle }] = useDisclosure();
@@ -40,7 +43,10 @@ export default function App() {
                     </AppShell>
                     <ScrollToTop />
                     <AxiosErrorHandler />
+                    <NewProjectNotification />
+                    <DiscoveryNotifications />
                     <PrinterWidgetProvider />
+                    <Notifications limit={10} />
                 </DashboardProvider>
             </SSEProvider>
         </SettingsProvider>

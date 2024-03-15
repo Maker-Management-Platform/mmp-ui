@@ -40,8 +40,8 @@ export function AssetCard({ asset, focused, onFocused, onDelete, onChange, view3
     return (
         <>
             {modal && asset.image_id && asset.image_id != "" && <Lightbox
-                medium={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}`}
-                large={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}`}
+                medium={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}/file`}
+                large={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}/file`}
                 hideDownload={true}
                 onClose={toggleModal}
             />}
@@ -50,7 +50,7 @@ export function AssetCard({ asset, focused, onFocused, onDelete, onChange, view3
                     <AspectRatio ratio={16 / 9}>
                         {asset?.image_id === "" ? (iconMap.get(asset.extension) ?? <IconFile />) :
                             <Image
-                                src={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}`}
+                                src={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.image_id}/file`}
                                 alt={asset.name}
                             />
                         }
@@ -58,7 +58,7 @@ export function AssetCard({ asset, focused, onFocused, onDelete, onChange, view3
                 </Card.Section>
 
                 <Text fw={700} className={classes.title} mt="xs" onClick={() => { onFocused() }}>
-                    {asset.name}
+                    {asset.label != "" ? asset.label : asset.name}
                 </Text>
 
                 <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ blur: 2 }} />
@@ -80,7 +80,7 @@ export function AssetCard({ asset, focused, onFocused, onDelete, onChange, view3
                                 projectUuid={asset.project_uuid}
                                 id={asset.id}
                                 openDetails={() => { onFocused() }}
-                                downloadURL={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.id}?download=true'`}
+                                downloadURL={`${settings.localBackend}/projects/${asset.project_uuid}/assets/${asset.id}/file?download=true'`}
                                 onDelete={onDelete}
                                 toggleLoad={toggleLoadingCallback}>
                                 <SetAsMain projectUuid={asset.project_uuid} assetId={asset.image_id} onChange={onChange} />

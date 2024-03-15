@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ProjectPageBody } from "./parts/project-page-body/ProjectPageBody.tsx";
 import { Header } from "@/core/header/Header.tsx";
 import { SettingsContext } from "@/core/settings/settingsContext.ts";
+import { Refresher } from "./parts/refresher/Refresher.tsx";
 
 
 export function ProjectPage() {
@@ -23,7 +24,7 @@ export function ProjectPage() {
                 description={project?.description}
                 tags={project?.tags}
                 link={project?.external_link}
-                imagePath={`${settings.localBackend}/projects/${project?.uuid}/assets/${project?.default_image_id}`}
+                imagePath={`${settings.localBackend}/projects/${project?.uuid}/assets/${project?.default_image_id}/file`}
                 onTagClick={(t) => navigate(`/projects/list?filter=${JSON.stringify({ tags: [t.value] })}`)}
             />
             {error && <p>Error!</p>}
@@ -31,6 +32,7 @@ export function ProjectPage() {
                 console.log("onProjectChange")
                 refetch()
             }} />}
+            <Refresher projectUUID={id ?? ''} refresh={refetch} />
         </>
     )
 }
