@@ -16,6 +16,7 @@ import {
 } from '@tabler/icons-react';
 import { menuItems as dashboardMenuItems } from "@/dashboard/menu";
 import { menuItems as projectMenuItems } from "@/projects/menu";
+import { menuItems as printQueueMenuItems } from "@/printQueue/menu";
 import { menuItems as tempFileMenuItems } from "@/tempfiles/menu";
 import { menuItems as printersMenuItems } from "@/printers/menu";
 import { menuItems as settingsMenuItems } from "@/settings/menu";
@@ -53,6 +54,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 
 const stdMenuItems = [
     ...projectMenuItems,
+    ...printQueueMenuItems,
     ...tempFileMenuItems,
     ...printersMenuItems,
 ];

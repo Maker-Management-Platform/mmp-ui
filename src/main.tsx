@@ -5,8 +5,6 @@ import '@mantine/core/styles/global.css';
 import '@mantine/core/styles.css';
 import '@mantine/core/styles/ScrollArea.css';
 import '@mantine/core/styles/UnstyledButton.css';
-import '@mantine/core/styles/Button.css';
-import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/VisuallyHidden.css';
 import '@mantine/core/styles/Paper.css';
 import '@mantine/core/styles/Popover.css';
@@ -17,6 +15,8 @@ import '@mantine/core/styles/Overlay.css';
 import '@mantine/core/styles/ModalBase.css';
 import '@mantine/core/styles/Input.css';
 import '@mantine/core/styles/Flex.css';
+import '@mantine/core/styles/Button.css';
+import '@mantine/core/styles/ActionIcon.css';
 import '@mantine/core/styles/AppShell.css';
 import '@mantine/core/styles/Tabs.css';
 import '@mantine/core/styles/Pagination.css';
@@ -29,6 +29,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes as dashboardRoutes } from "./dashboard/routes.tsx";
 import { routes as projectRoutes } from "./projects/routes.tsx";
 import { routes as tempFilesRoutes } from "./tempfiles/routes.tsx";
+import { routes as printQueueRoutes } from "./printQueue/routes.tsx";
 import { routes as printersRoutes } from "./printers/routes.tsx";
 import { routes as settingsRoutes } from "./settings/routes.tsx";
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
             {
                 path: "projects",
                 children: [...projectRoutes]
+            },
+            {
+                path: "printQueue",
+                children: [...printQueueRoutes]
             },
             {
                 path: "tempfiles",
