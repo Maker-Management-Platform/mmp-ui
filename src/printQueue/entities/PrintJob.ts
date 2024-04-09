@@ -2,9 +2,9 @@ import { Asset } from "../../assets/entities/Assets.ts";
 
 export interface PrintJob {
     uuid: string
-
-    slices: Asset
+    slice: Asset
     tags: Tag[]
+    order: number
 }
 
 export interface Tag {

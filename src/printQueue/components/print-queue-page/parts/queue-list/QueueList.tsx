@@ -1,6 +1,11 @@
 import { Avatar, Box, Group, Text, Center, Stack, Paper, ActionIcon, rem } from "@mantine/core"
 import { DragDropContext, Droppable, Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
+import { useContext, useRef } from "react";
+import { SettingsContext } from "@/core/settings/settingsContext";
+import { Project } from "@/projects/entities/Project";
+import useAxios from "axios-hooks";
+import { PrintJob } from "@/printQueue/entities/PrintJob";
 
 
 const printJobs = [
@@ -44,8 +49,11 @@ const printJobs = [
 ]
 
 export function QueueList() {
-
-
+    const reload = useRef(Math.floor(1000 + Math.random() * 9000));
+    const { settings } = useContext(SettingsContext);
+    const [{ data: printJobs, loading, error: pError }] = useAxios<PrintJob[]>(
+        `${settings.localBackend}/printqueue/jobs?states=queued&_=${reload.current}`
+    )
     return <DragDropContext
         onDragEnd={({ destination, source }) =>
             console.log(destination, source)
@@ -53,10 +61,10 @@ export function QueueList() {
         <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
                 <Stack gap="xs" mt='sm' {...provided.droppableProps} ref={provided.innerRef}>
-                    {printJobs.map(job => (
-                        <Draggable key={job.id} index={job.id} draggableId={job.id.toString()}>
+                    {printJobs?.map(job => (
+                        <Draggable key={job.uuid} index={job.order} draggableId={job.uuid.toString()}>
                             {(provided) => (
-                                <JobFragment provided={provided} index={job.id} job={job} remove={console.log} />
+                                <JobFragment provided={provided} index={job.order} job={job} remove={console.log} />
                             )}
                         </Draggable>
                     ))}
@@ -69,6 +77,7 @@ export function QueueList() {
 }
 
 function JobFragment({ provided, index, job, remove }: { provided: DraggableProvided, index: number, job: any, remove: () => void }) {
+    const { settings } = useContext(SettingsContext);
 
     return (
         <Paper shadow="xs" radius="xs" withBorder p="sm" component={Group} ref={provided.innerRef} bg="var(--mantine-color-body)" {...provided.draggableProps}>
@@ -78,7 +87,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                 </Center>
             </Box>
             <Group gap="sm">
-                <Avatar size={40} src={job.slice.name} radius={40} />
+                <Avatar size={40} src={`${settings.localBackend}/projects/${job.slice.project_uuid}/assets/${job.slice.image_id}/file`} radius={40} />
                 <Box>
                     <Text fz="sm" fw={500}>
                         {job.slice.name}

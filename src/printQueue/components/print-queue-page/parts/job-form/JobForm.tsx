@@ -9,7 +9,7 @@ import useAxios from "axios-hooks";
 import { useContext, useRef } from "react";
 
 interface PrintJobRequest {
-    slicesId: string;
+    sliceId: string;
     projectUuid: string;
     instances: number;
     printerUuid: string;
@@ -30,7 +30,7 @@ export function JobForm() {
         initialValues: {
             instances: 1,
             projectUuid: '',
-            slicesId: '',
+            sliceId: '',
             printerUuid: '',
             tags: []
         },
@@ -63,9 +63,7 @@ export function JobForm() {
         <form onSubmit={form.onSubmit(onSave)}>
             <Fieldset legend="Job">
                 <SimpleProjectSelect {...form.getInputProps('projectUuid')} />
-                <SimpleAssetSelect type="slice" projectUuid={form.values.projectUuid} {...form.getInputProps('slicesId')} />
-                <TextInput label="Project" placeholder="Default Project" />
-                <TextInput label="Slice" placeholder="Email" mt="sm" />
+                <SimpleAssetSelect type="slice" projectUuid={form.values.projectUuid} {...form.getInputProps('sliceId')} />
                 <Dropzone openRef={openRef} onDrop={() => { }} activateOnClick={false} mt="sm">
                     <Group justify="center">
                         <Button onClick={() => openRef.current?.()} style={{ pointerEvents: 'all' }}>
