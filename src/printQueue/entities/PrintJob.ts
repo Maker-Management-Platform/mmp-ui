@@ -4,7 +4,7 @@ export interface PrintJob {
     uuid: string
     slice: Asset
     tags: Tag[]
-    order: number
+    position: number
 }
 
 export interface Tag {

@@ -1,70 +1,64 @@
 import { Avatar, Box, Group, Text, Center, Stack, Paper, ActionIcon, rem } from "@mantine/core"
 import { DragDropContext, Droppable, Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useId, useRef, useState } from "react";
 import { SettingsContext } from "@/core/settings/settingsContext";
-import { Project } from "@/projects/entities/Project";
 import useAxios from "axios-hooks";
 import { PrintJob } from "@/printQueue/entities/PrintJob";
+import SSEContext from "@/core/sse/SSEContext";
 
 
-const printJobs = [
-    {
-        id: 1,
-        slice: {
-            name: 'Slice 1',
-            properties: {
-                name: 'Slice 1',
-                color: 'red',
-            }
-        }
-    }, {
-        id: 2,
-        slice: {
-            name: 'Slice 2',
-            properties: {
-                name: 'Slice 1',
-                color: 'red',
-            }
-        }
-    }, {
-        id: 3,
-        slice: {
-            name: 'Slice 3',
-            properties: {
-                name: 'Slice 1',
-                color: 'red',
-            }
-        }
-    }, {
-        id: 4,
-        slice: {
-            name: 'Slice 4',
-            properties: {
-                name: 'Slice 1',
-                color: 'red',
-            }
-        }
-    },
-]
 
 export function QueueList() {
-    const reload = useRef(Math.floor(1000 + Math.random() * 9000));
     const { settings } = useContext(SettingsContext);
-    const [{ data: printJobs, loading, error: pError }] = useAxios<PrintJob[]>(
-        `${settings.localBackend}/printqueue/jobs?states=queued&_=${reload.current}`
+    const [printJobs, setPrintJobs] = useState<PrintJob[]>([])
+    const [{ loading: mLoading }, move] = useAxios<PrintJob[]>(
+        `${settings.localBackend}/printqueue/move`,
+        { manual: true }
     )
+
+    const subscriberId = useId();
+    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+        if (!connected) return;
+        setPrintJobs([]);
+        const subscription = {
+            subscriberId,
+            provider: `printqueue`,
+        }
+        subscribe({
+            ...subscription,
+            event: `printQueue.queue.update`,
+            callback: (s) => { console.log(s); setPrintJobs(s.data) }
+        }).catch(setError);
+        return () => {
+            unsubscribe(subscriberId)
+        }
+    }, [connected])
+
+
     return <DragDropContext
-        onDragEnd={({ destination, source }) =>
+        onDragEnd={({ destination, source }) => {
             console.log(destination, source)
+            const job = printJobs?.find(job => job.position === source.index)
+            console.log(job)
+            if (job && destination) {
+                move({
+                    url: `${settings.localBackend}/printqueue/move?jobUuid=${job.uuid}&position=${destination.index}`
+                })
+            }
+
+        }
         }>
         <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
                 <Stack gap="xs" mt='sm' {...provided.droppableProps} ref={provided.innerRef}>
                     {printJobs?.map(job => (
-                        <Draggable key={job.uuid} index={job.order} draggableId={job.uuid.toString()}>
+                        <Draggable key={job.position} index={job.position} draggableId={job.position.toString()}>
                             {(provided) => (
-                                <JobFragment provided={provided} index={job.order} job={job} remove={console.log} />
+                                <JobFragment provided={provided} index={job.position} job={job} remove={console.log} />
                             )}
                         </Draggable>
                     ))}
@@ -127,7 +121,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                     </Center>
                 </Box>
             </Group>
-            <ActionIcon  size={42} variant="default" aria-label="ActionIcon with size as a number">
+            <ActionIcon size={42} variant="default" aria-label="ActionIcon with size as a number">
                 <IconTrash style={{ width: rem(24), height: rem(24) }} />
             </ActionIcon>
         </Paper>

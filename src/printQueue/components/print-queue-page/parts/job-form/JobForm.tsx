@@ -51,7 +51,7 @@ export function JobForm() {
             .then(({ data }) => {
                 notifications.show({
                     title: 'Great Success!',
-                    message: 'Project updated',
+                    message: 'Project created',
                     color: 'indigo',
                 })
             })
