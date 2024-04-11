@@ -1,5 +1,6 @@
 import { SimpleAssetSelect } from "@/assets/components/simple-asset-select/SimpleAssetSelect";
 import { SettingsContext } from "@/core/settings/settingsContext";
+import { PrinterSelect } from "@/printers/components/parts/printer-select/PrinterSelect";
 import { SimpleProjectSelect } from "@/projects/components/parts/simple-project-select/SimpleProjectSelect";
 import { Button, Fieldset, Group, NumberInput, TagsInput, TextInput } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
@@ -73,7 +74,7 @@ export function JobForm() {
                 </Dropzone>
                 <NumberInput label="Number of instances" mt="sm" {...form.getInputProps('instances')} />
                 <Group mt="sm" grow>
-                    <TextInput label="Printer" placeholder="" />
+                    <PrinterSelect {...form.getInputProps('printerUuid')}/>
                     <TagsInput
                         label="Tags"
                         placeholder="Pick tag from list"
