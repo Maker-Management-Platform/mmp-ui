@@ -1,6 +1,7 @@
 import axios from "axios"
 import { Subscription } from "./SSEContext"
 import ReconnectingEventSource from "reconnecting-eventsource";
+import { findDOMNode } from "react-dom";
 
 type State = {
     url: string
@@ -34,6 +35,23 @@ export const createSubsManager = (url: string): SubscriptionManager => {
         subs: new Map<string, Subscription[]>()
     }
 
+    function dispatch(e: any, parent = "") {
+        if (!e.event) {
+            return
+        }
+        const path = `${parent ? parent + '.' : ''}${e.event}`
+        if (e.unpack) {
+            if (Array.isArray(e.data)) {
+                e.data.forEach((d: any) => {
+                    dispatch(d, path)
+                })
+            } else {
+                dispatch(e.data, path)
+            }
+        }
+        state.evSubs.get(path)?.forEach(sub => sub.callback(e.data))
+    }
+
     return {
         connect() {
             state.source = new ReconnectingEventSource(`${url}/events`, {
@@ -47,7 +65,22 @@ export const createSubsManager = (url: string): SubscriptionManager => {
                     state.onConnect && state.onConnect()
                     return;
                 }
+                dispatch(ev)
+                /*
                 if (ev.event) {
+                    if (ev.unpack) {
+                        ev.data.forEach((d: any) => {
+                            if (d.name && (d.state || d.data)) {
+                                state.evSubs.get(`${ev.event}.${d.name}`)?.forEach(sub => sub.callback(d.state ?? d.data));
+                            } else {
+                                state.evSubs.get(ev.event)?.forEach(sub => sub.callback(d))
+                            }
+                        })
+                    } else if (ev.data.name) {
+                        state.evSubs.get(`${ev.event}.${ev.data.name}`)?.forEach(sub => sub.callback(ev.data.state ?? ev.data.data));
+                    } else {
+                        state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data.state ?? ev.data));
+                    }
                     if (ev.data.name) {
                         state.evSubs.get(`${ev.event}.${ev.data.name}`)?.forEach(sub => sub.callback(ev.data));
                     }
@@ -64,7 +97,7 @@ export const createSubsManager = (url: string): SubscriptionManager => {
                     } else {
                         state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data));
                     }
-                }
+                }*/
             }
             state.source.onerror = (e: Event) => {
                 console.log("Error", e);

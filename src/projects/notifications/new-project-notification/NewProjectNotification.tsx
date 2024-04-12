@@ -29,11 +29,11 @@ export function NewProjectNotification() {
 
     useEffect(() => {
         console.log(message)
-        if (!message.state) return;
-        if (message.state.type == "new") {
+        if (!message.type) return;
+        if (message.type == "new") {
             notifications.show({
                 title: `New project found`,
-                message: <>Go to <Anchor component={Link} to={`/projects/${message.state.projectUUID}`}>{message.state.projectName}</Anchor></>,
+                message: <>Go to <Anchor component={Link} to={`/projects/${message.projectUUID}`}>{message.projectName}</Anchor></>,
             })
         }
     }, [message])

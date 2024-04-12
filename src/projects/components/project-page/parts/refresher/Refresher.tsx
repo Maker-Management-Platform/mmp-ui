@@ -31,8 +31,8 @@ export function Refresher({ projectUUID, refresh }: RefresherProps) {
 
     useEffect(() => {
         console.log(projectUpdate)
-        if (!projectUpdate.state) return;
-        if (projectUpdate.state.projectUUID == projectUUID && projectUpdate.state.type == "update") {
+        if (!projectUpdate.projectUUID) return;
+        if (projectUpdate.projectUUID == projectUUID && projectUpdate.type == "update") {
             refresh();
         }
     }, [projectUpdate])

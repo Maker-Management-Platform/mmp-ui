@@ -24,14 +24,11 @@ export function QueueList() {
     useEffect(() => {
         if (!connected) return;
         setPrintJobs([]);
-        const subscription = {
+        subscribe({
             subscriberId,
             provider: `printqueue`,
-        }
-        subscribe({
-            ...subscription,
             event: `printQueue.queue.update`,
-            callback: (s) => { console.log(s); setPrintJobs(s.data) }
+            callback: (s) => { console.log(s); setPrintJobs(s) }
         }).catch(setError);
         return () => {
             unsubscribe(subscriberId)
@@ -72,7 +69,23 @@ export function QueueList() {
 
 function JobFragment({ provided, index, job, remove }: { provided: DraggableProvided, index: number, job: any, remove: () => void }) {
     const { settings } = useContext(SettingsContext);
+    const subscriberId = useId();
+    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
+    const [error, setError] = useState<Error | null>(null);
+    const [status, SetStatus] = useState<any>({});
 
+    useEffect(() => {
+        if (!connected) return;
+        subscribe({
+            subscriberId,
+            provider: `printqueue`,
+            event: `printQueue.job.update.${job.uuid}`,
+            callback: (s) => { console.log(s); SetStatus(s) }
+        }).catch(setError);
+        return () => {
+            unsubscribe(subscriberId)
+        }
+    }, [job, connected])
     return (
         <Paper shadow="xs" radius="xs" withBorder p="sm" component={Group} ref={provided.innerRef} bg="var(--mantine-color-body)" {...provided.draggableProps}>
             <Box>
@@ -107,7 +120,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         Starts in
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        {job.slice.properties.color}
+                        {status?.startAt}
                     </Center>
                 </Box>
             </Group>
@@ -117,7 +130,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         ETA
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        {job.slice.properties.color}
+                        {status?.endAt}
                     </Center>
                 </Box>
             </Group>

@@ -31,7 +31,7 @@ export function DiscoveryNotifications() {
     useEffect(() => {
         console.log(message)
         if (!message.state) return;
-        if (message.state.state == "started") {
+        if (message.state == "started") {
             setId(notifications.show({
                 loading: true,
                 title: "New Scan started",
