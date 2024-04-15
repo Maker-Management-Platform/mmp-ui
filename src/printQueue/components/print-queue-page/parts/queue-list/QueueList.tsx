@@ -1,4 +1,4 @@
-import { Avatar, Box, Group, Text, Center, Stack, Paper, ActionIcon, rem } from "@mantine/core"
+import { Avatar, Box, Group, Text, Center, Stack, Paper, ActionIcon, rem, Tooltip } from "@mantine/core"
 import { DragDropContext, Droppable, Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
 import { useContext, useEffect, useId, useRef, useState } from "react";
@@ -6,8 +6,9 @@ import { SettingsContext } from "@/core/settings/settingsContext";
 import useAxios from "axios-hooks";
 import { PrintJob } from "@/printQueue/entities/PrintJob";
 import SSEContext from "@/core/sse/SSEContext";
-
-
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 export function QueueList() {
     const { settings } = useContext(SettingsContext);
@@ -120,7 +121,9 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         Starts in
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        {status?.startAt}
+                        <Tooltip label={dayjs(status?.startAt).toString()}>
+                            {dayjs(status?.startAt).fromNow()}
+                        </Tooltip>
                     </Center>
                 </Box>
             </Group>
@@ -130,7 +133,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         ETA
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        {status?.endAt}
+                        {dayjs(status?.endAt).fromNow()}
                     </Center>
                 </Box>
             </Group>
