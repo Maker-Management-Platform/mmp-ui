@@ -1,7 +1,7 @@
 import { Avatar, Box, Group, Text, Center, Stack, Paper, ActionIcon, rem, Tooltip } from "@mantine/core"
 import { DragDropContext, Droppable, Draggable, DraggableProvided } from '@hello-pangea/dnd';
-import { IconGripVertical, IconTrash } from "@tabler/icons-react";
-import { useContext, useEffect, useId, useRef, useState } from "react";
+import { IconGripVertical, IconCircleX } from "@tabler/icons-react";
+import { useCallback, useContext, useEffect, useId, useRef, useState } from "react";
 import { SettingsContext } from "@/core/settings/settingsContext";
 import useAxios from "axios-hooks";
 import { PrintJob } from "@/printQueue/entities/PrintJob";
@@ -13,23 +13,24 @@ dayjs.extend(relativeTime)
 export function QueueList() {
     const { settings } = useContext(SettingsContext);
     const [printJobs, setPrintJobs] = useState<PrintJob[]>([])
+    const subscriberId = useId();
+    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
+    const [error, setError] = useState<Error | null>(null);
+
     const [{ loading: mLoading }, move] = useAxios<PrintJob[]>(
         `${settings.localBackend}/printqueue/move`,
         { manual: true }
     )
 
-    const subscriberId = useId();
-    const { connected, subscribe, unsubscribe } = useContext(SSEContext)
-    const [error, setError] = useState<Error | null>(null);
+
 
     useEffect(() => {
         if (!connected) return;
-        setPrintJobs([]);
         subscribe({
             subscriberId,
             provider: `printqueue`,
             event: `printQueue.queue.update`,
-            callback: (s) => { console.log(s); setPrintJobs(s) }
+            callback: setPrintJobs
         }).catch(setError);
         return () => {
             unsubscribe(subscriberId)
@@ -53,10 +54,10 @@ export function QueueList() {
         <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
                 <Stack gap="xs" mt='sm' {...provided.droppableProps} ref={provided.innerRef}>
-                    {printJobs?.map(job => (
-                        <Draggable key={job.position} index={job.position} draggableId={job.position.toString()}>
+                    {printJobs?.filter(p => p.state == "queued").map(job => (
+                        <Draggable key={job.uuid} index={job.position} draggableId={job.position.toString()}>
                             {(provided) => (
-                                <JobFragment provided={provided} index={job.position} job={job} remove={console.log} />
+                                <JobFragment provided={provided} job={job} remove={console.log} />
                             )}
                         </Draggable>
                     ))}
@@ -68,12 +69,24 @@ export function QueueList() {
 
 }
 
-function JobFragment({ provided, index, job, remove }: { provided: DraggableProvided, index: number, job: any, remove: () => void }) {
+function JobFragment({ provided, job, remove }: { provided: DraggableProvided, job: any, remove: () => void }) {
     const { settings } = useContext(SettingsContext);
     const subscriberId = useId();
     const { connected, subscribe, unsubscribe } = useContext(SSEContext)
     const [error, setError] = useState<Error | null>(null);
-    const [status, SetStatus] = useState<any>({});
+    const [status, setStatus] = useState<any>({});
+
+    const [{ loading: cLoading }, cancel] = useAxios<PrintJob[]>(
+        `${settings.localBackend}/printqueue/move`,
+        { manual: true }
+    )
+
+    var cancelHandler = useCallback(() => {
+        cancel({
+            url: `${settings.localBackend}/printqueue/jobs/${job.uuid}/cancel`
+        })
+    }, [job])
+
 
     useEffect(() => {
         if (!connected) return;
@@ -81,7 +94,7 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
             subscriberId,
             provider: `printqueue`,
             event: `printQueue.job.update.${job.uuid}`,
-            callback: (s) => { console.log(s); SetStatus(s) }
+            callback: setStatus
         }).catch(setError);
         return () => {
             unsubscribe(subscriberId)
@@ -121,8 +134,8 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         Starts in
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        <Tooltip label={dayjs(status?.startAt).toString()}>
-                            {dayjs(status?.startAt).fromNow()}
+                        <Tooltip label={<Box>{dayjs(status?.startAt).toString()}</Box>}>
+                            <Box>{dayjs(status?.startAt).fromNow()}</Box>
                         </Tooltip>
                     </Center>
                 </Box>
@@ -133,12 +146,14 @@ function JobFragment({ provided, index, job, remove }: { provided: DraggableProv
                         ETA
                     </Text>
                     <Center fz="xs" c="dimmed">
-                        {dayjs(status?.endAt).fromNow()}
+                        <Tooltip label={<Box>{dayjs(status?.endAt).toString()}</Box>}>
+                            <Box>{dayjs(status?.endAt).fromNow()}</Box>
+                        </Tooltip>
                     </Center>
                 </Box>
             </Group>
-            <ActionIcon size={42} variant="default" aria-label="ActionIcon with size as a number">
-                <IconTrash style={{ width: rem(24), height: rem(24) }} />
+            <ActionIcon size={42} variant="default" onClick={cancelHandler}>
+                <IconCircleX style={{ width: rem(24), height: rem(24) }} />
             </ActionIcon>
         </Paper>
     )

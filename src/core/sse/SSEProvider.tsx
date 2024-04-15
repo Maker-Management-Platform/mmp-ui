@@ -34,7 +34,6 @@ export function SSEProvider({ children }) {
             subManager.connect()
         }
         return () => {
-            console.log('qweqew')
             subManager?.close();
         }
     }, [settings.localBackend])

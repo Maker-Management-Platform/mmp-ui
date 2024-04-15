@@ -1,7 +1,6 @@
 import axios from "axios"
 import { Subscription } from "./SSEContext"
 import ReconnectingEventSource from "reconnecting-eventsource";
-import { findDOMNode } from "react-dom";
 
 type State = {
     url: string
@@ -66,38 +65,6 @@ export const createSubsManager = (url: string): SubscriptionManager => {
                     return;
                 }
                 dispatch(ev)
-                /*
-                if (ev.event) {
-                    if (ev.unpack) {
-                        ev.data.forEach((d: any) => {
-                            if (d.name && (d.state || d.data)) {
-                                state.evSubs.get(`${ev.event}.${d.name}`)?.forEach(sub => sub.callback(d.state ?? d.data));
-                            } else {
-                                state.evSubs.get(ev.event)?.forEach(sub => sub.callback(d))
-                            }
-                        })
-                    } else if (ev.data.name) {
-                        state.evSubs.get(`${ev.event}.${ev.data.name}`)?.forEach(sub => sub.callback(ev.data.state ?? ev.data.data));
-                    } else {
-                        state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data.state ?? ev.data));
-                    }
-                    if (ev.data.name) {
-                        state.evSubs.get(`${ev.event}.${ev.data.name}`)?.forEach(sub => sub.callback(ev.data));
-                    }
-                    if (ev.data.state) {
-                        state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data.state));
-                    } else if (Array.isArray(ev.data)) {
-                        ev.data.forEach((d: any) => {
-                            if (d.name) {
-                                state.evSubs.get(`${ev.event}.${d.name}`)?.forEach(sub => sub.callback(d.state));
-                            } else {
-                                state.evSubs.get(ev.event)?.forEach(sub => sub.callback(d))
-                            }
-                        })
-                    } else {
-                        state.evSubs.get(ev.event)?.forEach(sub => sub.callback(ev.data));
-                    }
-                }*/
             }
             state.source.onerror = (e: Event) => {
                 console.log("Error", e);
