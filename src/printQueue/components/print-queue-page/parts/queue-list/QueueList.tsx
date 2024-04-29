@@ -54,7 +54,7 @@ export function QueueList() {
         <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
                 <Stack gap="xs" mt='sm' {...provided.droppableProps} ref={provided.innerRef}>
-                    {printJobs?.filter(p => p.state == "queued").map(job => (
+                    {printJobs?.filter(p => p.state == "queued" || p.state == "printing").map(job => (
                         <Draggable key={job.uuid} index={job.position} draggableId={job.position.toString()}>
                             {(provided) => (
                                 <JobFragment provided={provided} job={job} remove={console.log} />
@@ -81,7 +81,7 @@ function JobFragment({ provided, job, remove }: { provided: DraggableProvided, j
         { manual: true }
     )
 
-    var cancelHandler = useCallback(() => {
+    const cancelHandler = useCallback(() => {
         cancel({
             url: `${settings.localBackend}/printqueue/jobs/${job.uuid}/cancel`
         })
@@ -116,6 +116,16 @@ function JobFragment({ provided, job, remove }: { provided: DraggableProvided, j
                     <Text fz="xs" c="dimmed">
                         {job.slice.properties.color}
                     </Text>
+                </Box>
+            </Group>
+            <Group gap="sm" ml="auto">
+                <Box>
+                    <Text fz="sm" fw={500}>
+                        State
+                    </Text>
+                    <Center fz="xs" c="dimmed">
+                        {job.state}
+                    </Center>
                 </Box>
             </Group>
             <Group gap="sm" ml="auto">
